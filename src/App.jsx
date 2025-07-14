@@ -13,12 +13,9 @@ import Home from './pages/Landing/Home';
 import About from './pages/Landing/About';
 import Blogs from './pages/Landing/Blogs';
 import Contacts from './pages/Landing/Contacts';
-
+import ProvidersDashboard from './layouts/ProvidersDashboard';
 import PatientProfile from './pages/patients/PatientProfile';
 import ServiceProfile from './pages/ServiceProfile';
-import ProvidersDashboard from './layouts/ProvidersDashboard';
-import PatientsDashboard from './layouts/patientsdashboard';
-
 
 // Dashboard Pages:
 import Services from './pages/Dashboard/Services';
@@ -82,23 +79,19 @@ const router = createBrowserRouter([
     path: "/pysio-home",
     element: <GymSessions />,
   },
-
-  // 💻 Dashboard Routes (WITH Sidebar inside ProvidersDashboard layout)
-  {
-
-    path: "/sign-up",
-    element: <SignUp/>
-  }, 
-  {
+{
     path: "patient-profile",
     element: <PatientProfile/>
   },
   {
     path: "service-profile",
     element: <ServiceProfile/>
-  }
- ])
+  },
 
+
+
+  // 💻 Dashboard Routes (WITH Sidebar inside ProvidersDashboard layout)
+  {
     path: "/dashboard",
     element: <ProvidersDashboard />,  // This is where Sidebar lives
     children: [
@@ -123,7 +116,17 @@ const router = createBrowserRouter([
         element: <Services />,
       },
 
-    
+//     {
+//       path: "/patient-dashboard",
+//       element: <PatientsDashboard/>,
+//     children: [
+// {
+//   index: True,
+//   element: <PatientHome/>,
+// },
+    // ],
+    // },
+  
 
     ],
   },
