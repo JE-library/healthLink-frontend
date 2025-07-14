@@ -13,6 +13,8 @@ import Home from './pages/Landing/Home';
 import About from './pages/Landing/About';
 import Blogs from './pages/Landing/Blogs';
 import Contacts from './pages/Landing/Contacts';
+import PatientProfile from './pages/patients/PatientProfile';
+import ServiceProfile from './pages/ServiceProfile';
 
 
 
@@ -77,6 +79,14 @@ element: <Login/>
   {
     path: "/sign-up",
     element: <SignUp/>
+  }, 
+  {
+    path: "patient-profile",
+    element: <PatientProfile/>
+  },
+  {
+    path: "service-profile",
+    element: <ServiceProfile/>
   }
  ])
 
