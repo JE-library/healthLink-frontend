@@ -4,7 +4,7 @@ const K = {
   NAVLINKS: [
     {
       icon: <FaStethoscope />,
-      text: "All Services",
+      text: "Overview",
       path: "/dashboard",
     },
     

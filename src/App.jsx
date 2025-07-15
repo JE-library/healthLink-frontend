@@ -1,137 +1,120 @@
 import './App.css';
-import { createBrowserRouter, RouterProvider } from 'react-router';  // ✅ FIXED: react-router-dom
+import { createBrowserRouter, RouterProvider } from 'react-router'; 
+
+// Public Pages
+import Home from './pages/Landing/Home';
+import About from './pages/Landing/About';
+import Blogs from './pages/Landing/Blogs';
+import Contacts from './pages/Landing/Contacts';
+import Login from './auth/Login';
+import SignUp from './auth/Signup';
+
+// Patient-Specific Pages
+import PatientHome from './pages/patients/PatientHome';
+import PatientProfile from './pages/patients/PatientProfile';
+import PatientsDashboard from './layouts/patientsdashboard';
+
+
+// Service Provider Pages
 import Details from './pages/Ambulance/Details';
-import PatientHome from './pages/patients/patientHome';
 import LabHome from './pages/Labtech/LabHome';
 import DocAppointments from './pages/Doctors/DocAppointments';
 import Sessions from './pages/Dermatologist/Sessions';
 import MentalSlot from './pages/Therapist/MentalSlot';
 import GymSessions from './pages/Physiotherapist/GymSessions';
-import Login from './auth/Login';
-import SignUp from './auth/Signup';
-import Home from './pages/Landing/Home';
-import About from './pages/Landing/About';
-import Blogs from './pages/Landing/Blogs';
-import Contacts from './pages/Landing/Contacts';
-import ProvidersDashboard from './layouts/ProvidersDashboard';
-import PatientProfile from './pages/patients/PatientProfile';
 import ServiceProfile from './pages/ServiceProfile';
+import ProvidersDashboard from './layouts/ProvidersDashboard';
 
-// Dashboard Pages:
-import Services from './pages/Dashboard/Services';
+// Dashboard Features
+
 import AllAppointments from './pages/Dashboard/AllAppointments';
 import HealthTips from './pages/Dashboard/HealthTips';
 import Settings from './pages/Dashboard/Settings';
+import Overview from './pages/Dashboard/Overview';
+import EditTip from './pages/Dashboard/EditTip';
+import ViewTip from './pages/Dashboard/ViewTips';
+import DoctorDashboard from './pages/Doctors/DoctorsDasboard';
 
+// Create routes
 const router = createBrowserRouter([
-  // 🌐 Public Routes (No Sidebar)
-  {
-    path: "/",
-    element: <Home />,
-  },
-  {
-    path: "/about",
-    element: <About />,
-  },
-  {
-    path: "/blog",
-    element: <Blogs />,
-  },
-  {
-    path: "/contact",
-    element: <Contacts />,
-  },
-  {
-    path: "/log-in",
-    element: <Login />,
-  },
-  {
-    path: "/sign-up",
-    element: <SignUp />,
-  },
+  // 🌐 Public Routes
+  { path: "/", element: <Home /> },
+  { path: "/about", element: <About /> },
+  { path: "/blog", element: <Blogs /> },
+  { path: "/contact", element: <Contacts /> },
+  { path: "/log-in", element: <Login /> },
+  { path: "/sign-up", element: <SignUp /> },
 
-  // 🏥 Independent Service Provider Pages (No Sidebar)
+  // 🧍‍♂️ Patient Dashboard Routes (with layout)
   {
-    path: "/amb-details",
-    element: <Details />,
-  },
-  {
-    path: "/pat-home",
-    element: <PatientHome />,
-  },
-  {
-    path: "/lab-home",
-    element: <LabHome />,
-  },
-  {
-    path: "/doc-appointments",
-    element: <DocAppointments />,
-  },
-  {
-    path: "/derma-appointments",
-    element: <Sessions />,
-  },
-  {
-    path: "/mental-slot",
-    element: <MentalSlot />,
-  },
-  {
-    path: "/pysio-home",
-    element: <GymSessions />,
-  },
-{
-    path: "patient-profile",
-    element: <PatientProfile/>
-  },
-  {
-    path: "service-profile",
-    element: <ServiceProfile/>
-  },
-
-
-
-  // 💻 Dashboard Routes (WITH Sidebar inside ProvidersDashboard layout)
-  {
-    path: "/dashboard",
-    element: <ProvidersDashboard />,  // This is where Sidebar lives
+    path: "/patient-dashboard",
+    element: <PatientsDashboard />,
     children: [
       {
-        index: true,                // /dashboard → shows Services
-        element: <Services />,
+        index: true, // Default: /patient-dashboard
+        element: <PatientHome/>,
       },
       {
-        path: "appointments",       // /dashboard/appointments
+        path: "profile",
+        element: <PatientProfile />,
+      },
+      
+      // { path: "appointments", element: <PatientAppointments /> },
+      // { path: "settings", element: <PatientSettings /> },
+    ],
+  },
+
+  // 👨‍⚕️ Service Provider Dashboard (with sidebar/layout)
+  {
+    path: "/dashboard",
+    element: <ProvidersDashboard />,
+    children: [
+      {
+        index: true,
+        element: <Overview />
+      },
+      {
+        path: "appointments",
         element: <AllAppointments />,
       },
       {
-        path: "health-tips",        // /dashboard/health-tips
+        path: "health-tips",
         element: <HealthTips />,
       },
+      { path: "health-tips/edit/:id", 
+        element: <EditTip /> 
+      },
       {
-        path: "settings",           // /dashboard/settings
+  path: "/dashboard/health-tips/view/:id",
+  element: <ViewTip/>,
+},
+      {
+        path: "settings",
         element: <Settings />,
       },
       {
-        path: "services",           // Optional extra route: /dashboard/services
-        element: <Services />,
+        path: "stats",
+        element: <Overview />,
       },
-
-//     {
-//       path: "/patient-dashboard",
-//       element: <PatientsDashboard/>,
-//     children: [
-// {
-//   index: True,
-//   element: <PatientHome/>,
-// },
-    // ],
-    // },
-  
-
     ],
   },
+
+  // 🏥 Independent Service Provider Pages (NO layout)
+  { path: "/amb-details", element: <Details /> },
+  { path: "/lab-home", element: <LabHome /> },
+  {
+  path: "/doctor-dashboard",
+  element: <DoctorDashboard/>
+},
+  { path: "/doc-appointments", element: <DocAppointments /> },
+
+  { path: "/derma-appointments", element: <Sessions /> },
+  { path: "/mental-slot", element: <MentalSlot /> },
+  { path: "/pysio-home", element: <GymSessions /> },
+  { path: "/service-profile", element: <ServiceProfile /> },
 ]);
 
+// App component
 function App() {
   return <RouterProvider router={router} />;
 }

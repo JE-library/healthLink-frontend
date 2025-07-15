@@ -1,15 +1,15 @@
-import Sidebar from "../component/Sidebar"
-import { Outlet } from "react-router"
+import Sidebar from "../component/Sidebar";
+import { Outlet } from "react-router";
 
 const ProvidersDashboard = () => {
   return (
-    <div className='flex min-h-screen'>
-        <Sidebar />
-
-      <main className="bg-pink-50 w-full ml-60 p-10">
+    <div className="flex">
+      <Sidebar />
+      <main className="flex-1 p-6 bg-gray-50 min-h-screen">
         <Outlet />
-      </main></div>
-  )
-}
+      </main>
+    </div>
+  );
+};
 
-export default ProvidersDashboard
+export default ProvidersDashboard;
