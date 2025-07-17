@@ -1,5 +1,5 @@
 import './App.css';
-import { createBrowserRouter, RouterProvider } from 'react-router'; 
+import { createBrowserRouter, RouterProvider } from 'react-router';
 
 // Public Pages
 import Home from './pages/Landing/Home';
@@ -12,8 +12,7 @@ import SignUp from './auth/Signup';
 // Patient-Specific Pages
 import PatientHome from './pages/patients/PatientHome';
 import PatientProfile from './pages/patients/PatientProfile';
-import PatientsDashboard from './layouts/patientsdashboard';
-
+import PatientsDashboard from './layouts/PatientsDashboard';
 
 // Service Provider Pages
 import Details from './pages/Ambulance/Details';
@@ -26,7 +25,6 @@ import ServiceProfile from './pages/ServiceProfile';
 import ProvidersDashboard from './layouts/ProvidersDashboard';
 
 // Dashboard Features
-
 import AllAppointments from './pages/Dashboard/AllAppointments';
 import HealthTips from './pages/Dashboard/HealthTips';
 import Settings from './pages/Dashboard/Settings';
@@ -50,17 +48,11 @@ const router = createBrowserRouter([
     path: "/patient-dashboard",
     element: <PatientsDashboard />,
     children: [
-      {
-        index: true, // Default: /patient-dashboard
-        element: <PatientHome/>,
-      },
-      {
-        path: "profile",
-        element: <PatientProfile />,
-      },
-      
-      // { path: "appointments", element: <PatientAppointments /> },
-      // { path: "settings", element: <PatientSettings /> },
+      { index: true, 
+        element: <PatientHome /> },
+
+      { path: "profile", 
+        element: <PatientProfile /> },
     ],
   },
 
@@ -69,45 +61,23 @@ const router = createBrowserRouter([
     path: "/dashboard",
     element: <ProvidersDashboard />,
     children: [
-      {
-        index: true,
-        element: <Overview />
-      },
-      {
-        path: "appointments",
-        element: <AllAppointments />,
-      },
-      {
-        path: "health-tips",
-        element: <HealthTips />,
-      },
-      { path: "health-tips/edit/:id", 
-        element: <EditTip /> 
-      },
-      {
-  path: "/dashboard/health-tips/view/:id",
-  element: <ViewTip/>,
-},
-      {
-        path: "settings",
-        element: <Settings />,
-      },
-      {
-        path: "stats",
-        element: <Overview />,
-      },
+      { index: true, 
+        element: <Overview /> },
+
+      { path: "appointments", element: <AllAppointments /> },
+      { path: "health-tips", element: <HealthTips /> },
+      { path: "health-tips/edit/:id", element: <EditTip /> },
+      { path: "health-tips/view/:id", element: <ViewTip /> },
+      { path: "settings", element: <Settings /> },
+      { path: "stats", element: <Overview /> }, // Optional: "stats" and "overview" point to same page
     ],
   },
 
   // 🏥 Independent Service Provider Pages (NO layout)
   { path: "/amb-details", element: <Details /> },
   { path: "/lab-home", element: <LabHome /> },
-  {
-  path: "/doctor-dashboard",
-  element: <DoctorDashboard/>
-},
+  { path: "/doctor-dashboard", element: <DoctorDashboard /> },
   { path: "/doc-appointments", element: <DocAppointments /> },
-
   { path: "/derma-appointments", element: <Sessions /> },
   { path: "/mental-slot", element: <MentalSlot /> },
   { path: "/pysio-home", element: <GymSessions /> },
