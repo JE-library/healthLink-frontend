@@ -1,92 +1,121 @@
-import './App.css';
-import { createBrowserRouter, RouterProvider } from 'react-router';
+import "./App.css"
+import { RouterProvider, createBrowserRouter } from "react-router";
 
 // Public Pages
-import Home from './pages/Landing/Home';
-import About from './pages/Landing/About';
-import Blogs from './pages/Landing/Blogs';
-import Contacts from './pages/Landing/Contacts';
-import Login from './auth/Login';
-import SignUp from './auth/Signup';
+import Home from "./pages/public/Home";
+import About from "./pages/public/About";
+import Contact from "./pages/public/Contact";
+import Blog from "./pages/public/Blog";
 
-// Patient-Specific Pages
-import PatientHome from './pages/patients/PatientHome';
-import PatientProfile from './pages/patients/PatientProfile';
-import PatientsDashboard from './layouts/PatientsDashboard';
+// Auth Pages
+import Login from "./pages/auth/Login";
+import SignUpPatient from "./pages/auth/SignUpPatient";
+import SignUpProvider from "./pages/auth/SignUpProvider";
+import SignUpAmbulance from "./pages/auth/SignUpAmbulance";
 
-// Service Provider Pages
-import Details from './pages/Ambulance/Details';
-import LabHome from './pages/Labtech/LabHome';
-import DocAppointments from './pages/Doctors/DocAppointments';
-import Sessions from './pages/Dermatologist/Sessions';
-import MentalSlot from './pages/Therapist/MentalSlot';
-import GymSessions from './pages/Physiotherapist/GymSessions';
-import ServiceProfile from './pages/ServiceProfile';
-import ProvidersDashboard from './layouts/ProvidersDashboard';
+// Patient Pages
+import PatientDashboard from "./pages/patient/Dashboard";
+import BookConsultation from "./pages/patient/BookConsultation";
+import Appointments from "./pages/patient/Appointments";
+import AppointmentDetails from "./pages/patient/AppointmentDetails";
+import Consultation from "./pages/patient/Consultation";
+import HomeLab from "./pages/patient/HomeLab";
+import Emergency from "./pages/patient/Emergency";
+import Notifications from "./pages/patient/Notifications";
+import Pharmacy from "./pages/patient/Pharmacy";
+import PatientProfile from "./pages/patient/Profile";
+import Support from "./pages/patient/Support";
 
-// Dashboard Features
-import AllAppointments from './pages/Dashboard/AllAppointments';
-import HealthTips from './pages/Dashboard/HealthTips';
-import Settings from './pages/Dashboard/Settings';
-import Overview from './pages/Dashboard/Overview';
-import EditTip from './pages/Dashboard/EditTip';
-import ViewTip from './pages/Dashboard/ViewTips';
-import DoctorDashboard from './pages/Doctors/DoctorsDasboard';
+// Provider Pages
+import ProviderDashboard from "./pages/provider/Dashboard";
+import ProviderAppointments from "./pages/provider/Appointments";
+import ProviderAppointmentDetails from "./pages/provider/AppointmentDetails";
+import ProviderChat from "./pages/provider/Chat";
+import ProviderProfile from "./pages/provider/Profile";
+import ProviderSettings from "./pages/provider/Settings";
 
-// Create routes
+// Ambulance Pages
+import AmbulanceDashboard from "./pages/ambulance/Dashboard";
+import AmbulanceRequests from "./pages/ambulance/Requests";
+import AmbulanceProfile from "./pages/ambulance/Profile";
+
+// Admin Pages
+import AdminDashboard from "./pages/admin/Dashboard";
+import AdminUsers from "./pages/admin/Users";
+import AdminAppointments from "./pages/admin/Appointments";
+import AdminLabrequets from "./pages/admin/LabRequets";
+import AdminBlogs from "./pages/admin/Blogs";
+import AdminReports from "./pages/admin/Reports";
+
+// Layouts
+import PublicLayout from "./layouts/PublicLayout";
+import PatientLayout from "./layouts/PatientLayout";
+import ProviderLayout from "./layouts/ProviderLayout";
+import AmbulanceLayout from "./layouts/AmbulanceLayout";
+import AdminLayout from './layouts/AdminLayout';
+
 const router = createBrowserRouter([
-  // 🌐 Public Routes
   { path: "/", element: <Home /> },
   { path: "/about", element: <About /> },
-  { path: "/blog", element: <Blogs /> },
-  { path: "/contact", element: <Contacts /> },
-  { path: "/log-in", element: <Login /> },
-  { path: "/sign-up", element: <SignUp /> },
+  { path: "/contact", element: <Contact /> },
+  { path: "/blog", element: <Blog /> },
+  { path: "/login", element: <Login /> },
+  { path: "/signup/patient", element: <SignUpPatient /> },
+  { path: "/signup/provider", element: <SignUpProvider /> },
+  { path: "/signup/ambulance", element: <SignUpAmbulance /> },
 
-  // 🧍‍♂️ Patient Dashboard Routes (with layout)
   {
-    path: "/patient-dashboard",
-    element: <PatientsDashboard />,
+    path: "/patient",
+    element: <PatientLayout />,
     children: [
-      { index: true, 
-        element: <PatientHome /> },
-
-      { path: "profile", 
-        element: <PatientProfile /> },
+      { path: "dashboard", element: <PatientDashboard /> },
+      { path: "book-consultation", element: <BookConsultation /> },
+      { path: "appointments", element: <Appointments /> },
+      { path: "appointments/:id", element: <AppointmentDetails /> },
+      { path: "consultation/:id", element: <Consultation /> },
+      { path: "home-lab", element: <HomeLab /> },
+      { path: "emergency", element: <Emergency /> },
+      { path: "notifications", element: <Notifications /> },
+      { path: "pharmacy", element: <Pharmacy /> },
+      { path: "profile", element: <PatientProfile /> },
+      { path: "support", element: <Support /> },
     ],
   },
-
-  // 👨‍⚕️ Service Provider Dashboard (with sidebar/layout)
   {
-    path: "/dashboard",
-    element: <ProvidersDashboard />,
+    path: "/provider",
+    element: <ProviderLayout />,
     children: [
-      { index: true, 
-        element: <Overview /> },
-
-      { path: "appointments", element: <AllAppointments /> },
-      { path: "health-tips", element: <HealthTips /> },
-      { path: "health-tips/edit/:id", element: <EditTip /> },
-      { path: "health-tips/view/:id", element: <ViewTip /> },
-      { path: "settings", element: <Settings /> },
-      { path: "stats", element: <Overview /> }, // Optional: "stats" and "overview" point to same page
+      { path: "dashboard", element: <ProviderDashboard /> },
+      { path: "appointments", element: <ProviderAppointments /> },
+      { path: "appointments/:id", element: <ProviderAppointmentDetails /> },
+      { path: "chat/:patientId", element: <ProviderChat /> },
+      { path: "profile", element: <ProviderProfile /> },
+      { path: "settings", element: <ProviderSettings /> },
     ],
   },
-
-  // 🏥 Independent Service Provider Pages (NO layout)
-  { path: "/amb-details", element: <Details /> },
-  { path: "/lab-home", element: <LabHome /> },
-  { path: "/doctor-dashboard", element: <DoctorDashboard /> },
-  { path: "/doc-appointments", element: <DocAppointments /> },
-  { path: "/derma-appointments", element: <Sessions /> },
-  { path: "/mental-slot", element: <MentalSlot /> },
-  { path: "/pysio-home", element: <GymSessions /> },
-  { path: "/service-profile", element: <ServiceProfile /> },
+  {
+    path: "/ambulance",
+    element: <AmbulanceLayout />,
+    children: [
+      { path: "dashboard", element: <AmbulanceDashboard /> },
+      { path: "requests", element: <AmbulanceRequests /> },
+      { path: "profile", element: <AmbulanceProfile /> },
+    ],
+  },
+  {
+    path: "/admin",
+    element: <AdminLayout />,
+    children: [
+      { path: "dashboard", element: <AdminDashboard /> },
+      { path: "users", element: <AdminUsers /> },
+      { path: "appointments", element: <AdminAppointments /> },
+      { path: "lab-requests", element: <AdminLabrequets /> },
+      { path: "blogs", element: <AdminBlogs /> },
+      { path: "reports", element: <AdminReports /> },
+    ],
+  },
 ]);
 
-// App component
-function App() {
+export default function App() {
   return <RouterProvider router={router} />;
 }
-
-export default App;

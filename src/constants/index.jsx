@@ -5,13 +5,13 @@ const K = {
     {
       icon: <FaStethoscope />,
       text: "Overview",
-      path: "/dashboard",
+      path: "/provider/dashboard",
     },
     
     {
       icon: <FaCalendarAlt />,
       text: "Appointments",
-      path: "/dashboard/appointments",
+      path: "/provider/appointments",
     },
     {
       icon: <FaHeartbeat />,
@@ -21,7 +21,7 @@ const K = {
     {
       icon: <FaCogs />,
       text: "Settings",
-      path: "/dashboard/settings",
+      path: "/provider/settings",
     },
   ],
 };

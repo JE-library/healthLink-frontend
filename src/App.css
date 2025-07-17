@@ -1,1 +1,61 @@
 @import "tailwindcss";
+
+@theme {
+  /* COLOURS BODY */
+  --color-main-body: #53cde2;
+  --color-primary-body: #005792;
+  --color-secondary-body: #d1f4fa;
+  --color-tertiary-body: #d1f4fa;
+  --color-main-font: #181823;
+  --color-tertiary-font: #cb0404;
+
+  /* FONTS  */
+  --default-font-family: "DM Sans", sans-serif;
+  --font-primary-font: "DM Sans", sans-serif;
+  --font-secondary-font: "Plus Jakarta Sans", sans-serif;
+
+  /* NAV ANIMATION */
+  --animate-navBar: navBar 0.3s ease-in-out forwards;
+  @keyframes navBar {
+    0% {
+      transform: scaleX(0);
+    }
+    80% {
+      transform: scaleX(1.2);
+    }
+    100% {
+      transform: scaleX(1);
+    }
+  }
+  --animate-navIcon: navIcon 0.3s ease-in-out forwards;
+  @keyframes navIcon {
+    0% {
+      transform: rotate(0);
+    }
+    80% {
+      transform: rotate(570deg);
+    }
+    100% {
+      transform: rotate(0);
+    }
+  }
+}
+
+/* https://colorhunt.co/palette/00579253cde2d1f4faedf9fc */
+
+/* SWIPPER STYLES */
+.swiper-button-next,
+.swiper-button-prev {
+  color: #f4796b;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: #f4796b !important;
+}
+
+@media (max-width: 768px) {
+  .swiper-slide {
+    flex-direction: column-reverse !important;
+    text-align: center !important;
+  }
+}
