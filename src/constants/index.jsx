@@ -4,14 +4,14 @@ const K = {
   NAVLINKS: [
     {
       icon: <FaStethoscope />,
-      text: "All Services",
-      path: "/dashboard",
+      text: "Overview",
+      path: "/provider/dashboard",
     },
     
     {
       icon: <FaCalendarAlt />,
       text: "Appointments",
-      path: "/dashboard/appointments",
+      path: "/provider/appointments",
     },
     {
       icon: <FaHeartbeat />,
@@ -21,7 +21,7 @@ const K = {
     {
       icon: <FaCogs />,
       text: "Settings",
-      path: "/dashboard/settings",
+      path: "/provider/settings",
     },
   ],
 };
