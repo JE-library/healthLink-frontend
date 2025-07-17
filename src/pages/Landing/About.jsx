@@ -1,8 +1,10 @@
 import React from "react";
+import PagesLayout from "../../layouts/PagesLayout";
 
 const About = () => {
   return (
-    <div className="bg-gradient-to-r from-blue-50 to-blue-200">
+    <PagesLayout>
+      <div className="bg-gradient-to-r from-blue-50 to-blue-200">
       <div className="grid grid-cols-2">
         <div>
           <h1>Image does here</h1>
@@ -248,6 +250,7 @@ const About = () => {
         </div>
       </div>
     </div>
+    </PagesLayout>
   );
 };
 

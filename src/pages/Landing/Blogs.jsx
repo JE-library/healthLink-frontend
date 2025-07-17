@@ -1,8 +1,11 @@
 import React from 'react'
+import PagesLayout from '../../layouts/PagesLayout'
 
 const Blogs = () => {
   return (
-    <div>Blogs</div>
+    <PagesLayout>
+      <div>Blogs</div>
+    </PagesLayout>
   )
 }
 

@@ -1,8 +1,10 @@
 import React from "react";
+import PagesLayout from "../../layouts/PagesLayout";
 
 const Contacts = () => {
   return (
-    <div className=" bg-gradient-to-r from-blue-50 to-blue-200  px-4">
+    <PagesLayout>
+      <div className=" bg-gradient-to-r from-blue-50 to-blue-200  px-4">
       <div className="grid grid-cols-2">
         <div>
           <h1 className="flex flex-row items-center justify-center text-blue-500 font-serif text-[30px] mt-[15px] mb-[15px]">
@@ -82,6 +84,7 @@ const Contacts = () => {
         </form>
       </div>
     </div>
+    </PagesLayout>
   );
 };
 
