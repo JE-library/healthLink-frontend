@@ -4,6 +4,7 @@ import SwiperSlides from "../../pages/public/components/home/SwiperSlides";
 import HomeHero from "./components/home/HomeHero";
 import SpecialtyMarquee from "./components/home/SpecialtyMarquee";
 import ServicesHome from "./components/home/ServicesHome";
+import Steps from "./components/home/Steps";
 
 const Home = () => {
   return (
@@ -11,6 +12,7 @@ const Home = () => {
       <HomeHero />
       <SpecialtyMarquee />
       <SwiperSlides />
+      <Steps/>
       <ServicesHome/>
     </PublicLayout>
   );

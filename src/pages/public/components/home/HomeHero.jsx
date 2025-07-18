@@ -8,9 +8,9 @@ import { MdBookOnline } from "react-icons/md";
 const HomeHero = () => {
   const cards = [
     {
-      title: "See a Doctor",
+      title: "See a Specialist",
       description:
-        "Connect instantly with licensed doctors through secure video or chat consultations.",
+        "Connect instantly with licensed Specialist through secure video or chat consultations.",
       icon: <FaUserDoctor />,
     },
     {
@@ -56,7 +56,7 @@ const HomeHero = () => {
             onClick={() => navigate("/signup/patient")}
             className="shadow-2xl bg-white max-w-[200px] py-3 px-4 rounded-4xl text-main-font cursor-pointer hover:bg-primary-body font-bold transition duration-300 hover:text-white"
           >
-            Talk to a Doctor
+            Talk to a Specialist
           </button>
           <div className="flex justify-between gap-4 text-sm font-bold text-white">
             <p className="flex items-center gap-1">

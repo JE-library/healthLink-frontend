@@ -57,12 +57,6 @@ const specialties = [
     icon: FaVial,
   },
   {
-    title: "Spa & Wellness",
-    description:
-      "Enjoy holistic wellness experiences with our trusted spa and self-care providers.",
-    icon: FaSpa,
-  },
-  {
     title: "Emergency Care",
     description:
       "Get urgent help fast with on-demand ambulance and emergency response options.",

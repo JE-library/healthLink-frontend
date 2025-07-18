@@ -26,7 +26,7 @@ const Header = () => {
         onClick={() => navigate("/signup/patient")}
         className="bg-tertiary-body/40 py-2 px-5 rounded-3xl cursor-pointer hover:bg-primary-body font-bold transition duration-300 hidden md:block"
       >
-        Talk to a Doctor
+        Talk to a Specialist
       </button>
       {isNav ? (
         <MdClose

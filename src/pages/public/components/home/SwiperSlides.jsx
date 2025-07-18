@@ -48,14 +48,13 @@ const slides = [
 
 export default function SwiperSlides() {
   return (
-    <div className="bg-main-body py-8">
+    <div className="bg-white py-8">
       <h2 className="font-secondary-font text-3xl md:text-4xl font-bold text-center mb-6 text-main-font">
         Are You a Certified Health Specialist?
       </h2>
       <Swiper
-        modules={[Navigation, Pagination]}
+        modules={[ Pagination]}
         loop={true}
-        navigation
         pagination={{ clickable: true }}
         className="mySwiper "
       >
