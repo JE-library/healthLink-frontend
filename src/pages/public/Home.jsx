@@ -1,13 +1,17 @@
 import React from "react";
 import PublicLayout from "../../layouts/PublicLayout";
-import SwiperSlides from "../../component/public/SwiperSlides";
+import SwiperSlides from "../../pages/public/components/home/SwiperSlides";
 import HomeHero from "./components/home/HomeHero";
+import SpecialtyMarquee from "./components/home/SpecialtyMarquee";
+import ServicesHome from "./components/home/ServicesHome";
 
 const Home = () => {
   return (
     <PublicLayout>
       <HomeHero />
+      <SpecialtyMarquee />
       <SwiperSlides />
+      <ServicesHome/>
     </PublicLayout>
   );
 };

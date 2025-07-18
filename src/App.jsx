@@ -1,4 +1,4 @@
-import "./App.css"
+import "./App.css";
 import { RouterProvider, createBrowserRouter } from "react-router";
 
 // Public Pages
@@ -6,6 +6,7 @@ import Home from "./pages/public/Home";
 import About from "./pages/public/About";
 import Contact from "./pages/public/Contact";
 import Blog from "./pages/public/Blog";
+import NotFound from "./component/public/NotFound";
 
 // Auth Pages
 import Login from "./pages/auth/Login";
@@ -52,7 +53,7 @@ import PublicLayout from "./layouts/PublicLayout";
 import PatientLayout from "./layouts/PatientLayout";
 import ProviderLayout from "./layouts/ProviderLayout";
 import AmbulanceLayout from "./layouts/AmbulanceLayout";
-import AdminLayout from './layouts/AdminLayout';
+import AdminLayout from "./layouts/AdminLayout";
 
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
@@ -114,6 +115,7 @@ const router = createBrowserRouter([
       { path: "reports", element: <AdminReports /> },
     ],
   },
+  { path: "*", element: <NotFound /> },
 ]);
 
 export default function App() {
