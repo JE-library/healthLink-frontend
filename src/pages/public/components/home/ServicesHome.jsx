@@ -55,13 +55,7 @@ const specialties = [
     description:
       "Book home sample collection and receive detailed lab reports online.",
     icon: FaVial,
-  },
-  {
-    title: "Emergency Care",
-    description:
-      "Get urgent help fast with on-demand ambulance and emergency response options.",
-    icon: FaAmbulance,
-  },
+  }
 ];
 
 const ServicesHome = () => {

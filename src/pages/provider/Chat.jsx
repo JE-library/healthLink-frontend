@@ -55,7 +55,7 @@ const Chat = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-secondary-body text-main-font font-primary-font w-full">
+    <div className="flex flex-col h-screen  text-main-font font-primary-font w-full">
       {/* Header */}
       <div className="flex items-center gap-4 px-4 py-3 bg-white shadow-md">
         {/* Back Button */}
@@ -87,14 +87,16 @@ const Chat = () => {
             key={index}
             className={`flex flex-col py-1 px-2 rounded-lg max-w-[70%] w-fit ${
               msg.sender === "patient"
-                ? "bg-main-body text-white self-end ml-auto"
-                : "bg-white text-main-font self-start"
+                ? "bg-primary-body text-white self-end ml-auto"
+                : "bg-main-font text-white self-start"
             }`}
           >
             <p className="text-sm">{msg.text}</p>
             <p
-              className={`text-xs  text-gray-500 ${
-                msg.sender === "patient" ? "self-end " : "self-start"
+              className={`text-xs ${
+                msg.sender === "patient"
+                  ? "self-end text-white/50 "
+                  : "self-start text-white/50"
               }`}
             >
               {msg.createdAt.toLocaleTimeString([], {
