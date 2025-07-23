@@ -8,11 +8,6 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 text-sm">
         {/* Brand & Mission */}
         <div>
-
-          <h3 className="text-lg font-semibold mb-3 text-primary-body">
-            {" "}
-            Location
-
           <h2 className="text-xl font-bold text-primary mb-3">HealthLink</h2>
           <p className="text-white/80">
             Your digital health companion. Consult with doctors, book lab tests,
@@ -23,7 +18,7 @@ const Footer = () => {
         {/* Quick Links */}
         <div>
           <h3 className="text-lg font-semibold mb-3 text-secondary-body">
-            Quick Link
+            Quick Links
           </h3>
           <ul className="space-y-2 text-white/80">
             <li className="hover:text-main-body">
@@ -43,12 +38,8 @@ const Footer = () => {
 
         {/* Services */}
         <div>
-          <h3 className="text-lg font-semibold mb-3 text-primary-body">
-            Stay healthy with us
-
           <h3 className="text-lg font-semibold mb-3 text-secondary-body">
             Services
-
           </h3>
           <ul className="space-y-2 text-white/80">
             <li className="hover:text-main-body">
@@ -68,23 +59,6 @@ const Footer = () => {
 
         {/* For Providers */}
         <div>
-
-          <h3 className="text-lg font-semibold  text-primary-body"> Follow Us</h3>
-          <ul className="space-y-2">
-            <li>
-              <a href="#">
-                <FaFacebook/>
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                <FaXTwitter/>
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                <FaInstagram />
-              </a>
           <h3 className="text-lg font-semibold mb-3 text-secondary-body">
             For Specialists
           </h3>
@@ -103,7 +77,9 @@ const Footer = () => {
 
         {/* Contact & Social */}
         <div>
-          <h3 className="text-lg font-semibold mb-3 text-secondary-body">Contact</h3>
+          <h3 className="text-lg font-semibold mb-3 text-secondary-body">
+            Contact
+          </h3>
           <p>
             123 Health Street
             <br />

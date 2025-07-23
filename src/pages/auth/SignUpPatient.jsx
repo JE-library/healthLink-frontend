@@ -2,7 +2,7 @@ import React from "react";
 import PublicLayout from "../../layouts/PublicLayout";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
-import { apiSignup } from "../../services/auth";
+import { apiUserSignup } from "../../services/auth"
 import { toast } from "react-toastify";
 import { useState } from "react";
 
@@ -27,9 +27,9 @@ const SignUpPatient = () => {
     setIsSubmitting(true);
 
     try {
-      const res = await apiPatientSignup(payload);
+      const res = await apiUserSignup(payload);
       console.log(res);
-      toast.success("User Registered Successfully!");
+      // toast.success("User Registered Successfully!");
       navigate("/log-in");
     } catch (error) {
       console.log(error);

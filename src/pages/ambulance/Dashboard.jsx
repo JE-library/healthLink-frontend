@@ -1,12 +1,8 @@
-
-const AmbulanceDashboard = () => {
-  return (
-    <div>
-      <h3>Ambulance Dashboard</h3>
-      <p>Track ambulance deployments, active requests, and response time.</p>
-
 import React from "react";
 import { Link } from "react-router";
+
+
+
 
 const stats = [
   { label: "Total Requests", value: 120 },
@@ -32,7 +28,7 @@ const recentRequests = [
   },
 ];
 
-const Dashboard = () => {
+const AmbulanceDashboard = () => {
   return (
     <div className="min-h-screen bg-gradient-to-r from-blue-50 to-blue-200 ">
       <div className="m-[40px]">
@@ -69,7 +65,7 @@ const Dashboard = () => {
           </button>
         </div>
 
-        {/* Recent Requests */}
+        Recent Requests
         <div className="bg-white rounded-lg shadow-md p-6">
           <h2 className="text-xl font-semibold mb-4 text-gray-700">
             Recent Requests
@@ -117,51 +113,7 @@ const Dashboard = () => {
 
 export default AmbulanceDashboard;
 
-export default Dashboard;
 
-// const Dashboard = () => {
-//   return (
-//     <div className="min-h-screen bg-gradient-to-r from-blue-50 to-blue-200">
-//       <div className="max-w-7xl mx-auto bg-gray-100 shadow-xl rounded-lg p-8">
-//         <div className="flex items-center space-x-6">
-//           <div>
-//             <h1 className="text-2xl font-bold text-gray-800">
-//               Speedy Rescue Ambulance
-//             </h1>
-//             <p className="text-gray-600">Available 24/7 across The Country</p>
-//           </div>
-//         </div>
 
-//         <div className="mt-6">
-//           <h2 className="text-xl font-semibold text-gray-700 mb-2">Services</h2>
-//           <ul className="list-disc ml-6 text-gray-700 space-y-1">
-//             <li>Emergency Medical Response</li>
-//             <li>Inter-Hospital Transfers</li>
-//             <li>Event Standby Services</li>
-//             <li>First Aid Support</li>
-//           </ul>
-//         </div>
 
-//         <Link to="/ambulance/requests" className="dashboard-card">
-//           {/* <FaUserMd className="text-2xl text-green-500" /> */}
-//           <div>
-//             <p className="text-sm text-gray-500">Requests</p>
-//             <p className="text-lg font-semibold text-gray-800">3</p>
-//           </div>
-//         </Link>
-
-//         <div className="mt-6">
-//           <h2 className="text-xl font-semibold text-gray-700 mb-2">
-//             Contact Info
-//           </h2>
-//           <p className="text-gray-700">📞 +233 20 123 4567</p>
-//           <p className="text-gray-700">📍 Accra, Ghana</p>
-//           <p className="text-gray-700">📧 support@speedyambulance.com</p>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Dashboard;
 
