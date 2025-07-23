@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:3000/api", // Replace with your actual base URL
+  // baseURL: "http://localhost:3000/api", // Replace with your actual base URL
+  baseURL: "https://healthlink-backend01.onrender.com/api", 
   headers: {
     "Content-Type": "application/json",
   },
