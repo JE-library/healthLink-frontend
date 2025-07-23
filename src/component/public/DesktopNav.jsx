@@ -16,10 +16,12 @@ const DesktopNav = () => {
             to={link.path}
             key={link.path}
             className={({ isActive }) =>
-              isActive ? "underline text-primary-body" : ""
+              isActive ? "border-b-2 text-primary-body" : ""
             }
           >
-            <li>{link.label}</li>
+            <li className="px-4 text-center hover:border-b-1 hover:text-primary-body transition duration-200">
+              {link.label}
+            </li>
           </NavLink>
         ))}
       </ul>

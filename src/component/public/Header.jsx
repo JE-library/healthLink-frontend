@@ -24,9 +24,9 @@ const Header = () => {
       <DesktopNav />
       <button
         onClick={() => navigate("/signup/patient")}
-        className="bg-tertiary-body/40 py-1 px-4 rounded-2xl cursor-pointer hover:bg-primary-body font-bold transition duration-300 hidden md:block"
+        className="bg-tertiary-body/40 py-2 px-5 rounded-3xl cursor-pointer hover:bg-primary-body font-bold transition duration-300 hidden md:block"
       >
-        Talk to a Doctor
+        Talk to a Specialist
       </button>
       {isNav ? (
         <MdClose
