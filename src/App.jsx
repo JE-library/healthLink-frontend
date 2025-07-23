@@ -1,4 +1,4 @@
-import "./App.css"
+import "./App.css";
 import { RouterProvider, createBrowserRouter } from "react-router";
 
 // Public Pages
@@ -6,6 +6,8 @@ import Home from "./pages/public/Home";
 import About from "./pages/public/About";
 import Contact from "./pages/public/Contact";
 import Blog from "./pages/public/Blog";
+import NotFound from "./component/public/NotFound";
+import ServiceProviderProfile from "./pages/public/ServiceProviderProfile";
 
 // Auth Pages
 import Login from "./pages/auth/Login";
@@ -52,7 +54,12 @@ import PublicLayout from "./layouts/PublicLayout";
 import PatientLayout from "./layouts/PatientLayout";
 import ProviderLayout from "./layouts/ProviderLayout";
 import AmbulanceLayout from "./layouts/AmbulanceLayout";
+
 import AdminLayout from './layouts/AdminLayout';
+import AvailableDoctors from "./pages/patient/AvailableDoctors";
+import DoctorDetails from "./pages/patient/DoctorDetails";
+import LabRequets from "./pages/patient/LabRequets";
+
 
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
@@ -62,6 +69,7 @@ const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
   { path: "/signup/patient", element: <SignUpPatient /> },
   { path: "/signup/provider", element: <SignUpProvider /> },
+  { path: "/providers/:id", element: <ServiceProviderProfile /> },
   { path: "/signup/ambulance", element: <SignUpAmbulance /> },
 
   {
@@ -69,16 +77,19 @@ const router = createBrowserRouter([
     element: <PatientLayout />,
     children: [
       { path: "dashboard", element: <PatientDashboard /> },
-      { path: "book-consultation", element: <BookConsultation /> },
+      { path: "book-consultation/:id", element: <BookConsultation /> },
       { path: "appointments", element: <Appointments /> },
       { path: "appointments/:id", element: <AppointmentDetails /> },
       { path: "consultation/:id", element: <Consultation /> },
-      { path: "home-lab", element: <HomeLab /> },
+      { path: "home-lab/:id", element: <HomeLab /> },
+      { path: "lab-requests", element: <LabRequets /> },
       { path: "emergency", element: <Emergency /> },
       { path: "notifications", element: <Notifications /> },
       { path: "pharmacy", element: <Pharmacy /> },
       { path: "profile", element: <PatientProfile /> },
       { path: "support", element: <Support /> },
+      { path: "available-doctors", element: <AvailableDoctors />},
+      { path:"doctor-details", element: <DoctorDetails /> }
     ],
   },
   {
@@ -114,6 +125,7 @@ const router = createBrowserRouter([
       { path: "reports", element: <AdminReports /> },
     ],
   },
+  { path: "*", element: <NotFound /> },
 ]);
 
 export default function App() {

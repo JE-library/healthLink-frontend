@@ -39,6 +39,16 @@
       transform: rotate(0);
     }
   }
+  /* MARQUEE ANIMATION */
+  --animate-marquee: marquee 300s linear infinite;
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
 }
 
 /* https://colorhunt.co/palette/00579253cde2d1f4faedf9fc */
@@ -46,11 +56,11 @@
 /* SWIPPER STYLES */
 .swiper-button-next,
 .swiper-button-prev {
-  color: #f4796b;
+  color: #005792;
 }
 
 .swiper-pagination-bullet-active {
-  background-color: #f4796b !important;
+  background-color: #005792 !important;
 }
 
 @media (max-width: 768px) {
