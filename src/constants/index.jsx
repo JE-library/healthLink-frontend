@@ -1,4 +1,4 @@
-import { FaHome, FaStethoscope, FaCalendarAlt, FaCogs, FaHeartbeat } from "react-icons/fa";
+import {  FaStethoscope, FaCalendarAlt, FaCogs, FaUserMd, FaComments } from "react-icons/fa";
 
 const K = {
   NAVLINKS: [
@@ -7,22 +7,33 @@ const K = {
       text: "Overview",
       path: "/provider/dashboard",
     },
+    {
+  icon: <FaUserMd />,
+  text: "Profile",
+  path: "/provider/profile",
+},
     
     {
       icon: <FaCalendarAlt />,
       text: "Appointments",
       path: "/provider/appointments",
     },
-    {
-      icon: <FaHeartbeat />,
-      text: "Health Tips",
-      path: "/dashboard/health-tips",
-    },
+   {
+  icon: <FaComments/>,
+  text: "Patient Chat",
+  path: "/provider/chat/1", // Just a sample — will be dynamic in the actual app
+},
     {
       icon: <FaCogs />,
       text: "Settings",
       path: "/provider/settings",
     },
+
+
+
+
+
+
   ],
 };
 
