@@ -55,9 +55,9 @@ const Chat = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen  text-main-font font-primary-font w-full">
+    <div className="flex flex-col h-screen  text-main-font font-primary-font w-full m-auto max-w-[600px]">
       {/* Header */}
-      <div className="flex items-center gap-4 px-4 py-3 bg-white shadow-md">
+      <div className="flex items-center gap-4 px-4 py-3 bg-tertiary-body shadow-md">
         {/* Back Button */}
         <button
           onClick={() => navigate(-1)}
@@ -81,14 +81,14 @@ const Chat = () => {
       </div>
 
       {/* Chat Messages */}
-      <div className="flex-1 p-4 overflow-y-auto space-y-4  lg:px-12">
+      <div className="flex-1 p-4 overflow-y-auto space-y-4 lg:px-12 ">
         {messages.map((msg, index) => (
           <div
             key={index}
-            className={`flex flex-col py-1 px-2 rounded-lg max-w-[70%] w-fit ${
+            className={`flex flex-col py-1 px-4 rounded-full max-w-[70%] w-fit ${
               msg.sender === "patient"
-                ? "bg-primary-body text-white self-end ml-auto"
-                : "bg-main-font text-white self-start"
+                ? "bg-blue-600 rounded-br-none text-white self-end ml-auto"
+                : "bg-main-body rounded-bl-none text-white self-start"
             }`}
           >
             <p className="text-sm">{msg.text}</p>
@@ -96,7 +96,7 @@ const Chat = () => {
               className={`text-xs ${
                 msg.sender === "patient"
                   ? "self-end text-white/50 "
-                  : "self-start text-white/50"
+                  : "self-start text-black/50"
               }`}
             >
               {msg.createdAt.toLocaleTimeString([], {
@@ -109,7 +109,7 @@ const Chat = () => {
       </div>
 
       {/* Input Area */}
-      <div className="flex items-center p-4 bg-white border-t border-gray-200">
+      <div className="flex items-center p-4 bg-white border-t border-gray-200 w-full ">
         <textarea
           rows={1}
           type="text"
