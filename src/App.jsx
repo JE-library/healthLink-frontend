@@ -58,7 +58,6 @@ import AmbulanceLayout from "./layouts/AmbulanceLayout";
 import AdminLayout from './layouts/AdminLayout';
 import AvailableDoctors from "./pages/patient/AvailableDoctors";
 import DoctorDetails from "./pages/patient/DoctorDetails";
-import AdminLayout from "./layouts/AdminLayout";
 import LabRequets from "./pages/patient/LabRequets";
 
 
