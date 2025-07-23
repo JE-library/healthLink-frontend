@@ -8,7 +8,7 @@ const Footer = () => {
       <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 text-sm">
         <p>Doctor in your pocket.</p>
         <div>
-          <h3 className="text-lg font-semibold mb-3 text-amber-300">
+          <h3 className="text-lg font-semibold mb-3 text-primary-body">
             {" "}
             Location
           </h3>
@@ -18,7 +18,7 @@ const Footer = () => {
         </div>
 
         <div>
-          <h3 className="text-lg font-semibold mb-3 text-amber-300">
+          <h3 className="text-lg font-semibold mb-3 text-primary-body">
             Stay healthy with us
           </h3>
           <ul>
@@ -29,7 +29,7 @@ const Footer = () => {
         </div>
 
         <div>
-          <h3 className="text-lg font-semibold  text-amber-300"> Follow Us</h3>
+          <h3 className="text-lg font-semibold  text-primary-body"> Follow Us</h3>
           <ul className="space-y-2">
             <li>
               <a href="#">

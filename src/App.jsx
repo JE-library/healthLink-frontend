@@ -53,6 +53,8 @@ import PatientLayout from "./layouts/PatientLayout";
 import ProviderLayout from "./layouts/ProviderLayout";
 import AmbulanceLayout from "./layouts/AmbulanceLayout";
 import AdminLayout from './layouts/AdminLayout';
+import AvailableDoctors from "./pages/patient/AvailableDoctors";
+import DoctorDetails from "./pages/patient/DoctorDetails";
 
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
@@ -79,6 +81,8 @@ const router = createBrowserRouter([
       { path: "pharmacy", element: <Pharmacy /> },
       { path: "profile", element: <PatientProfile /> },
       { path: "support", element: <Support /> },
+      { path: "available-doctors", element: <AvailableDoctors />},
+      { path:"doctor-details", element: <DoctorDetails /> }
     ],
   },
   {
