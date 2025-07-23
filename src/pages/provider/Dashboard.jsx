@@ -1,5 +1,4 @@
-import React from "react";
-
+import React, { useState, useEffect } from "react";
 import {
   FaUserMd,
   FaStethoscope,
@@ -14,11 +13,15 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { useState, useEffect } from "react";
 
 const Dashboard = () => {
   const [role, setRole] = useState("Doctor");
   const [stats, setStats] = useState([]);
+  const [isAvailable, setIsAvailable] = useState(true);
+
+  const toggleAvailability = () => {
+    setIsAvailable((prev) => !prev);
+  };
 
   const appointmentStats = [
     {
@@ -47,6 +50,7 @@ const Dashboard = () => {
       icon: <FaStethoscope className="text-red-500" />,
     },
   ];
+
   const labRequestStats = [
     {
       title: "Total Lab Requests",
@@ -76,11 +80,7 @@ const Dashboard = () => {
   ];
 
   useEffect(() => {
-    if (role == "Lab Technician") {
-      setStats(labRequestStats);
-    } else {
-      setStats(appointmentStats);
-    }
+    setStats(role === "Lab Technician" ? labRequestStats : appointmentStats);
   }, [role]);
 
   const chartData = [
@@ -93,18 +93,40 @@ const Dashboard = () => {
     { name: "Jul", appointments: 40 },
     { name: "Aug", appointments: 5 },
   ];
-  return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold mb-6 text-blue-700">
-        Dashboard Overview
-      </h1>
 
-      {/* 🔢 Summary Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+  return (
+    <div className="p-6 bg-gray-100 min-h-screen">
+      <h1 className="text-3xl font-bold mb-6 text-blue-700">Dashboard Overview</h1>
+
+      {/* 🔁 Availability Toggle */}
+      <div className="flex justify-end mb-4">
+        <button
+          onClick={toggleAvailability}
+          className={`px-6 py-2 rounded-full text-white font-semibold shadow-md transition duration-300 ${
+            isAvailable ? "bg-green-600 hover:bg-green-700" : "bg-red-500 hover:bg-red-600"
+          }`}
+        >
+          {isAvailable ? "Available" : "Unavailable"}
+        </button>
+      </div>
+
+      {/* 👋 Welcome Message */}
+      <div className="bg-white p-6 rounded-lg shadow-sm mb-6">
+        <h2 className="text-2xl font-bold mb-2">Welcome, {role}!</h2>
+        <p className="text-gray-700">
+          You are currently:{" "}
+          <span className={isAvailable ? "text-green-600" : "text-red-500"}>
+            {isAvailable ? "Available for consultations" : "Unavailable"}
+          </span>
+        </p>
+      </div>
+
+      {/* 📊 Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-10 ">
         {stats.map((item, idx) => (
           <div
             key={idx}
-            className="bg-white shadow-md rounded-xl p-4 flex items-center gap-4"
+            className="bg-tertiary-body  shadow-md rounded-xl p-4 flex items-center gap-4"
           >
             <div className="text-3xl">{item.icon}</div>
             <div>
@@ -115,7 +137,7 @@ const Dashboard = () => {
         ))}
       </div>
 
-      {/* 📊 Bar Chart */}
+      {/* 📉 Chart */}
       <div className="bg-white p-6 rounded-xl shadow-md">
         <h2 className="text-xl font-semibold mb-4">Monthly Appointments</h2>
         <ResponsiveContainer width="100%" height={300}>

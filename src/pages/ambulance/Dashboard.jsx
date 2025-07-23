@@ -1,3 +1,10 @@
+
+const AmbulanceDashboard = () => {
+  return (
+    <div>
+      <h3>Ambulance Dashboard</h3>
+      <p>Track ambulance deployments, active requests, and response time.</p>
+
 import React from "react";
 import { Link } from "react-router";
 
@@ -107,6 +114,9 @@ const Dashboard = () => {
   );
 };
 
+
+export default AmbulanceDashboard;
+
 export default Dashboard;
 
 // const Dashboard = () => {
@@ -154,3 +164,4 @@ export default Dashboard;
 // };
 
 // export default Dashboard;
+
