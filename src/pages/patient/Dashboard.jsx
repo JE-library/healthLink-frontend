@@ -38,6 +38,11 @@ const Dashboard = () => {
 
   const featureLinks = [
     {
+      label: "Health Tips",
+      path: "/blog",
+      icon: <FaCalendarAlt className="text-blue-500 text-2xl" />,
+    },
+    {
       label: "Appointments",
       path: "/patient/appointments",
       icon: <FaCalendarAlt className="text-blue-500 text-2xl" />,

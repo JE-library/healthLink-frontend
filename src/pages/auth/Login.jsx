@@ -3,8 +3,8 @@ import PublicLayout from "../../layouts/PublicLayout";
 import { Link } from "react-router";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
-import { apiUserLogin } from "../../services/auth";
-// import { toast } from "react-toastify";
+import { apiLogin } from "../../services/auth";
+import { toast } from "react-toastify";
 import { useState } from "react";
 
 const Login = () => {
@@ -19,23 +19,30 @@ const Login = () => {
   const onSubmit = async (data) => {
     console.log(data);
     const payload = {
-      usernameOrEmail: data.usernameOrEmail,
+      email: data.email,
       password: data.password,
     };
     // console.log(payload)
     setIsSubmitting(true);
 
     try {
-      const res = await apiUserLogin(payload);
+      const res = await apiLogin(payload);
       console.log(res);
-      localStorage.setItem("accessToken", res.data.data.token);
+      localStorage.setItem("accessToken", res.data.user.token);
       toast.success(res.data.message);
-
-      // if (data.role == "vendor") {
-      //   navigate("/dashboard");
-      // } else {
-      //   navigate("/user-home");
-      // }
+      const role = res.data.user.role;
+      if (role === "user") {
+        navigate("/patient/dashboard");
+      } else if (role === "serviceProvider") {
+        const status = res.data.user.status;
+        console.log(status);
+        
+        if (status !== "approved") {
+          navigate(`/pending-approval/${res.data.user._id}`);
+        } else {
+          navigate("/provider/dashboard");
+        }
+      }
     } catch (error) {
       console.log(error);
       toast.error(error?.message || "An Error Occured.");
@@ -59,28 +66,27 @@ const Login = () => {
             htmlFor=""
             className="block text-[20px] font-medium text-blue-500"
           >
-            Username Or Email
+            Email
           </label>
           <br />
           <input
             type="text"
-            name=""
-            id=""
+            id="email"
             className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
             placeholder="Enter your username or email"
-            {...register("usernameOrEmail", {
-              required: "Username or email is required",
+            {...register("email", {
+              required: "Email is required",
             })}
           />
           <label
-            htmlFor=""
+            type="text"
+            id="email"
             className="block text-[20px] font-medium text-blue-500 mt-[15px]"
           >
             Password
           </label>
           <input
             type="password"
-            name=""
             id="password"
             className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
             placeholder="Enter your password"

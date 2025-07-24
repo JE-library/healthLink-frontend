@@ -1,3 +1,4 @@
+
 // src/pages/provider/AppointmentDetails.jsx
 
 import { useParams, useNavigate } from "react-router";
