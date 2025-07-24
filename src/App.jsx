@@ -35,6 +35,7 @@ import ProviderAppointmentDetails from "./pages/provider/AppointmentDetails";
 import ProviderChat from "./pages/provider/Chat";
 import ProviderProfile from "./pages/provider/Profile";
 import ProviderSettings from "./pages/provider/Settings";
+import PendingApproval from "./pages/public/PendingApproval";
 
 // Ambulance Pages
 import AmbulanceDashboard from "./pages/ambulance/Dashboard";
@@ -69,6 +70,7 @@ const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
   { path: "/signup/patient", element: <SignUpPatient /> },
   { path: "/signup/provider", element: <SignUpProvider /> },
+  { path: "/pending-approval/:id", element: <PendingApproval /> },
   { path: "/providers/:id", element: <ServiceProviderProfile /> },
   { path: "/signup/ambulance", element: <SignUpAmbulance /> },
 

@@ -3,8 +3,8 @@ import PublicLayout from "../../layouts/PublicLayout";
 import { Link } from "react-router";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
-import { apiUserLogin } from "../../services/auth";
-// import { toast } from "react-toastify";
+import { apiLogin } from "../../services/auth";
+import { toast } from "react-toastify";
 import { useState } from "react";
 
 const Login = () => {
@@ -19,18 +19,30 @@ const Login = () => {
   const onSubmit = async (data) => {
     console.log(data);
     const payload = {
-      username: data.username,
+      email: data.email,
       password: data.password,
     };
     // console.log(payload)
     setIsSubmitting(true);
 
     try {
-      const res = await apiUserLogin(payload);
+      const res = await apiLogin(payload);
       console.log(res);
-      localStorage.setItem("accessToken", res.data.data.token);
+      localStorage.setItem("accessToken", res.data.user.token);
       toast.success(res.data.message);
-
+      const role = res.data.user.role;
+      if (role === "user") {
+        navigate("/patient/dashboard");
+      } else if (role === "serviceProvider") {
+        const status = res.data.user.status;
+        console.log(status);
+        
+        if (status !== "approved") {
+          navigate(`/pending-approval/${res.data.user._id}`);
+        } else {
+          navigate("/provider/dashboard");
+        }
+      }
     } catch (error) {
       console.log(error);
       toast.error(error?.message || "An Error Occured.");
@@ -54,7 +66,7 @@ const Login = () => {
             htmlFor=""
             className="block text-[20px] font-medium text-blue-500"
           >
-             Email
+            Email
           </label>
           <br />
           <input
