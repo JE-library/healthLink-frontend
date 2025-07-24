@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import PublicLayout from "../../layouts/PublicLayout";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router";
-import { apiUserSignup } from "../../services/auth"
+import { useNavigate } from "react-router";
+import { apiUserSignup } from "../../services/auth";
 import { toast } from "react-toastify";
-import { useState } from "react";
+import { Link } from "react-router";
 
 const SignUpPatient = () => {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -16,97 +17,99 @@ const SignUpPatient = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    console.log(data);
-    const payload = {
-      username: data.username,
-      gender: data.gender,
-      email: data.email,
-      password: data.password,
-    };
-    // console.log(payload)
+    const formData = new FormData();
+
+    formData.append("fullName", data.fullName);
+    formData.append("email", data.email);
+    formData.append("phoneNumber", data.phoneNumber);
+    formData.append("password", data.password);
+    formData.append("gender", data.gender);
+    formData.append("dateOfBirth", data.dateOfBirth);
+    formData.append("address", data.address);
+    if (data.profilePhoto && data.profilePhoto.length > 0) {
+      formData.append("profilePhoto", data.profilePhoto[0]);
+    }
+
     setIsSubmitting(true);
 
     try {
-      const res = await apiUserSignup(payload);
-      console.log(res);
-      // toast.success("User Registered Successfully!");
-      navigate("/log-in");
+      await apiUserSignup(formData); // Ensure this function handles FormData
+      toast.success("User Registered Successfully!");
+      navigate("/login");
     } catch (error) {
-      console.log(error);
-      toast.error(error?.message || "An Error Occured.");
+      console.error(error);
+      toast.error(error?.message || "Registration failed.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const isError = Object.keys(errors).length > 0;
   return (
     <PublicLayout>
-      <div className="bg-gradient-to-r from-blue-50 to-blue-200">
+      <div className="bg-gradient-to-r from-blue-50 to-blue-200 py-12 min-h-screen">
         <div className="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md">
           <h2 className="text-2xl font-bold mb-6 text-center text-blue-600">
             User Registration Form
           </h2>
 
-          <form className="space-y-6">
-            onSubmit={handleSubmit(onSubmit)}
-            {/* <!-- Full Name --> */}
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+            {/* Full Name */}
             <div>
-              <label className="block font-medium mb-1 text-blue-500">
+              <label className="block text-blue-500 font-medium mb-1">
                 Full Name
               </label>
               <input
                 type="text"
-                className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                placeholder="enter your full name"
-                {...register("fullName", { required: "Fullname is required" })}
+                {...register("fullName", { required: "Full name is required" })}
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                placeholder="Enter full name"
               />
-              {errors?.fullName && (
-                <span className="text-red-400">
-                  {errors?.fullName?.message}
-                </span>
+              {errors.fullName && (
+                <p className="text-red-400">{errors.fullName.message}</p>
               )}
             </div>
-            {/* <!-- Email --> */}
+
+            {/* Email */}
             <div>
-              <label className="block font-medium mb-1 text-blue-500">
+              <label className="block text-blue-500 font-medium mb-1">
                 Email
               </label>
               <input
                 type="email"
-                name="email"
-                className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                placeholder="enter your email"
                 {...register("email", { required: "Email is required" })}
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                placeholder="Enter email"
               />
-              {errors?.email && (
-                <span className="text-red-400">{errors?.email?.message}</span>
+              {errors.email && (
+                <p className="text-red-400">{errors.email.message}</p>
               )}
             </div>
-            {/* <!-- Phone Number --> */}
+
+            {/* Phone Number */}
             <div>
-              <label className="block font-medium mb-1 text-blue-500">
+              <label className="block text-blue-500 font-medium mb-1">
                 Phone Number
               </label>
               <input
                 type="tel"
-                className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                placeholder="eg: 0123 456 789"
                 {...register("phoneNumber", {
                   required: "Phone number is required",
                 })}
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                placeholder="Enter phone number"
               />
+              {errors.phoneNumber && (
+                <p className="text-red-400">{errors.phoneNumber.message}</p>
+              )}
             </div>
-            {/* <!-- Password --> */}
+
+            {/* Password */}
             <div>
-              <label className="block font-medium mb-1 text-blue-500">
+              <label className="block text-blue-500 font-medium mb-1">
                 Password
               </label>
               <input
                 type="password"
-                name="password"
-                className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                placeholder="enter your password"
                 {...register("password", {
                   required: "Password is required",
                   minLength: {
@@ -114,62 +117,101 @@ const SignUpPatient = () => {
                     message: "Password must be at least 8 characters",
                   },
                 })}
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                placeholder="Enter password"
               />
+              {errors.password && (
+                <p className="text-red-400">{errors.password.message}</p>
+              )}
             </div>
-            {/* <!-- Gender --> */}
+
+            {/* Gender */}
             <div>
-              <label className="block font-medium mb-1 text-blue-500">
+              <label className="block text-blue-500 font-medium mb-1">
                 Gender
               </label>
               <select
-                id="gender"
-                className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                {...register("role", { required: "Gender is required" })}
+                {...register("gender", { required: "Gender is required" })}
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
               >
                 <option value="">Select gender</option>
-                <option>Male</option>
-                <option>Female</option>
-                <option>Other</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
               </select>
+              {errors.gender && (
+                <p className="text-red-400">{errors.gender.message}</p>
+              )}
             </div>
-            {/* <!-- Address --> */}
+
+            {/* Date of Birth */}
             <div>
-              <label className="block font-medium mb-1 text-blue-500">
+              <label className="block text-blue-500 font-medium mb-1">
+                Date of Birth
+              </label>
+              <input
+                type="date"
+                {...register("dateOfBirth", {
+                  required: "Date of birth is required",
+                })}
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              />
+              {errors.dateOfBirth && (
+                <p className="text-red-400">{errors.dateOfBirth.message}</p>
+              )}
+            </div>
+
+            {/* Address */}
+            <div>
+              <label className="block text-blue-500 font-medium mb-1">
                 Address
               </label>
               <textarea
-                name="address"
-                rows="2"
-                className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                placeholder="enter your address"
+                {...register("address", { required: "Address is required" })}
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                placeholder="Enter address"
               ></textarea>
+              {errors.address && (
+                <p className="text-red-400">{errors.address.message}</p>
+              )}
             </div>
-            {/* <!-- Profile Photo --> */}
+
+            {/* Profile Photo */}
             <div>
-              <label className="block font-medium mb-1 text-blue-500">
-                Profile Photo
+              <label className="block text-blue-500 font-medium mb-1">
+                Profile Photo (optional)
               </label>
               <input
                 type="file"
-                name="profilePhoto"
                 accept="image/*"
-                className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                placeholder="choose your photo"
+                {...register("profilePhoto")}
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
               />
             </div>
-            {/* <!-- Submit Button --> */}
+
+            {/* Submit Button */}
             <div className="text-center">
               <button
                 type="submit"
-                className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition"
+                disabled={isSubmitting}
+                className={`w-full text-white py-2 rounded ${
+                  isSubmitting
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-blue-500 hover:bg-blue-600"
+                }`}
               >
-                Submit
+                {isSubmitting ? "Submitting..." : "Sign Up"}
               </button>
             </div>
+            <p className="mt-4 text-center text-sm text-gray-600">
+              Already have an account?{" "}
+              <Link to="/login" className="text-blue-400 hover:underline">
+                Sign-in
+              </Link>
+            </p>
           </form>
         </div>
       </div>
-      ;
     </PublicLayout>
   );
 };

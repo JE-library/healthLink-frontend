@@ -19,7 +19,7 @@ const Login = () => {
   const onSubmit = async (data) => {
     console.log(data);
     const payload = {
-      usernameOrEmail: data.usernameOrEmail,
+      username: data.username,
       password: data.password,
     };
     // console.log(payload)
@@ -31,11 +31,6 @@ const Login = () => {
       localStorage.setItem("accessToken", res.data.data.token);
       toast.success(res.data.message);
 
-      // if (data.role == "vendor") {
-      //   navigate("/dashboard");
-      // } else {
-      //   navigate("/user-home");
-      // }
     } catch (error) {
       console.log(error);
       toast.error(error?.message || "An Error Occured.");
@@ -59,28 +54,27 @@ const Login = () => {
             htmlFor=""
             className="block text-[20px] font-medium text-blue-500"
           >
-            Username Or Email
+             Email
           </label>
           <br />
           <input
             type="text"
-            name=""
-            id=""
+            id="email"
             className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
             placeholder="Enter your username or email"
-            {...register("usernameOrEmail", {
-              required: "Username or email is required",
+            {...register("email", {
+              required: "Email is required",
             })}
           />
           <label
-            htmlFor=""
+            type="text"
+            id="email"
             className="block text-[20px] font-medium text-blue-500 mt-[15px]"
           >
             Password
           </label>
           <input
             type="password"
-            name=""
             id="password"
             className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
             placeholder="Enter your password"
