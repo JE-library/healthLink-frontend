@@ -10,13 +10,13 @@ const ServiceProviderProfile = () => {
   const [provider, setProvider] = useState(null);
 
   //   checkif token is not expired
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token || isTokenExpired(token)) {
-      localStorage.removeItem("token");
-      navigate("/login");
-    }
-  }, []);
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
+  //   if (!token || isTokenExpired(token)) {
+  //     localStorage.removeItem("token");
+  //     navigate("/login");
+  //   }
+  // }, []);
 
   useEffect(() => {
     const fetchProvider = async () => {

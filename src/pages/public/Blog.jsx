@@ -23,7 +23,7 @@ const Blog = () => {
   }, []);
 
   const handleAuthorClick = (id) => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("accessToken");
     console.log(token);
     
     navigate(token ? `/providers/${id}` : "/signup/patient");
