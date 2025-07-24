@@ -1,235 +1,268 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router";
+import { useForm } from "react-hook-form";
 import PublicLayout from "../../layouts/PublicLayout";
+import axios from "../../services/api";
+
+const SPECIALTIES = [
+  "nutritionist",
+  "therapist",
+  "dermatologist",
+  "pharmacist",
+  "lab technician",
+  "physiotherapist",
+];
+
+const LAB_TESTS = [
+  "Complete Blood Count (CBC)",
+  "Urinalysis",
+  "Lipid Panel",
+  "Thyroid Function Test",
+  "Liver Function Test",
+  "Kidney Function Test",
+  "X-ray",
+  "MRI Scan",
+  "CT Scan",
+  "Blood Glucose Test",
+  "COVID-19 Test",
+  "Stool Test",
+  "Malaria Parasite Test",
+  "Blood Group Typing",
+];
 
 const SignUpProvider = () => {
+  const navigate = useNavigate();
+  const [errorMsg, setErrorMsg] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [labTests, setLabTests] = useState([]);
+  const [consultationModes, setConsultationModes] = useState({
+    video: false,
+    chat: false,
+    audio: false,
+  });
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+
+  const specialization = watch("specialization");
+  const isLabTech = specialization === "lab technician";
+
+  const onSubmit = async (data) => {
+    try {
+      setLoading(true);
+      setErrorMsg("");
+
+      const formPayload = new FormData();
+
+      for (const key in data) {
+        if (key === "profilePhoto") {
+          formPayload.append("profilePhoto", data.profilePhoto[0]);
+        } else if (key === "certifications") {
+          Array.from(data.certifications).forEach((file) => {
+            formPayload.append("certifications", file);
+          });
+        } else {
+          formPayload.append(key, data[key]);
+        }
+      }
+
+      if (isLabTech) {
+        formPayload.append("labTestsOffered", JSON.stringify(labTests));
+      } else {
+        formPayload.append("consultationModes", consultationModes);
+      }
+
+      await axios.post("/providers/register", formPayload, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      navigate("/login");
+    } catch (error) {
+      setErrorMsg(error.response?.data?.message || "Registration failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <PublicLayout>
-      <div className="bg-gradient-to-r from-blue-50 to-blue-200">
-        <div className="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-md fade-in">
-          <h2 className="text-2xl font-bold mb-6 text-center text-blue-600">
+      <div className="bg-secondary-body min-h-screen py-10">
+        <div className="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-md font-primary-font">
+          <h2 className="text-2xl font-bold mb-6 text-center text-primary-body">
             Professional Registration Form
           </h2>
 
-          <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* <!-- Full Name --> */}
-            <div>
-              <label className="block mb-1 font-medium text-blue-500">
-                Full Name
-              </label>
-              <input
-                type="text"
-                name="fullName"
-                className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                placeholder="eg: Vanessa Simmons"
-                required
-              />
-            </div>
+          {errorMsg && (
+            <p className="text-tertiary-font text-center mb-4">{errorMsg}</p>
+          )}
 
-            {/* <!-- Email --> */}
-            <div>
-              <label className="block mb-1 font-medium text-blue-500">
-                Email
-              </label>
-              <input
-                type="email"
-                name="email"
-                className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                placeholder="Enter your email"
-                required
-              />
-            </div>
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            encType="multipart/form-data"
+            className="grid grid-cols-1 md:grid-cols-2 gap-6"
+          >
+            {[
+              { name: "fullName", label: "Full Name", type: "text" },
+              { name: "email", label: "Email", type: "email" },
+              { name: "password", label: "Password", type: "password" },
+              { name: "phoneNumber", label: "Phone Number", type: "tel" },
+              { name: "dateOfBirth", label: "Date of Birth", type: "date" },
+              { name: "address", label: "Address", type: "textarea" },
+              {
+                name: "professionalTitle",
+                label: "Professional Title",
+                type: "text",
+              },
+              {
+                name: "experienceYears",
+                label: "Years of Experience",
+                type: "number",
+              },
+              { name: "bio", label: "Bio", type: "textarea" },
+            ].map((field) => (
+              <div
+                key={field.name}
+                className={field.type === "textarea" ? "md:col-span-2" : ""}
+              >
+                <label className="block mb-1 text-main-font font-medium">
+                  {field.label}
+                </label>
+                {field.type === "textarea" ? (
+                  <textarea
+                    {...register(field.name, { required: true })}
+                    rows="2"
+                    className="w-full px-4 py-2 border rounded-lg"
+                  />
+                ) : (
+                  <input
+                    type={field.type}
+                    {...register(field.name, { required: true })}
+                    className="w-full px-4 py-2 border rounded-lg"
+                  />
+                )}
+              </div>
+            ))}
 
-            {/* <!-- Password --> */}
+            {/* Gender */}
             <div>
-              <label className="block mb-1 font-medium text-blue-500">
-                Password
-              </label>
-              <input
-                type="password"
-                name="password"
-                className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                placeholder="enter your password"
-                required
-              />
-            </div>
-
-            {/* <!-- Phone Number --> */}
-            <div>
-              <label className="block mb-1 font-medium text-blue-500">
-                Phone Number
-              </label>
-              <input
-                type="tel"
-                name="phoneNumber"
-                className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                placeholder="eg: 0123 456 789"
-                required
-              />
-            </div>
-
-            {/* <!-- Gender --> */}
-            <div>
-              <label className="block mb-1 font-medium text-blue-500">
+              <label className="block mb-1 font-medium text-main-font">
                 Gender
               </label>
               <select
-                name="gender"
-                className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                required
+                {...register("gender", { required: true })}
+                className="w-full px-4 py-2 border rounded-lg"
               >
                 <option value="">Select gender</option>
-                <option>Male</option>
-                <option>Female</option>
-                <option>Other</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
               </select>
             </div>
 
-            {/* <!-- Date of Birth --> */}
+            {/* Specialization */}
             <div>
-              <label className="block mb-1 font-medium text-blue-500">
-                Date of Birth
+              <label className="block mb-1 font-medium text-main-font">
+                Specialization
               </label>
-              <input
-                type="date"
-                name="dateOfBirth"
-                className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                placeholder="Enter your date of birth"
-                required
-              />
+              <select
+                {...register("specialization", { required: true })}
+                className="w-full px-4 py-2 border rounded-lg"
+              >
+                <option value="">Select specialization</option>
+                {SPECIALTIES.map((s) => (
+                  <option key={s} value={s}>
+                    {s}
+                  </option>
+                ))}
+              </select>
             </div>
 
-            {/* <!-- Address --> */}
-            <div className="md:col-span-2">
-              <label className="block mb-1 font-medium text-blue-500">
-                Address
-              </label>
-              <textarea
-                name="address"
-                rows="2"
-                className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                placeholder="Enter your address"
-                required
-              ></textarea>
-            </div>
-
-            {/* <!-- Profile Photo --> */}
+            {/* Profile Photo */}
             <div>
-              <label className="block mb-1 font-medium text-blue-500">
+              <label className="block mb-1 font-medium text-main-font">
                 Profile Photo
               </label>
               <input
                 type="file"
-                name="profilePhoto"
-                className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                placeholder="Select your profile photo"
-                required
+                {...register("profilePhoto", { required: true })}
+                accept="image/*"
               />
             </div>
 
-            {/* <!-- Experience Years --> */}
-            <div>
-              <label className="block mb-1 font-medium text-blue-500">
-                Years of Experience
-              </label>
-              <input
-                type="number"
-                name="experienceYears"
-                className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                placeholder="Enter your years of experience"
-                required
-              />
-            </div>
-
-            {/* <!-- Professional Title --> */}
-            <div>
-              <label className="block mb-1 font-medium text-blue-500">
-                Professional Title
-              </label>
-              <input
-                type="text"
-                name="professionalTitle"
-                className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                placeholder="Enter your professional title"
-                required
-              />
-            </div>
-
-            {/* <!-- Specialization --> */}
-            <div>
-              <label className="block mb-1 font-medium text-blue-500">
-                Specialization
-              </label>
-              <input
-                type="text"
-                name="specialization"
-                className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                placeholder="eg: Vanessa Simmons"
-                required
-              />
-            </div>
-
-            {/* <!-- Bio --> */}
+            {/* Certifications */}
             <div className="md:col-span-2">
-              <label className="block mb-1 font-medium text-blue-500">
-                Bio
-              </label>
-              <textarea
-                name="bio"
-                rows="2"
-                className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                placeholder="Write something about yourself"
-              ></textarea>
-            </div>
-
-            {/* <!-- Certifications --> */}
-            <div className="md:col-span-2">
-              <label className="block mb-1 font-medium text-blue-500">
-                Certifications
+              <label className="block mb-1 font-medium text-main-font">
+                Certifications (max 5 files)
               </label>
               <input
                 type="file"
-                name="certifications"
-                className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                placeholder="Choose your files"
+                {...register("certifications")}
+                accept=".pdf,.doc,.jpg,.png"
+                multiple
               />
             </div>
 
-            {/* <!-- Calendar-based Availability (Date + Time Picker) --> */}
-            <div className="md:col-span-2">
-              <label className="block mb-2 font-medium text-blue-500">
-                Availability (Choose Date & Time)
-              </label>
-              <input
-                type="datetime-local"
-                name="availability"
-                className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                placeholder="Choose your available times"
-              />
-            </div>
+            {/* Conditional */}
+            {isLabTech ? (
+              <div className="md:col-span-2">
+                <label className="block mb-1 font-medium text-main-font">
+                  Lab Tests Offered
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  {LAB_TESTS.map((test) => (
+                    <label key={test} className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        checked={labTests.includes(test)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setLabTests([...labTests, test]);
+                          } else {
+                            setLabTests(labTests.filter((t) => t !== test));
+                          }
+                        }}
+                      />
+                      {test}
+                    </label>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div className="md:col-span-2">
+                <label className="block mb-1 font-medium text-main-font">
+                  Consultation Modes
+                </label>
+                <div className="flex gap-4">
+                  {Object.keys(consultationModes).map((mode) => (
+                    <label key={mode} className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        checked={consultationModes[mode]}
+                        onChange={(e) =>
+                          setConsultationModes((prev) => ({
+                            ...prev,
+                            [mode]: e.target.checked,
+                          }))
+                        }
+                      />
+                      {mode}
+                    </label>
+                  ))}
+                </div>
+              </div>
+            )}
 
-            {/* <!-- Consultation Modes --> */}
-            <div className="md:col-span-2">
-              <label className="block mb-1 font-medium text-blue-500">
-                Consultation Modes
-              </label>
-              <select
-                name="consultationModes"
-                className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              >
-                <option value="">Select mode(s)</option>
-                <option>In-person</option>
-                <option>Online (Live chat)</option>
-                <option>Phone Call</option>
-              </select>
-            </div>
-
-            {/* <!-- Submit Button --> */}
-            <div className="md:col-span-2 text-center">
+            <div className="md:col-span-2 text-center mt-4">
               <button
                 type="submit"
-                className="bg-blue-600 text-white px-6 py-2 rounded-[15px] hover:bg-blue-700 transition duration-200"
+                disabled={loading}
+                className="bg-primary-body text-white px-8 py-2 rounded-2xl hover:bg-main-body disabled:opacity-50"
               >
-                Submit
+                {loading ? "Submitting..." : "Register"}
               </button>
             </div>
           </form>
