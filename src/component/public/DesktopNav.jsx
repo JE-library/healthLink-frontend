@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, NavLink } from "react-router";
+import { NavLink } from "react-router";
 
 const DesktopNav = () => {
   const navLinks = [
@@ -8,21 +8,25 @@ const DesktopNav = () => {
     { label: "Blog", path: "/blog" },
     { label: "Contact", path: "/contact" },
   ];
+
   return (
-    <nav className="w-[60%] max-w-[500px]">
-      <ul className=" md:flex justify-evenly items-end text-white font-bold  hidden">
+    <nav className="hidden md:flex items-center bg-white px-6 py-3 rounded-full shadow-md">
+      <ul className="flex gap-6 font-medium text-blue-900">
         {navLinks.map((link) => (
-          <NavLink
-            to={link.path}
-            key={link.path}
-            className={({ isActive }) =>
-              isActive ? "border-b-2 text-primary-body" : ""
-            }
-          >
-            <li className="px-4 text-center hover:border-b-1 hover:text-primary-body transition duration-200">
+          <li key={link.path}>
+            <NavLink
+              to={link.path}
+              className={({ isActive }) =>
+                `transition duration-200 px-4 py-2 rounded-full ${
+                  isActive
+                    ? "bg-main-body text-white"
+                    : "hover:text-white hover:bg-primary-body"
+                }`
+              }
+            >
               {link.label}
-            </li>
-          </NavLink>
+            </NavLink>
+          </li>
         ))}
       </ul>
     </nav>

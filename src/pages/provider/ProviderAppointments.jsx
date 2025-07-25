@@ -1,21 +1,21 @@
-// Appointments.jsx
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import axios from "../../services/api";
-import { FaVideo, FaUserMd } from "react-icons/fa";
+import { FaVideo, FaUser } from "react-icons/fa";
 import ConfirmModal from "../../component/public/ConfirmModal";
 
-const Appointments = () => {
+const ProviderAppointments = () => {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedId, setSelectedId] = useState(null);
   const [showModal, setShowModal] = useState(false);
+
   const navigate = useNavigate();
 
   const fetchAppointments = async () => {
     try {
-      const res = await axios.get("/users/appointments");
-      setAppointments(res.data.appointments);
+      const res = await axios.get("providers/appointments");
+      setAppointments(res.data.appointments || []);
     } catch (err) {
       console.error("Failed to fetch appointments", err);
     } finally {
@@ -32,7 +32,7 @@ const Appointments = () => {
         )
       );
     } catch (err) {
-      console.error("Failed to cancel", err);
+      console.error("Failed to cancel appointment", err);
     } finally {
       setShowModal(false);
     }
@@ -45,8 +45,9 @@ const Appointments = () => {
   return (
     <div className="min-h-screen px-4 md:px-12 py-10 bg-gray-50">
       <h1 className="text-2xl font-bold text-gray-800 mb-6">My Appointments</h1>
+
       {loading ? (
-        <p>Loading...</p>
+        <p className="text-gray-500">Loading appointments...</p>
       ) : appointments.length === 0 ? (
         <p className="text-gray-500">You have no appointments yet.</p>
       ) : (
@@ -54,7 +55,7 @@ const Appointments = () => {
           <table className="w-full bg-white shadow rounded-xl overflow-hidden">
             <thead className="bg-blue-100 text-left text-sm text-gray-700">
               <tr>
-                <th className="p-4">Provider</th>
+                <th className="p-4">Patient</th>
                 <th className="p-4">Date</th>
                 <th className="p-4">Time</th>
                 <th className="p-4">Mode</th>
@@ -66,24 +67,22 @@ const Appointments = () => {
               {appointments.map((appt) => (
                 <tr
                   key={appt._id}
-                  className="hover:bg-blue-50 cursor-pointer border-b"
-                  onClick={() => navigate(`/patient/appointments/${appt._id}`)}
+                  className="hover:bg-blue-50 border-b cursor-pointer"
+                  onClick={() => navigate(`/provider/appointments/${appt._id}`)}
                 >
                   <td className="p-4 flex items-center gap-3">
                     <img
                       src={
-                        appt.serviceProvider?.profilePhoto?.url ||
+                        appt.user?.profilePhoto?.url ||
                         "https://via.placeholder.com/40"
                       }
-                      alt={appt.serviceProvider?.fullName}
-                      className="w-10 h-10 rounded-full object-cover border-2 border-main-body"
+                      alt={appt.user?.fullName}
+                      className="w-10 h-10 rounded-full object-cover border"
                     />
                     <div>
-                      <p className="font-medium">
-                        {appt.serviceProvider?.fullName}
-                      </p>
-                      <p className="text-xs text-gray-500 capitalize">
-                        {appt.serviceProvider?.specialization}
+                      <p className="font-medium">{appt.user?.fullName}</p>
+                      <p className="text-xs text-gray-500">
+                        {appt.user?.email}
                       </p>
                     </div>
                   </td>
@@ -91,8 +90,8 @@ const Appointments = () => {
                     {new Date(appt.date).toLocaleDateString()}
                   </td>
                   <td className="p-4">{appt.timeSlot}</td>
-                  <td className="p-4 capitalize flex">
-                    {appt.mode === "video" ? <FaVideo /> : <FaUserMd />}{" "}
+                  <td className="p-4 capitalize flex items-center gap-1">
+                    {appt.mode === "video" ? <FaVideo /> : <FaUser />}{" "}
                     {appt.mode}
                   </td>
                   <td className="p-4 capitalize text-sm">
@@ -111,6 +110,7 @@ const Appointments = () => {
                     </span>
                   </td>
                   <td
+                    className="p-4"
                     onClick={(e) => {
                       e.stopPropagation();
                       if (!["completed", "cancelled"].includes(appt.status)) {
@@ -118,10 +118,9 @@ const Appointments = () => {
                         setShowModal(true);
                       }
                     }}
-                    className="p-4"
                   >
                     {!["completed", "cancelled"].includes(appt.status) && (
-                      <button className="text-red-600 font-medium  px-2 py-1 hover:bg-red-500/20 rounded-full hover:underline  cursor-pointer">
+                      <button className="text-red-600 font-medium  px-2 py-1 hover:bg-red-500/20 rounded-full hover:underline cursor-pointer">
                         Cancel
                       </button>
                     )}
@@ -144,4 +143,4 @@ const Appointments = () => {
   );
 };
 
-export default Appointments;
+export default ProviderAppointments;

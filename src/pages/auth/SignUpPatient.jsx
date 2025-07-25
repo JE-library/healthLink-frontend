@@ -21,11 +21,8 @@ const SignUpPatient = () => {
 
     formData.append("fullName", data.fullName);
     formData.append("email", data.email);
-    formData.append("phoneNumber", data.phoneNumber);
     formData.append("password", data.password);
     formData.append("gender", data.gender);
-    formData.append("dateOfBirth", data.dateOfBirth);
-    formData.append("address", data.address);
     if (data.profilePhoto && data.profilePhoto.length > 0) {
       formData.append("profilePhoto", data.profilePhoto[0]);
     }
@@ -48,11 +45,11 @@ const SignUpPatient = () => {
     <PublicLayout>
       <div className="bg-gradient-to-r from-blue-50 to-blue-200 py-12 min-h-screen">
         <div className="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md">
-          <h2 className="text-2xl font-bold mb-6 text-center text-blue-600">
+          <h2 className="text-2xl font-bold mb-3 text-center text-blue-600">
             User Registration Form
           </h2>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
             {/* Full Name */}
             <div>
               <label className="block text-blue-500 font-medium mb-1">
@@ -82,24 +79,6 @@ const SignUpPatient = () => {
               />
               {errors.email && (
                 <p className="text-red-400">{errors.email.message}</p>
-              )}
-            </div>
-
-            {/* Phone Number */}
-            <div>
-              <label className="block text-blue-500 font-medium mb-1">
-                Phone Number
-              </label>
-              <input
-                type="tel"
-                {...register("phoneNumber", {
-                  required: "Phone number is required",
-                })}
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                placeholder="Enter phone number"
-              />
-              {errors.phoneNumber && (
-                <p className="text-red-400">{errors.phoneNumber.message}</p>
               )}
             </div>
 
@@ -141,38 +120,6 @@ const SignUpPatient = () => {
               </select>
               {errors.gender && (
                 <p className="text-red-400">{errors.gender.message}</p>
-              )}
-            </div>
-
-            {/* Date of Birth */}
-            <div>
-              <label className="block text-blue-500 font-medium mb-1">
-                Date of Birth
-              </label>
-              <input
-                type="date"
-                {...register("dateOfBirth", {
-                  required: "Date of birth is required",
-                })}
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              />
-              {errors.dateOfBirth && (
-                <p className="text-red-400">{errors.dateOfBirth.message}</p>
-              )}
-            </div>
-
-            {/* Address */}
-            <div>
-              <label className="block text-blue-500 font-medium mb-1">
-                Address
-              </label>
-              <textarea
-                {...register("address", { required: "Address is required" })}
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                placeholder="Enter address"
-              ></textarea>
-              {errors.address && (
-                <p className="text-red-400">{errors.address.message}</p>
               )}
             </div>
 

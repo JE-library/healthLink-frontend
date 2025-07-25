@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
 import axios from "../../services/api";
-import PublicLayout from "../../layouts/PublicLayout";
 import { isTokenExpired } from "../../utility/checkTokenValidity";
 
 const ServiceProviderProfile = () => {
@@ -10,13 +9,13 @@ const ServiceProviderProfile = () => {
   const [provider, setProvider] = useState(null);
 
   //   checkif token is not expired
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token || isTokenExpired(token)) {
-      localStorage.removeItem("token");
-      navigate("/login");
-    }
-  }, []);
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
+  //   if (!token || isTokenExpired(token)) {
+  //     localStorage.removeItem("token");
+  //     navigate("/login");
+  //   }
+  // }, []);
 
   useEffect(() => {
     const fetchProvider = async () => {
@@ -26,7 +25,7 @@ const ServiceProviderProfile = () => {
           setProvider(res.data.provider);
         }
       } catch (err) {
-        console.error("Error fetching provider:", err.response.data);
+        console.error("Error fetching provider:", err.response?.data || err);
       }
     };
 
@@ -35,11 +34,9 @@ const ServiceProviderProfile = () => {
 
   if (!provider) {
     return (
-      <PublicLayout>
-        <div className="min-h-screen bg-white flex items-center justify-center">
-          <p className="text-main-font">Loading profile...</p>
-        </div>
-      </PublicLayout>
+      <div className="min-h-screen flex items-center justify-center text-gray-600">
+        Loading profile...
+      </div>
     );
   }
 
@@ -55,173 +52,171 @@ const ServiceProviderProfile = () => {
     bio,
     consultationModes,
     availability,
+    labTestsOffered,
   } = provider;
 
   return (
-    <PublicLayout>
-      <div className="min-h-screen bg-white py-12 px-6 max-w-5xl mx-auto space-y-10 font-secondary-font">
-        {/* Header */}
-        <div className="bg-tertiary-body/70 p-6 rounded-lg shadow-sm flex flex-col sm:flex-row items-center sm:items-start gap-6">
-          <img
-            src={profilePhoto?.url}
-            alt="Profile"
-            className="w-32 h-32 rounded-full object-cover border"
-          />
-          <div className="flex-1 space-y-1">
-            <h1 className="text-3xl font-bold text-primary-body">
-              {professionalTitle} {fullName}
-            </h1>
-            <p className="text-main-font text-lg capitalize">
-              {specialization}
-            </p>
-            <p className="text-sm text-main-font/70">
-              {experienceYears} yrs experience | Rating: {rating || "N/A"}
-            </p>
-            <span
-              className={`text-sm px-3 py-1 rounded-full font-medium inline-block mt-2 ${
-                isAvailable
-                  ? "bg-green-200 text-green-700"
-                  : "bg-red-200 text-red-600"
-              }`}
-            >
-              {isAvailable ? "Available for Appointments" : "Not Available"}
-            </span>
-          </div>
+    <div className="min-h-screen bg-white py-12 px-4 md:px-8 lg:px-12 max-w-6xl mx-auto space-y-10 font-secondary-font">
+      {/* Header */}
+      <div className="bg-gray-50 p-6 rounded-2xl shadow-sm flex flex-col sm:flex-row gap-6 items-center sm:items-start">
+        <div className="w-full sm:w-auto sm:mr-4">
+          <button
+            onClick={() => navigate(-1)}
+            className="text-blue-600 hover:underline text-sm mb-4 sm:mb-0 cursor-pointer"
+          >
+            ← Back
+          </button>
         </div>
 
-        {/* Bio */}
-        <div className="bg-tertiary-body/50 p-6 rounded-md shadow-sm">
-          <h2 className="text-lg font-semibold text-primary-body mb-2">Bio</h2>
-          <p className="text-main-font text-sm leading-relaxed">
-            {bio && bio !== "No Bio" ? bio : "No bio provided."}
+        <img
+          src={profilePhoto?.url}
+          alt={fullName}
+          className="w-32 h-32 rounded-full object-cover border-3 border-main-body"
+        />
+
+        <div className="flex-1 space-y-1 text-center sm:text-left">
+          <h1 className="text-2xl font-bold text-gray-800">
+            {professionalTitle} {fullName}
+          </h1>
+          <p className="text-sm text-gray-500 capitalize">{specialization}</p>
+          <p className="text-xs text-gray-400">
+            {experienceYears || 0} yrs experience &bull; Rating:{" "}
+            {rating || "N/A"}
           </p>
+          <span
+            className={`text-xs px-3 py-1 rounded-full inline-block mt-2 font-semibold ${
+              isAvailable
+                ? "bg-green-100 text-green-700"
+                : "bg-red-100 text-red-600"
+            }`}
+          >
+            {isAvailable
+              ? "Available for Appointments"
+              : "Currently Unavailable"}
+          </span>
+        </div>
+      </div>
+
+      {/* Bio Section */}
+      <section className="bg-gray-50 rounded-2xl p-6 shadow-sm">
+        <h2 className="text-lg font-semibold mb-2 text-gray-800">Bio</h2>
+        <p className="text-sm text-gray-600 leading-relaxed">
+          {bio && bio !== "No Bio" ? bio : "No bio provided."}
+        </p>
+      </section>
+
+      {/* Info & Skills Section */}
+      <div className="grid gap-6 md:grid-cols-2">
+        {/* Professional Info */}
+        <div className="bg-gray-50 p-6 rounded-2xl shadow-sm">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">
+            Professional Info
+          </h3>
+          <ul className="space-y-2 text-sm text-gray-600">
+            <li>
+              <strong>Status:</strong> {status}
+            </li>
+            <li>
+              <strong>Experience:</strong> {experienceYears} years
+            </li>
+            <li>
+              <strong>Rating:</strong> {rating || "No rating yet"}
+            </li>
+          </ul>
         </div>
 
-        {/* Info Sections */}
-        <div className="flex flex-wrap gap-8">
-          {/* Professional Info */}
-          <div className="bg-tertiary-body/50 p-6 rounded-md shadow-sm">
-            <h2 className="text-lg font-semibold text-primary-body mb-4">
-              Professional Info
-            </h2>
-            <ul className="text-sm text-main-font space-y-1">
-              <li>
-                <strong>Status:</strong>{" "}
-                <span className="capitalize">{status}</span>
-              </li>
-              <li>
-                <strong>Experience:</strong> {experienceYears} years
-              </li>
-              <li>
-                <strong>Rating:</strong> {rating || "No rating yet"}
-              </li>
-            </ul>
-          </div>
+        {/* Modes / Lab Tests */}
+        <div className="bg-gray-50 p-6 rounded-2xl shadow-sm">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">
+            {specialization === "lab technician"
+              ? "Lab Tests Offered"
+              : "Consultation Modes"}
+          </h3>
 
-          {/* Conditional: Lab Tests OR Consultation Modes */}
           {specialization === "lab technician" ? (
-            <div className="bg-tertiary-body/50 p-6 rounded-md shadow-sm">
-              <h2 className="text-lg font-semibold text-primary-body mb-4">
-                Lab Tests Offered
-              </h2>
-              {provider.labTestsOffered?.length > 0 ? (
-                <div className="flex flex-wrap gap-3">
-                  {provider.labTestsOffered.map((test, index) => (
-                    <span
-                      key={index}
-                      className="bg-main-body/50 text-main-font text-xs px-4 py-1 rounded-full border border-main-font/10"
-                    >
-                      {test}
-                    </span>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-main-font/70 text-sm">
-                  No lab tests listed.
-                </p>
-              )}
+            labTestsOffered?.length > 0 ? (
+              <div className="flex flex-wrap gap-2">
+                {labTestsOffered.map((test, i) => (
+                  <span
+                    key={i}
+                    className="bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full"
+                  >
+                    {test}
+                  </span>
+                ))}
+              </div>
+            ) : (
+              <p className="text-sm text-gray-500">No lab tests listed.</p>
+            )
+          ) : Object.values(consultationModes).some(Boolean) ? (
+            <div className="flex flex-wrap gap-2">
+              {Object.entries(consultationModes)
+                .filter(([, isActive]) => isActive)
+                .map(([mode]) => (
+                  <span
+                    key={mode}
+                    className="bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full capitalize"
+                  >
+                    {mode}
+                  </span>
+                ))}
             </div>
           ) : (
-            <div className="bg-tertiary-body/50 p-6 rounded-md shadow-sm">
-              <h2 className="text-lg font-semibold text-primary-body mb-4">
-                Consultation Modes
-              </h2>
-              {Object.entries(consultationModes).filter(([, active]) => active)
-                .length > 0 ? (
-                <div className="flex flex-wrap gap-3">
-                  {Object.entries(consultationModes)
-                    .filter(([, active]) => active)
-                    .map(([mode]) => (
-                      <span
-                        key={mode}
-                        className="bg-main-body/50 text-main-font text-xs px-4 py-1 rounded-full border border-main-font/10 capitalize"
-                      >
-                        {mode}
-                      </span>
-                    ))}
-                </div>
-              ) : (
-                <p className="text-main-font/70 text-sm">
-                  No consultation modes listed.
-                </p>
-              )}
-            </div>
-          )}
-        </div>
-
-        {/* Availability & Booking */}
-        <div className="bg-tertiary-body/50 p-6 rounded-md shadow-sm">
-          <h2 className="text-lg font-semibold text-primary-body mb-4">
-            Weekly Availability
-          </h2>
-          {availability?.length ? (
-            <div className="space-y-4">
-              {availability.map(({ day, timeSlots, _id }) => (
-                <div key={_id}>
-                  <p className="text-sm font-medium text-main-font mb-1">
-                    {day}
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {timeSlots.map((slot, idx) => (
-                      <span
-                        key={idx}
-                        className="bg-main-body/50 text-main-font text-xs px-3 py-1 rounded-full hover:bg-main-body/20 transition"
-                      >
-                        {slot}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="text-main-font/70 text-sm">No availability listed.</p>
-          )}
-
-          {isAvailable && (
-            <div className="mt-6">
-              {specialization === "lab technician" ? (
-                <button
-                  onClick={() => navigate(`/patient/home-lab/${provider._id}`)}
-                  className="bg-primary-body text-white px-6 py-2 rounded-lg hover:bg-primary-body/90 transition text-sm cursor-pointer"
-                >
-                  Book a Home Lab
-                </button>
-              ) : (
-                <button
-                  onClick={() =>
-                    navigate(`/patient/book-consultation/${provider._id}`)
-                  }
-                  className="bg-primary-body text-white px-6 py-2 rounded-lg hover:bg-primary-body/90 transition text-sm cursor-pointer"
-                >
-                  Book Appointment
-                </button>
-              )}
-            </div>
+            <p className="text-sm text-gray-500">
+              No consultation modes listed.
+            </p>
           )}
         </div>
       </div>
-    </PublicLayout>
+
+      {/* Weekly Availability */}
+      <section className="bg-gray-50 p-6 rounded-2xl shadow-sm">
+        <h3 className="text-lg font-semibold text-gray-800 mb-4">
+          Weekly Availability
+        </h3>
+        {availability?.length > 0 ? (
+          <div className="space-y-4">
+            {availability.map(({ day, timeSlots, _id }) => (
+              <div key={_id}>
+                <p className="font-medium text-sm text-gray-700 mb-1">{day}</p>
+                <div className="flex flex-wrap gap-2">
+                  {timeSlots.map((slot, idx) => (
+                    <span
+                      key={idx}
+                      className="bg-gray-200 text-gray-800 text-xs px-3 py-1 rounded-full"
+                    >
+                      {slot}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-sm text-gray-500">No availability listed.</p>
+        )}
+
+        {/* Booking CTA */}
+        {isAvailable && (
+          <div className="mt-6">
+            <button
+              onClick={() =>
+                navigate(
+                  specialization === "lab technician"
+                    ? `/patient/home-lab/${provider._id}`
+                    : `/patient/book-consultation/${provider._id}`
+                )
+              }
+              className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-6 py-2 rounded-lg transition cursor-pointer"
+            >
+              {specialization === "lab technician"
+                ? "Book a Home Lab"
+                : "Book Appointment"}
+            </button>
+          </div>
+        )}
+      </section>
+    </div>
   );
 };
 

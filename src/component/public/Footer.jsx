@@ -77,9 +77,7 @@ const Footer = () => {
 
         {/* Contact & Social */}
         <div>
-          <h3 className="text-lg font-semibold mb-3 text-secondary-body">
-            Contact
-          </h3>
+          <h3 className="text-lg font-semibold mb-3 text-secondary-body">Contact</h3>
           <p>
             123 Health Street
             <br />

@@ -64,7 +64,7 @@ const PendingPage = () => {
           <img
             src={profilePhoto?.url}
             alt={fullName}
-            className="w-24 h-24 rounded-full object-cover border"
+            className="w-24 h-24 rounded-full object-cover border-3 border-main-body"
           />
           <div>
             <h3 className="text-xl font-semibold">{fullName}</h3>
