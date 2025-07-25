@@ -2,12 +2,15 @@
 
 @theme {
   /* COLOURS BODY */
-  --color-main-body: #53cde2;
-  --color-primary-body: #005792;
-  --color-secondary-body: #d1f4fa;
-  --color-tertiary-body: #d1f4fa;
-  --color-main-font: #181823;
-  --color-tertiary-font: #cb0404;
+
+  --color-main-body: #40bcd8; /* Soft teal-blue – calm, medical feel */
+  --color-primary-body: #004e89; /* Professional navy – trust and stability */
+  --color-secondary-body: #e7f7fa; /* Very light cyan – clean and gentle */
+  --color-tertiary-body: #cbeff4; /* Pale teal – visually distinct from secondary */
+  --color-main-font: #1a1a1a; /* Slightly deeper black for better contrast */
+  --color-tertiary-font: #c62828; /* Muted medical red – being too aggressive */
+
+
 
   /* FONTS  */
   --default-font-family: "DM Sans", sans-serif;

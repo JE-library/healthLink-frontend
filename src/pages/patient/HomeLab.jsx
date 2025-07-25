@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import axios from "../../services/api";
 import toast from "react-hot-toast";
-import PublicLayout from "../../layouts/PublicLayout";
 
 const HomeLab = () => {
   const { id } = useParams();
@@ -23,7 +22,6 @@ const HomeLab = () => {
         toast.error("Failed to load lab technician.");
       }
     };
-
     fetchProvider();
   }, [id]);
 
@@ -47,7 +45,7 @@ const HomeLab = () => {
         navigate("/patient/lab-requests");
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
       const msg = err.response?.data?.message || "An error occurred";
       toast.error(msg, { duration: 5000 });
     }
@@ -60,144 +58,145 @@ const HomeLab = () => {
   };
 
   return (
-    <PublicLayout>
-      <div className="max-w-3xl mx-auto py-10 px-4">
-        {provider ? (
-          <div className="max-w-4xl mx-auto">
-            <div className="bg-tertiary-body/50 p-6 rounded-md shadow mb-6">
-              <div className="flex items-center gap-4 mb-4">
-                <img
-                  src={provider.profilePhoto?.url}
-                  alt="Provider"
-                  className="w-20 h-20 rounded-full object-cover border"
-                />
-                <div>
-                  <h2 className="text-xl font-bold text-primary-body">
-                    {provider.fullName}
-                  </h2>
-                  <p className="text-main-font/80">
-                    {provider.specialization} | {provider.experienceYears} yrs
-                    exp.
-                  </p>
-                </div>
-              </div>
-
-              <p className="text-main-font mb-2">
-                Availability:{" "}
-                {provider.isAvailable ? (
-                  <span className="text-green-600 font-semibold">
-                    Available
-                  </span>
-                ) : (
-                  <span className="text-red-600 font-semibold">
-                    Unavailable
-                  </span>
-                )}
-              </p>
-
-              {provider.bio && provider.bio !== "No Bio" && (
-                <p className="text-sm text-main-font italic">
-                  "{provider.bio}"
+    <div className="bg-white min-h-screen py-10 px-4">
+      {provider ? (
+        <div className="max-w-3xl mx-auto">
+          {/* Provider Info */}
+          <div className="bg-tertiary-body/50 p-6 rounded-md shadow mb-6">
+            <div className="flex items-center gap-4 mb-4">
+              <img
+                src={provider.profilePhoto?.url}
+                alt="Lab Provider"
+                className="w-20 h-20 rounded-full object-cover border-2 border-main-body"
+              />
+              <div>
+                <h2 className="text-xl font-bold text-primary-body">{provider.fullName}</h2>
+                <p className="text-main-font/80">
+                  {provider.specialization} | {provider.experienceYears} yrs exp.
                 </p>
-              )}
+              </div>
             </div>
 
-            <form
-              onSubmit={handleSubmit}
-              className="space-y-6 bg-tertiary-body/50 p-6 rounded-md shadow"
-            >
-              <h2 className="text-lg font-semibold text-primary-body mb-4">
-                Book a Lab Service
-              </h2>
-              {/* Tests */}
-              <div>
-                <label className="block text-sm font-medium mb-1">
-                  Select Tests <span className="text-red-600">*</span>
-                </label>
-                <div className="flex flex-wrap gap-2">
-                  {provider.labTestsOffered?.map((test, index) => (
-                    <button
-                      type="button"
-                      key={index}
-                      onClick={() => handleTestToggle(test)}
-                      className={`px-4 py-2 rounded-full border border-black/20  text-sm transition duration-200 hover:bg-primary-body/60 hover:text-white ${
-                        selectedTests.includes(test)
-                          ? "bg-primary-body text-white"
-                          : "bg-main-body/30"
-                      }`}
-                    >
-                      {test}
-                    </button>
-                  ))}
-                </div>
-              </div>
+            <p className="text-main-font mb-2">
+              Availability:{" "}
+              {provider.isAvailable ? (
+                <span className="text-green-600 font-semibold">Available</span>
+              ) : (
+                <span className="text-red-600 font-semibold">Unavailable</span>
+              )}
+            </p>
 
-              {/* Date */}
-
-              <div>
-                <label className="block text-sm font-medium mb-1">
-                  Select Date <span className="text-red-600">*</span>
-                </label>
-                <input
-                  min={today}
-                  type="date"
-                  value={selectedDate}
-                  onChange={(e) => setSelectedDate(e.target.value)}
-                  className="w-full px-3 py-2 rounded bg-white border border-black/40"
-                  required
-                />
-              </div>
-
-              {/* Time Slot */}
-              <div>
-                <label className="block text-sm font-medium mb-1">
-                  Select Time Slot <span className="text-red-600">*</span>
-                </label>
-                <select
-                  value={selectedTimeSlot}
-                  onChange={(e) => setSelectedTimeSlot(e.target.value)}
-                  className="w-full px-3 py-2 rounded bg-white border border-black/40 "
-                  required
-                >
-                  <option value="">-- Select --</option>
-                  {provider.availability?.flatMap((day) =>
-                    day.timeSlots.map((slot, idx) => (
-                      <option key={`${day.day}-${idx}`} value={slot}>
-                        {day.day} - {slot}
-                      </option>
-                    ))
-                  )}
-                </select>
-              </div>
-
-              {/* Notes */}
-              <div>
-                <label className="block text-sm font-medium mb-1 ">
-                  Notes (Optional)
-                </label>
-                <textarea
-                  value={notes}
-                  onChange={(e) => setNotes(e.target.value)}
-                  className="w-full px-3 py-2 rounded bg-white border border-black/40"
-                  rows={3}
-                  placeholder="Any extra information..."
-                />
-              </div>
-
-              {/* Submit */}
-              <button
-                type="submit"
-                className="bg-primary-body text-white px-6 py-2 rounded-md hover:bg-primary-body/90 transition"
-              >
-                Submit Request
-              </button>
-            </form>
+            {provider.bio && provider.bio !== "No Bio" && (
+              <p className="text-sm italic text-main-font">"{provider.bio}"</p>
+            )}
           </div>
-        ) : (
-          <p>Loading provider info...</p>
-        )}
-      </div>
-    </PublicLayout>
+
+          {/* Booking Form */}
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-6 bg-tertiary-body/50 p-6 rounded-md shadow"
+          >
+            <h3 className="text-lg font-semibold text-primary-body mb-4">
+              Book a Lab Service
+            </h3>
+
+            {/* Tests */}
+            <div>
+              <label className="block text-sm font-medium mb-1">
+                Select Tests <span className="text-red-600">*</span>
+              </label>
+              <div className="flex flex-wrap gap-2">
+                {provider.labTestsOffered?.map((test, index) => (
+                  <button
+                    type="button"
+                    key={index}
+                    onClick={() => handleTestToggle(test)}
+                    className={`px-4 py-2 rounded-full border border-black/20 text-sm transition duration-200 ${
+                      selectedTests.includes(test)
+                        ? "bg-primary-body text-white"
+                        : "bg-main-body/30 hover:bg-primary-body/60 hover:text-white"
+                    }`}
+                  >
+                    {test}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Date */}
+            <div>
+              <label className="block text-sm font-medium mb-1">
+                Select Date <span className="text-red-600">*</span>
+              </label>
+              <input
+                type="date"
+                min={today}
+                value={selectedDate}
+                onChange={(e) => setSelectedDate(e.target.value)}
+                className="w-full px-3 py-2 rounded bg-white border border-black/40"
+                required
+              />
+            </div>
+
+            {/* Time Slot */}
+            <div>
+              <label className="block text-sm font-medium mb-1">
+                Select Time Slot <span className="text-red-600">*</span>
+              </label>
+              <select
+                value={selectedTimeSlot}
+                onChange={(e) => setSelectedTimeSlot(e.target.value)}
+                className="w-full px-3 py-2 rounded bg-white border border-black/40"
+                required
+              >
+                <option value="">-- Select --</option>
+                {provider.availability?.flatMap((day) =>
+                  day.timeSlots.map((slot, idx) => (
+                    <option key={`${day.day}-${idx}`} value={slot}>
+                      {day.day} - {slot}
+                    </option>
+                  ))
+                )}
+              </select>
+            </div>
+
+            {/* Notes */}
+            <div>
+              <label className="block text-sm font-medium mb-1">
+                Notes (Optional)
+              </label>
+              <textarea
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                className="w-full px-3 py-2 rounded bg-white border border-black/40"
+                rows={3}
+                placeholder="Any extra information..."
+              />
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              className="bg-primary-body text-white px-6 py-2 rounded-md hover:bg-primary-body/90 transition"
+            >
+              Submit Request
+            </button>
+          </form>
+
+          {/* Back Button */}
+          <div className="mt-6">
+            <button
+              onClick={() => navigate(-1)}
+              className="text-blue-600 hover:underline text-lg font-bold cursor-pointer"
+            >
+              ← Back
+            </button>
+          </div>
+        </div>
+      ) : (
+        <p className="text-center text-main-font mt-10">Loading provider info...</p>
+      )}
+    </div>
   );
 };
 

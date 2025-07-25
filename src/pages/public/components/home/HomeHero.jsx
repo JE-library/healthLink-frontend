@@ -10,7 +10,7 @@ const HomeHero = () => {
     {
       title: "See a Specialist",
       description:
-        "Connect instantly with licensed Specialist through secure video or chat consultations.",
+        "Connect instantly with licensed specialists through secure video or chat consultations.",
       icon: <FaUserDoctor />,
     },
     {
@@ -28,44 +28,42 @@ const HomeHero = () => {
   ];
 
   const navigate = useNavigate();
+
   return (
-    <section className="h-auto md:min-h-screen bg-main-body px-4 sm:px-12 ">
+    <section className="h-auto md:min-h-screen bg-gray-50">
+      {/* Hero Section */}
       <div
-        style={{ backgroundImage: `url(${heroImage})` }}
-        className="h-[100%] rounded-2xl p-4 relative bg-cover flex"
+        style={{
+          backgroundImage: `url(${heroImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "top center",
+        }}
+        className="p-4 relative bg-cover bg-center flex md:px-12"
       >
-        <div className="absolute bg-gradient-to-r from-black/50 to-transparent top-0 left-0 h-[100%] w-[100%]  rounded-2xl z-0 "></div>
-        <div
-          className="relative  lg:w-[50%] md:w-[80%] flex flex-col items-center md:items-start gap-4 z-10
-        6+
-        "
-        >
-          <h2 className="font-secondary-font text-5xl  sm:text-8xl font-bold text-white text-shadow-lg text-center md:text-left">
+        <div className="absolute   top-0 left-0 h-full w-full z-0"></div>
+        <div className=" bg-gradient-to-t from-white via-white to-transparent relative lg:w-[50%] md:w-[80%] flex flex-col items-center md:items-start gap-4 z-10 py-12 px-8">
+          <h2 className="font-secondary-font text-5xl sm:text-7xl font-bold text-primary-body drop-shadow-md text-center md:text-left">
             Care Without <br /> the Wait
           </h2>
-          <p className="text-white font-bold mt-3 text-lg text-center md:text-left">
-            Instant access to doctors, therapists, and wellness experts—anytime,
-            anywhere.
-          </p>
-          <p className="text-sm text-white/80 text-center md:text-left">
+          <p className="text-lg text-primary-body/90 text-center md:text-left max-w-xl">
             Say goodbye to long queues and waiting rooms. With HealthLink, you
             can book virtual consultations, request lab tests at home, or even
             call an ambulance—all from your phone.
           </p>
           <button
             onClick={() => navigate("/signup/patient")}
-            className="shadow-2xl bg-white max-w-[200px] py-3 px-4 rounded-4xl text-main-font cursor-pointer hover:bg-primary-body font-bold transition duration-300 hover:text-white"
+            className="bg-primary-body text-white font-bold py-3 px-5 rounded-full hover:bg-white hover:text-primary-body transition duration-300 shadow-lg cursor-pointer hover:border-main-body border"
           >
             Talk to a Specialist
           </button>
-          <div className="flex justify-between gap-4 text-sm font-bold text-white">
+          <div className="flex flex-wrap md:flex-nowrap justify-between gap-4 text-sm font-bold text-primary-body mt-4">
             <p className="flex items-center gap-1">
               <FaCheckCircle />
               Available on Web & Mobile
             </p>
             <p className="flex items-center gap-1">
               <FaCheckCircle />
-              Secure & Private{" "}
+              Secure & Private
             </p>
             <p className="flex items-center gap-1">
               <FaCheckCircle />
@@ -73,25 +71,27 @@ const HomeHero = () => {
             </p>
           </div>
         </div>
-        <div></div>
       </div>
-      <div className="flex md:flex-nowrap justify-between flex-wrap   w-full p-4 gap-4">
+
+      {/* Cards Section */}
+      <div className="flex md:flex-nowrap justify-evenly flex-wrap p-6 gap-6 bg-primary-body">
         {cards.map((card, index) => (
           <div
+            onClick={() => {
+              navigate("/signup/patient");
+            }}
             key={index}
-            className="max-w-[400px]  group p-5 bg-tertiary-body/30 rounded-2xl cursor-pointer hover:bg-white transition duration-700 flex gap-2 hover:text-main-font hover:shadow-2xl"
+            className="max-w-[400px] group p-6 bg-white/90  text-primary-body rounded-2xl cursor-pointer hover:bg-main-body/80 transition duration-500 hover:text-white shadow-lg"
           >
-            <div className="text-5xl text-white group-hover:text-main-body transition duration-700 ">
+            <div className="text-5xl mb-4  group-hover:text-white transition duration-500">
               {card.icon}
             </div>
-            <div className="flex flex-col gap-1 ">
-              <h3 className="font-secondary-font font-bold text-3xl text-white group-hover:text-main-font transition duration-700">
-                {card.title}
-              </h3>
-              <p className="font-medium text-white group-hover:text-main-font transition duration-700">
-                {card.description}
-              </p>
-            </div>
+            <h3 className="font-secondary-font font-bold text-2xl mb-2 group-hover:text-white transition">
+              {card.title}
+            </h3>
+            <p className="text-sm font-medium group-hover:text-white transition">
+              {card.description}
+            </p>
           </div>
         ))}
       </div>

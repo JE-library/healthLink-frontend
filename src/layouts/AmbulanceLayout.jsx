@@ -3,7 +3,7 @@ import { Outlet } from 'react-router'
 
 const AmbulanceLayout = () => {
   return (
-    <div>AmbulanceLayout
+    <div>
         <Outlet />
     </div>
   )

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FaVideo, FaPhone, FaComments, FaPaperPlane } from "react-icons/fa";
 
-const Consultation = () => {
+const ProviderConsultation = () => {
   const [messages, setMessages] = useState([
     { id: 1, sender: "specialist", text: "Hello, how can I help you today?" },
   ]);
@@ -82,4 +82,4 @@ const Consultation = () => {
   );
 };
 
-export default Consultation;
+export default ProviderConsultation;

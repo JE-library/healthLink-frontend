@@ -1,6 +1,6 @@
 import { FiMenu } from "react-icons/fi";
 import { MdClose } from "react-icons/md";
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import DesktopNav from "./DesktopNav";
 import MobileNav from "./MobileNavBar";
 import { useState } from "react";
@@ -14,31 +14,42 @@ const Header = () => {
   };
 
   return (
-    <header className="px-4 py-3 bg-main-body flex justify-between items-center text-white font-secondary-font md:px-12 sticky top-0 z-99">
-      <span className=" cursor-pointer" onClick={() => navigate("/")}>
-        <h1 className="font-extrabold text-2xl leading-4">HealthLink</h1>
-        <p className="text-xs">Care Without the Wait</p>
-      </span>
+    <header className="px-4 py-3 bg-primary-body flex justify-between items-center text-white font-secondary-font md:px-12 sticky top-0 z-50 shadow-md">
+      {/* Logo & Brand */}
+      <div
+        className="cursor-pointer flex flex-col leading-tight"
+        onClick={() => navigate("/")}
+      >
+        <h1 className="font-extrabold text-2xl">HealthLink</h1>
+        <p className="text-xs text-white/80">Care Without the Wait</p>
+      </div>
 
-      <MobileNav isNav={isNav} />
+      {/* Navigation */}
       <DesktopNav />
+      <MobileNav isNav={isNav} />
+
+      {/* CTA Button (Hidden on Mobile) */}
       <button
         onClick={() => navigate("/signup/patient")}
-        className="bg-tertiary-body/40 py-2 px-5 rounded-3xl cursor-pointer hover:bg-primary-body font-bold transition duration-300 hidden md:block"
+        className="hidden md:block bg-white text-primary-body py-2 px-5 rounded-full font-bold transition duration-300 hover:bg-main-body hover:text-white cursor-pointer"
       >
         Talk to a Specialist
       </button>
-      {isNav ? (
-        <MdClose
-          onClick={handleNav}
-          className="animate-navBar text-4xl cursor-pointer md:hidden"
-        />
-      ) : (
-        <FiMenu
-          onClick={handleNav}
-          className="animate-navBar text-4xl cursor-pointer md:hidden"
-        />
-      )}
+
+      {/* Hamburger Icon (Mobile Only) */}
+      <div className="md:hidden text-white text-3xl z-50">
+        {isNav ? (
+          <MdClose
+            onClick={handleNav}
+            className="transition-transform duration-300"
+          />
+        ) : (
+          <FiMenu
+            onClick={handleNav}
+            className="transition-transform duration-300"
+          />
+        )}
+      </div>
     </header>
   );
 };

@@ -1,12 +1,64 @@
 import React from "react";
 import PublicLayout from "../../layouts/PublicLayout";
 import { Link } from "react-router";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
+import { apiLogin } from "../../services/auth";
+import { toast } from "react-toastify";
+import { useState } from "react";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = async (data) => {
+    console.log(data);
+    const payload = {
+      email: data.email,
+      password: data.password,
+    };
+    // console.log(payload)
+    setIsSubmitting(true);
+
+    try {
+      const res = await apiLogin(payload);
+      console.log(res);
+      localStorage.setItem("accessToken", res.data.user.token);
+      toast.success(res.data.message);
+      const role = res.data.user.role;
+      if (role === "user") {
+        navigate("/patient/dashboard");
+      } else if (role === "serviceProvider") {
+        const status = res.data.user.status;
+        console.log(status);
+        
+        if (status !== "approved") {
+          navigate(`/pending-approval/${res.data.user._id}`);
+        } else {
+          navigate("/provider/dashboard");
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.message || "An Error Occured.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const isError = Object.keys(errors).length > 0;
   return (
     <PublicLayout>
       <div className="min-h-screen bg-gradient-to-r from-blue-50 to-blue-200 flex items-center justify-center px-4">
-        <form className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md"
+        >
           <h2 className="text-3xl font-bold text-center text-blue-600 mb-6 ">
             Let's Get You Logged In!
           </h2>
@@ -14,37 +66,58 @@ const Login = () => {
             htmlFor=""
             className="block text-[20px] font-medium text-blue-500"
           >
-            Username Or Email
+            Email
           </label>
           <br />
           <input
             type="text"
-            name=""
-            id=""
+            id="email"
             className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
             placeholder="Enter your username or email"
-            required
+            {...register("email", {
+              required: "Email is required",
+            })}
           />
           <label
-            htmlFor=""
+            type="text"
+            id="email"
             className="block text-[20px] font-medium text-blue-500 mt-[15px]"
           >
             Password
           </label>
           <input
-            type="text"
-            name=""
-            id=""
+            type="password"
+            id="password"
             className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
             placeholder="Enter your password"
-            required
+            {...register("password", {
+              required: "Password is required",
+              minLength: {
+                value: 8,
+                message: "Password must be at least 8 characters",
+              },
+            })}
           />
-          <button className="w-[150px] bg-blue-500 text-white mt-[30px] ml-[110px] p-[10px] justify-center rounded-[15px] hover:bg-blue-500/80 transition duration-200">
-            Submit
+          {errors?.password && (
+            <span className="text-red-400">{errors?.password?.message}</span>
+          )}
+          <button
+            type="submit"
+            disabled={isError}
+            className={`${
+              isError
+                ? "bg-gray-300 cursor-not-allowed"
+                : "bg-blue-400 hover:bg-emerald-500"
+            } w-[150px] text-white mt-[30px] mr-[200px] p-[10px] justify-center rounded-[15px] transition duration-200`}
+          >
+            {isSubmitting ? "Submitting..." : "Log In"}
           </button>
+          {/* <button className="w-[150px] bg-blue-500 text-white mt-[30px] ml-[110px] p-[10px] justify-center rounded-[15px] hover:bg-blue-500/80 transition duration-200">
+            Submit
+          </button> */}
           <p className="mt-4 text-center text-sm text-gray-600">
             Don't have an account?{" "}
-            <Link to="/sign-up" className="text-blue-400 hover:underline">
+            <Link to="/signup/patient" className="text-blue-400 hover:underline">
               Sign up
             </Link>
           </p>
