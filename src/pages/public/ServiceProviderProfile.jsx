@@ -76,7 +76,7 @@ const ServiceProviderProfile = () => {
 
         <div className="flex-1 space-y-1 text-center sm:text-left">
           <h1 className="text-2xl font-bold text-gray-800">
-            {professionalTitle} {fullName}
+             {fullName}
           </h1>
           <p className="text-sm text-gray-500 capitalize">{specialization}</p>
           <p className="text-xs text-gray-400">
