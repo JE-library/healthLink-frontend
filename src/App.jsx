@@ -65,7 +65,6 @@ import ProviderLayout from "./layouts/ProviderLayout";
 import AmbulanceLayout from "./layouts/AmbulanceLayout";
 
 import AdminLayout from "./layouts/AdminLayout";
-import AvailableDoctors from "./pages/patient/AvailableDoctors";
 
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
