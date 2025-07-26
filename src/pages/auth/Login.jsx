@@ -1,15 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import PublicLayout from "../../layouts/PublicLayout";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
 import { apiLogin } from "../../services/auth";
 import { toast } from "react-toastify";
-import { useState } from "react";
 
 const Login = () => {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -17,107 +16,119 @@ const Login = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    console.log(data);
     const payload = {
       email: data.email,
       password: data.password,
     };
-    // console.log(payload)
+
     setIsSubmitting(true);
 
     try {
       const res = await apiLogin(payload);
-      console.log(res);
       localStorage.setItem("accessToken", res.data.user.token);
-      toast.success(res.data.message);
-      const role = res.data.user.role;
+      toast.success(
+        `Welcome ${res.data.user.fullName}` || "Login Successfull!"
+      );
+
+      const { role, status, _id } = res.data.user;
+
       if (role === "user") {
         navigate("/patient/dashboard");
       } else if (role === "serviceProvider") {
-        const status = res.data.user.status;
-        console.log(status);
-        
-        if (status !== "approved") {
-          navigate(`/pending-approval/${res.data.user._id}`);
-        } else {
-          navigate("/provider/dashboard");
-        }
+        status !== "approved"
+          ? navigate(`/pending-approval/${_id}`)
+          : navigate("/provider/dashboard");
       }
     } catch (error) {
-      console.log(error);
-      toast.error(error?.message || "An Error Occured.");
+      toast.error(error?.response?.data?.message || "Login failed.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const isError = Object.keys(errors).length > 0;
   return (
     <PublicLayout>
-      <div className="min-h-screen bg-gradient-to-r from-blue-50 to-blue-200 flex items-center justify-center px-4">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-200 flex items-center justify-center px-4">
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md"
         >
-          <h2 className="text-3xl font-bold text-center text-blue-600 mb-6 ">
+          <h2 className="text-3xl font-bold text-center text-primary-body mb-6 font-primary-font">
             Let's Get You Logged In!
           </h2>
-          <label
-            htmlFor=""
-            className="block text-[20px] font-medium text-blue-500"
-          >
-            Email
-          </label>
-          <br />
-          <input
-            type="text"
-            id="email"
-            className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-            placeholder="Enter your username or email"
-            {...register("email", {
-              required: "Email is required",
-            })}
-          />
-          <label
-            type="text"
-            id="email"
-            className="block text-[20px] font-medium text-blue-500 mt-[15px]"
-          >
-            Password
-          </label>
-          <input
-            type="password"
-            id="password"
-            className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-            placeholder="Enter your password"
-            {...register("password", {
-              required: "Password is required",
-              minLength: {
-                value: 8,
-                message: "Password must be at least 8 characters",
-              },
-            })}
-          />
-          {errors?.password && (
-            <span className="text-red-400">{errors?.password?.message}</span>
-          )}
+
+          {/* Email */}
+          <div className="mb-4">
+            <label
+              htmlFor="email"
+              className="block text-primary-body font-medium mb-1"
+            >
+              Email
+            </label>
+            <input
+              id="email"
+              type="text"
+              placeholder="you@example.com"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400  placeholder:text-gray-500"
+              {...register("email", {
+                required: "Email is required",
+              })}
+            />
+            {errors.email && (
+              <p className="text-sm text-red-500 mt-1">
+                {errors.email.message}
+              </p>
+            )}
+          </div>
+
+          {/* Password */}
+          <div className="mb-4">
+            <label
+              htmlFor="password"
+              className="block text-primary-body font-medium mb-1"
+            >
+              Password
+            </label>
+            <input
+              id="password"
+              type="password"
+              placeholder="••••••••"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400  placeholder:text-gray-500"
+              {...register("password", {
+                required: "Password is required",
+                minLength: {
+                  value: 8,
+                  message: "Password must be at least 8 characters",
+                },
+              })}
+            />
+            {errors.password && (
+              <p className="text-sm text-red-500 mt-1">
+                {errors.password.message}
+              </p>
+            )}
+          </div>
+
+          {/* Submit Button */}
           <button
             type="submit"
-            disabled={isError}
-            className={`${
-              isError
-                ? "bg-gray-300 cursor-not-allowed"
-                : "bg-blue-400 hover:bg-emerald-500"
-            } w-[150px] text-white mt-[30px] mr-[200px] p-[10px] justify-center rounded-[15px] transition duration-200`}
+            disabled={isSubmitting}
+            className={`w-full py-2 rounded-lg text-white font-medium transition ${
+              isSubmitting
+                ? "bg-blue-300 cursor-not-allowed"
+                : "bg-blue-500 hover:bg-blue-600"
+            }`}
           >
-            {isSubmitting ? "Submitting..." : "Log In"}
+            {isSubmitting ? "Logging in..." : "Log In"}
           </button>
-          {/* <button className="w-[150px] bg-blue-500 text-white mt-[30px] ml-[110px] p-[10px] justify-center rounded-[15px] hover:bg-blue-500/80 transition duration-200">
-            Submit
-          </button> */}
+
+          {/* Link to Signup */}
           <p className="mt-4 text-center text-sm text-gray-600">
-            Don't have an account?{" "}
-            <Link to="/signup/patient" className="text-blue-400 hover:underline">
+            Don&apos;t have an account?{" "}
+            <Link
+              to="/signup/patient"
+              className="text-primary-body hover:underline"
+            >
               Sign up
             </Link>
           </p>

@@ -90,14 +90,16 @@ const SignUpProvider = () => {
 
   return (
     <PublicLayout>
-      <div className="bg-secondary-body min-h-screen py-10">
-        <div className="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-md font-primary-font">
-          <h2 className="text-2xl font-bold mb-6 text-center text-primary-body">
-            Professional Registration Form
+      <div className="bg-gradient-to-b from-blue-50 to-white min-h-screen py-12 px-4">
+        <div className="max-w-5xl mx-auto bg-white p-8 rounded-xl shadow-lg font-primary-font">
+          <h2 className="text-3xl font-bold mb-8 text-center text-blue-600">
+            Register as a HealthLink Professional
           </h2>
 
           {errorMsg && (
-            <p className="text-tertiary-font text-center mb-4">{errorMsg}</p>
+            <div className="bg-red-100 text-red-700 p-3 rounded mb-6 text-center">
+              {errorMsg}
+            </div>
           )}
 
           <form
@@ -128,20 +130,20 @@ const SignUpProvider = () => {
                 key={field.name}
                 className={field.type === "textarea" ? "md:col-span-2" : ""}
               >
-                <label className="block mb-1 text-main-font font-medium">
+                <label className="block mb-2 text-sm font-semibold text-gray-700">
                   {field.label}
                 </label>
                 {field.type === "textarea" ? (
                   <textarea
                     {...register(field.name, { required: true })}
-                    rows="2"
-                    className="w-full px-4 py-2 border rounded-lg"
+                    rows="3"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200"
                   />
                 ) : (
                   <input
                     type={field.type}
                     {...register(field.name, { required: true })}
-                    className="w-full px-4 py-2 border rounded-lg"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200"
                   />
                 )}
               </div>
@@ -149,12 +151,12 @@ const SignUpProvider = () => {
 
             {/* Gender */}
             <div>
-              <label className="block mb-1 font-medium text-main-font">
+              <label className="block mb-2 text-sm font-semibold text-gray-700">
                 Gender
               </label>
               <select
                 {...register("gender", { required: true })}
-                className="w-full px-4 py-2 border rounded-lg"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200"
               >
                 <option value="">Select gender</option>
                 <option value="male">Male</option>
@@ -165,17 +167,17 @@ const SignUpProvider = () => {
 
             {/* Specialization */}
             <div>
-              <label className="block mb-1 font-medium text-main-font">
+              <label className="block mb-2 text-sm font-semibold text-gray-700">
                 Specialization
               </label>
               <select
                 {...register("specialization", { required: true })}
-                className="w-full px-4 py-2 border rounded-lg"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200"
               >
                 <option value="">Select specialization</option>
                 {SPECIALTIES.map((s) => (
                   <option key={s} value={s}>
-                    {s}
+                    {s.charAt(0).toUpperCase() + s.slice(1)}
                   </option>
                 ))}
               </select>
@@ -183,48 +185,61 @@ const SignUpProvider = () => {
 
             {/* Profile Photo */}
             <div>
-              <label className="block mb-1 font-medium text-main-font">
+              <label className="block mb-2 text-sm font-semibold text-gray-700">
                 Profile Photo
               </label>
               <input
                 type="file"
                 {...register("profilePhoto", { required: true })}
                 accept="image/*"
+                className="block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4
+        file:rounded-md file:border-0
+        file:text-sm file:font-semibold
+        file:bg-blue-50 file:text-blue-700
+        hover:file:bg-blue-100"
               />
             </div>
 
             {/* Certifications */}
             <div className="md:col-span-2">
-              <label className="block mb-1 font-medium text-main-font">
-                Certifications (max 5 files)
+              <label className="block mb-2 text-sm font-semibold text-gray-700">
+                Certifications (PDF, JPG, PNG - Max 5 files)
               </label>
               <input
                 type="file"
                 {...register("certifications")}
                 accept=".pdf,.doc,.jpg,.png"
                 multiple
+                className="block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4
+        file:rounded-md file:border-0
+        file:text-sm file:font-semibold
+        file:bg-blue-50 file:text-blue-700
+        hover:file:bg-blue-100"
               />
             </div>
 
-            {/* Conditional */}
+            {/* Conditional Section */}
             {isLabTech ? (
               <div className="md:col-span-2">
-                <label className="block mb-1 font-medium text-main-font">
+                <label className="block mb-2 text-sm font-semibold text-gray-700">
                   Lab Tests Offered
                 </label>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                   {LAB_TESTS.map((test) => (
-                    <label key={test} className="flex items-center gap-2">
+                    <label
+                      key={test}
+                      className="flex items-center gap-2 text-sm"
+                    >
                       <input
                         type="checkbox"
                         checked={labTests.includes(test)}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setLabTests([...labTests, test]);
-                          } else {
-                            setLabTests(labTests.filter((t) => t !== test));
-                          }
-                        }}
+                        onChange={(e) =>
+                          setLabTests((prev) =>
+                            e.target.checked
+                              ? [...prev, test]
+                              : prev.filter((t) => t !== test)
+                          )
+                        }
                       />
                       {test}
                     </label>
@@ -233,12 +248,15 @@ const SignUpProvider = () => {
               </div>
             ) : (
               <div className="md:col-span-2">
-                <label className="block mb-1 font-medium text-main-font">
+                <label className="block mb-2 text-sm font-semibold text-gray-700">
                   Consultation Modes
                 </label>
-                <div className="flex gap-4">
+                <div className="flex flex-wrap gap-4">
                   {Object.keys(consultationModes).map((mode) => (
-                    <label key={mode} className="flex items-center gap-2">
+                    <label
+                      key={mode}
+                      className="flex items-center gap-2 text-sm"
+                    >
                       <input
                         type="checkbox"
                         checked={consultationModes[mode]}
@@ -249,18 +267,19 @@ const SignUpProvider = () => {
                           }))
                         }
                       />
-                      {mode}
+                      {mode.charAt(0).toUpperCase() + mode.slice(1)}
                     </label>
                   ))}
                 </div>
               </div>
             )}
 
-            <div className="md:col-span-2 text-center mt-4">
+            {/* Submit Button */}
+            <div className="md:col-span-2 text-center mt-6">
               <button
                 type="submit"
                 disabled={loading}
-                className="bg-primary-body text-white px-8 py-2 rounded-2xl hover:bg-main-body disabled:opacity-50"
+                className="bg-blue-600 text-white px-8 py-3 rounded-full text-sm font-semibold hover:bg-blue-700 transition disabled:opacity-50"
               >
                 {loading ? "Submitting..." : "Register"}
               </button>

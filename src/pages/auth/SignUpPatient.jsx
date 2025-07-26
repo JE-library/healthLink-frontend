@@ -18,24 +18,22 @@ const SignUpPatient = () => {
 
   const onSubmit = async (data) => {
     const formData = new FormData();
-
     formData.append("fullName", data.fullName);
     formData.append("email", data.email);
     formData.append("password", data.password);
     formData.append("gender", data.gender);
-    if (data.profilePhoto && data.profilePhoto.length > 0) {
+    if (data.profilePhoto?.length > 0) {
       formData.append("profilePhoto", data.profilePhoto[0]);
     }
 
     setIsSubmitting(true);
-
     try {
-      await apiUserSignup(formData); // Ensure this function handles FormData
-      toast.success("User Registered Successfully!");
+      await apiUserSignup(formData);
+      toast.success("Registration successful!");
       navigate("/login");
     } catch (error) {
       console.error(error);
-      toast.error(error?.message || "Registration failed.");
+      toast.error(error?.response?.data?.message || "Registration failed.");
     } finally {
       setIsSubmitting(false);
     }
@@ -43,48 +41,52 @@ const SignUpPatient = () => {
 
   return (
     <PublicLayout>
-      <div className="bg-gradient-to-r from-blue-50 to-blue-200 py-12 min-h-screen">
-        <div className="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md">
-          <h2 className="text-2xl font-bold mb-3 text-center text-blue-600">
-            User Registration Form
+      <div className="min-h-screen py-12 bg-gradient-to-br from-blue-50 to-blue-200">
+        <div className="max-w-xl mx-auto bg-white shadow-lg rounded-2xl p-8">
+          <h2 className="text-3xl font-bold text-center text-primary-body font-primary-font mb-6">
+            Create Your Account
           </h2>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             {/* Full Name */}
             <div>
-              <label className="block text-blue-500 font-medium mb-1">
+              <label className="block text-sm font-medium text-primary-body mb-1">
                 Full Name
               </label>
               <input
                 type="text"
                 {...register("fullName", { required: "Full name is required" })}
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                placeholder="Enter full name"
+                className="w-full border border-gray-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400  placeholder:text-gray-500"
+                placeholder="e.g. Kwesi Obeng"
               />
               {errors.fullName && (
-                <p className="text-red-400">{errors.fullName.message}</p>
+                <p className="text-sm text-red-500 mt-1">
+                  {errors.fullName.message}
+                </p>
               )}
             </div>
 
             {/* Email */}
             <div>
-              <label className="block text-blue-500 font-medium mb-1">
-                Email
+              <label className="block text-sm font-medium text-primary-body mb-1">
+                Email Address
               </label>
               <input
                 type="email"
                 {...register("email", { required: "Email is required" })}
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                placeholder="Enter email"
+                className="w-full border border-gray-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400  placeholder:text-gray-500"
+                placeholder="yourname@example.com"
               />
               {errors.email && (
-                <p className="text-red-400">{errors.email.message}</p>
+                <p className="text-sm text-red-500 mt-1">
+                  {errors.email.message}
+                </p>
               )}
             </div>
 
             {/* Password */}
             <div>
-              <label className="block text-blue-500 font-medium mb-1">
+              <label className="block text-sm font-medium text-primary-body mb-1 ">
                 Password
               </label>
               <input
@@ -93,67 +95,72 @@ const SignUpPatient = () => {
                   required: "Password is required",
                   minLength: {
                     value: 8,
-                    message: "Password must be at least 8 characters",
+                    message: "Minimum 8 characters",
                   },
                 })}
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                placeholder="Enter password"
+                className="w-full border border-gray-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400  placeholder:text-gray-500"
+                placeholder="••••••••"
               />
               {errors.password && (
-                <p className="text-red-400">{errors.password.message}</p>
+                <p className="text-sm text-red-500 mt-1">
+                  {errors.password.message}
+                </p>
               )}
             </div>
 
             {/* Gender */}
             <div>
-              <label className="block text-blue-500 font-medium mb-1">
+              <label className="block text-sm font-medium text-primary-body mb-1">
                 Gender
               </label>
               <select
                 {...register("gender", { required: "Gender is required" })}
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="w-full border border-gray-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
               >
-                <option value="">Select gender</option>
+                <option value="">Select...</option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
                 <option value="other">Other</option>
               </select>
               {errors.gender && (
-                <p className="text-red-400">{errors.gender.message}</p>
+                <p className="text-sm text-red-500 mt-1">
+                  {errors.gender.message}
+                </p>
               )}
             </div>
 
             {/* Profile Photo */}
             <div>
-              <label className="block text-blue-500 font-medium mb-1">
+              <label className="block text-sm font-medium text-primary-body mb-1">
                 Profile Photo (optional)
               </label>
               <input
                 type="file"
                 accept="image/*"
                 {...register("profilePhoto")}
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
               />
             </div>
 
             {/* Submit Button */}
-            <div className="text-center">
+            <div className="pt-4">
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`w-full text-white py-2 rounded ${
+                className={`w-full py-2 rounded-lg text-white font-medium transition ${
                   isSubmitting
-                    ? "bg-gray-400 cursor-not-allowed"
+                    ? "bg-blue-300 cursor-not-allowed"
                     : "bg-blue-500 hover:bg-blue-600"
                 }`}
               >
                 {isSubmitting ? "Submitting..." : "Sign Up"}
               </button>
             </div>
-            <p className="mt-4 text-center text-sm text-gray-600">
+
+            <p className="text-sm text-center mt-4 text-gray-600">
               Already have an account?{" "}
-              <Link to="/login" className="text-blue-400 hover:underline">
-                Sign-in
+              <Link to="/login" className="text-primary-body hover:underline">
+                Sign in
               </Link>
             </p>
           </form>

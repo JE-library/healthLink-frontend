@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
 import axios from "../../services/api";
+import ConfirmModal from "../../component/public/ConfirmModal";
 
 const BookConsultation = () => {
+  const [showConfirm, setShowConfirm] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
   const [provider, setProvider] = useState(null);
@@ -54,13 +56,13 @@ const BookConsultation = () => {
           {/* Back Button */}
           <button
             onClick={() => navigate(-1)}
-            className="text-blue-600 hover:underline text-sm font-semibold"
+            className="text-blue-600 hover:underline text-sm font-semibold cursor-pointer"
           >
             ← Back
           </button>
 
           {/* Provider Card */}
-          <div className="bg-tertiary-body/50 p-6 rounded-xl shadow-sm flex flex-col sm:flex-row gap-6 items-center sm:items-start">
+          <div className="bg-gray-50 rounded-2xl p-6 shadow-sm  flex flex-col sm:flex-row gap-6 items-center sm:items-start">
             <img
               src={provider.profilePhoto?.url}
               alt={provider.fullName}
@@ -95,8 +97,11 @@ const BookConsultation = () => {
 
           {/* Booking Form */}
           <form
-            onSubmit={handleSubmit}
-            className="bg-tertiary-body/50 p-6 rounded-xl shadow-sm space-y-6"
+            onSubmit={(e) => {
+              e.preventDefault();
+              setShowConfirm(true);
+            }}
+            className="bg-gray-50 rounded-2xl p-6 shadow-sm space-y-6"
           >
             <h3 className="text-lg font-semibold text-primary-body">
               Book Appointment
@@ -112,7 +117,7 @@ const BookConsultation = () => {
                 min={today}
                 value={selectedDate}
                 onChange={(e) => setSelectedDate(e.target.value)}
-                className="w-full px-3 py-2 rounded-md bg-white border border-black/30"
+                className="w-full px-3 py-2 rounded-md bg-white border border-black/30  outline-main-body/50"
                 required
               />
             </div>
@@ -125,7 +130,7 @@ const BookConsultation = () => {
               <select
                 value={selectedTimeSlot}
                 onChange={(e) => setSelectedTimeSlot(e.target.value)}
-                className="w-full px-3 py-2 rounded-md bg-white border border-black/30"
+                className="w-full px-3 py-2 rounded-md bg-white border border-black/30  outline-main-body/50"
                 required
               >
                 <option value="">-- Select --</option>
@@ -170,7 +175,7 @@ const BookConsultation = () => {
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 rows="3"
-                className="w-full px-3 py-2 rounded-md bg-white border border-black/30"
+                className="w-full px-3 py-2 rounded-md bg-white border border-black/30  outline-main-body/50"
                 placeholder="Optional notes about your concern..."
               />
             </div>
@@ -183,7 +188,7 @@ const BookConsultation = () => {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-primary-body text-white py-2 rounded-md hover:bg-primary-body/90 transition"
+              className="w-full bg-primary-body text-white py-2 rounded-md hover:bg-primary-body/90 transition cursor-pointer"
               disabled={!provider.isAvailable}
             >
               Confirm Booking
@@ -195,6 +200,15 @@ const BookConsultation = () => {
           Loading provider details...
         </p>
       )}
+      <ConfirmModal
+        bgColour="bg-green-500"
+        isOpen={showConfirm}
+        onClose={() => setShowConfirm(false)}
+        onConfirm={handleSubmit}
+        title="Confirm Appointment"
+        message="Do you want to confirm this appointment with the specialist?"
+        confirmText="Confirm Appointment"
+      />
     </div>
   );
 };
