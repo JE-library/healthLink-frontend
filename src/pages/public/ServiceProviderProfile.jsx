@@ -8,14 +8,14 @@ const ServiceProviderProfile = () => {
   const navigate = useNavigate();
   const [provider, setProvider] = useState(null);
 
-  //   checkif token is not expired
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
-  //   if (!token || isTokenExpired(token)) {
-  //     localStorage.removeItem("token");
-  //     navigate("/login");
-  //   }
-  // }, []);
+  // checkif token is expired
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    if (!token || isTokenExpired(token)) {
+      localStorage.removeItem("accessToken");
+      navigate("/login");
+    }
+  }, []);
 
   useEffect(() => {
     const fetchProvider = async () => {
@@ -75,9 +75,7 @@ const ServiceProviderProfile = () => {
         />
 
         <div className="flex-1 space-y-1 text-center sm:text-left">
-          <h1 className="text-2xl font-bold text-gray-800">
-             {fullName}
-          </h1>
+          <h1 className="text-2xl font-bold text-gray-800">{fullName}</h1>
           <p className="text-sm text-gray-500 capitalize">{specialization}</p>
           <p className="text-xs text-gray-400">
             {experienceYears || 0} yrs experience &bull; Rating:{" "}

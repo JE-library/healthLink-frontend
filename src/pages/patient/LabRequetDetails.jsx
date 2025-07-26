@@ -50,7 +50,7 @@ const LabRequestDetails = () => {
         Lab Request Details
       </h2>
 
-      <div className="bg-white rounded-lg shadow p-5 space-y-4">
+      <div className="bg-white rounded-lg shadow p-5 space-y-4 border border-gray-300">
         <div className="flex items-center gap-4">
           <img
             src={serviceProvider?.profilePhoto?.url}

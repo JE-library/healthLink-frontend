@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import axios from "../../services/api";
 import toast from "react-hot-toast";
+import ConfirmModal from "../../component/public/ConfirmModal";
 
 const HomeLab = () => {
   const { id } = useParams();
+  const [showConfirm, setShowConfirm] = useState(false);
   const navigate = useNavigate();
   const [provider, setProvider] = useState(null);
   const [selectedTests, setSelectedTests] = useState([]);
@@ -62,7 +64,7 @@ const HomeLab = () => {
       {provider ? (
         <div className="max-w-3xl mx-auto">
           {/* Provider Info */}
-          <div className="bg-tertiary-body/50 p-6 rounded-md shadow mb-6">
+          <div className="bg-gray-50 rounded-2xl p-6 shadow-sm">
             <div className="flex items-center gap-4 mb-4">
               <img
                 src={provider.profilePhoto?.url}
@@ -70,9 +72,12 @@ const HomeLab = () => {
                 className="w-20 h-20 rounded-full object-cover border-2 border-main-body"
               />
               <div>
-                <h2 className="text-xl font-bold text-primary-body">{provider.fullName}</h2>
+                <h2 className="text-xl font-bold text-primary-body">
+                  {provider.fullName}
+                </h2>
                 <p className="text-main-font/80">
-                  {provider.specialization} | {provider.experienceYears} yrs exp.
+                  {provider.specialization} | {provider.experienceYears} yrs
+                  exp.
                 </p>
               </div>
             </div>
@@ -93,8 +98,11 @@ const HomeLab = () => {
 
           {/* Booking Form */}
           <form
-            onSubmit={handleSubmit}
-            className="space-y-6 bg-tertiary-body/50 p-6 rounded-md shadow"
+            onSubmit={(e) => {
+              e.preventDefault();
+              setShowConfirm(true);
+            }}
+            className="bg-gray-50 rounded-2xl p-6 shadow-sm"
           >
             <h3 className="text-lg font-semibold text-primary-body mb-4">
               Book a Lab Service
@@ -133,7 +141,7 @@ const HomeLab = () => {
                 min={today}
                 value={selectedDate}
                 onChange={(e) => setSelectedDate(e.target.value)}
-                className="w-full px-3 py-2 rounded bg-white border border-black/40"
+                className="w-full px-3 py-2 rounded bg-white border border-black/30 outline-main-body/50"
                 required
               />
             </div>
@@ -146,7 +154,7 @@ const HomeLab = () => {
               <select
                 value={selectedTimeSlot}
                 onChange={(e) => setSelectedTimeSlot(e.target.value)}
-                className="w-full px-3 py-2 rounded bg-white border border-black/40"
+                className="w-full px-3 py-2 rounded bg-white border border-black/30 outline-main-body/50"
                 required
               >
                 <option value="">-- Select --</option>
@@ -168,7 +176,7 @@ const HomeLab = () => {
               <textarea
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
-                className="w-full px-3 py-2 rounded bg-white border border-black/40"
+                className="w-full px-3 py-2 rounded bg-white border border-black/30 outline-main-body/50"
                 rows={3}
                 placeholder="Any extra information..."
               />
@@ -177,7 +185,7 @@ const HomeLab = () => {
             {/* Submit Button */}
             <button
               type="submit"
-              className="bg-primary-body text-white px-6 py-2 rounded-md hover:bg-primary-body/90 transition"
+              className="bg-primary-body text-white px-6 py-2 rounded-md hover:bg-primary-body/90 transition cursor-pointer"
             >
               Submit Request
             </button>
@@ -194,8 +202,19 @@ const HomeLab = () => {
           </div>
         </div>
       ) : (
-        <p className="text-center text-main-font mt-10">Loading provider info...</p>
+        <p className="text-center text-main-font mt-10">
+          Loading provider info...
+        </p>
       )}
+      <ConfirmModal
+        bgColour="bg-green-500"
+        isOpen={showConfirm}
+        onClose={() => setShowConfirm(false)}
+        onConfirm={handleSubmit}
+        title="Confirm Lab Request"
+        message="Do you want to confirm your lab request with the technician?"
+        confirmText="Confirm Lab Request"
+      />
     </div>
   );
 };

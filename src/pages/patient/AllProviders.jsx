@@ -58,8 +58,8 @@ const AllProviders = () => {
             Find Trusted Care, <span className="text-blue-600">Faster</span>
           </h1>
           <p className="text-gray-700 text-sm md:text-base">
-            Search our network of highly-qualified healthcare providers by
-            specialty, experience, and more — and book with confidence.
+            Search our network of highly qualified healthcare providers by
+            specialty, experience, and more and book with confidence.
           </p>
         </div>
 
@@ -80,7 +80,7 @@ const AllProviders = () => {
             placeholder="Search by name"
             value={query.fullName}
             onChange={handleChange}
-            className="w-full bg-transparent outline-none text-sm text-gray-700"
+            className="w-full bg-transparent outline-none text-sm text-gray-700 placeholder:text-gray-500"
           />
         </div>
 
@@ -90,7 +90,7 @@ const AllProviders = () => {
           placeholder="Specialization"
           value={query.specialization}
           onChange={handleChange}
-          className="border-3 border-main-body focus:outline-primary-body rounded-lg px-3 py-2 text-sm w-full bg-white shadow-sm"
+          className="border-3 border-main-body focus:outline-primary-body rounded-lg px-3 py-2 text-sm w-full bg-white shadow-sm  placeholder:text-gray-500"
         />
 
         <input
@@ -99,7 +99,7 @@ const AllProviders = () => {
           placeholder="Min. Years of Experience"
           value={query.experienceYears}
           onChange={handleChange}
-          className="border-3 border-main-body focus:outline-primary-body rounded-lg px-3 py-2 text-sm w-full bg-white shadow-sm"
+          className="border-3 border-main-body focus:outline-primary-body rounded-lg px-3 py-2 text-sm w-full bg-white shadow-sm  placeholder:text-gray-500"
         />
       </div>
 

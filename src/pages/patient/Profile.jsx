@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "../../services/api";
-import toast from "react-hot-toast";
+import { toast } from "react-toastify";
 import ConfirmModal from "../../component/public/ConfirmModal";
 
 const PatientProfile = () => {
@@ -13,6 +13,7 @@ const PatientProfile = () => {
       try {
         const { data } = await axios.get("/users/profile");
         setUser(data.user);
+
         setForm({
           fullName: data.user.fullName || "",
           email: data.user.email || "",
@@ -76,7 +77,7 @@ const PatientProfile = () => {
               <h3 className="text-lg font-medium text-primary-body">
                 {user.fullName}
               </h3>
-              <p className="text-sm text-gray-500">{user.role}</p>
+              <p className="text-sm text-gray-500">Patient</p>
             </div>
           </div>
 
@@ -88,7 +89,7 @@ const PatientProfile = () => {
                 name="fullName"
                 value={form.fullName}
                 onChange={handleChange}
-                className="w-full px-3 py-2 rounded border border-gray-300"
+                className="w-full px-3 py-2 rounded border-b border-r outline-blue-400/50 border-gray-300 text-gray-500"
               />
             </div>
             <div>
@@ -98,7 +99,7 @@ const PatientProfile = () => {
                 name="email"
                 value={form.email}
                 onChange={handleChange}
-                className="w-full px-3 py-2 rounded border border-gray-300"
+                className="w-full px-3 py-2 rounded border-b border-r outline-blue-400/50 border-gray-300 text-gray-500 "
               />
             </div>
             <div>
@@ -108,7 +109,7 @@ const PatientProfile = () => {
                 name="phoneNumber"
                 value={form.phoneNumber}
                 onChange={handleChange}
-                className="w-full px-3 py-2 rounded border border-gray-300"
+                className="w-full px-3 py-2 rounded border-b border-r outline-blue-400/50 border-gray-300 text-gray-500"
               />
             </div>
             <div>
@@ -117,7 +118,7 @@ const PatientProfile = () => {
                 name="gender"
                 value={form.gender}
                 onChange={handleChange}
-                className="w-full px-3 py-2 rounded border border-gray-300"
+                className="w-full px-3 py-2 rounded border-b border-r outline-blue-400/50 border-gray-300 text-gray-500"
               >
                 <option value="">-- Select --</option>
                 <option value="male">Male</option>
@@ -132,7 +133,7 @@ const PatientProfile = () => {
                 name="dateOfBirth"
                 value={form.dateOfBirth}
                 onChange={handleChange}
-                className="w-full px-3 py-2 rounded border border-gray-300"
+                className="w-full px-3 py-2 rounded border-b border-r outline-blue-400/50 border-gray-300 text-gray-500"
               />
             </div>
             <div className="md:col-span-2">
@@ -142,7 +143,7 @@ const PatientProfile = () => {
                 name="address"
                 value={form.address}
                 onChange={handleChange}
-                className="w-full px-3 py-2 rounded border border-gray-300"
+                className="w-full px-3 py-2 rounded border-b border-r outline-blue-400/50 border-gray-300 text-gray-500"
               />
             </div>
           </div>
@@ -150,7 +151,7 @@ const PatientProfile = () => {
           <div className="pt-4">
             <button
               type="submit"
-              className="px-6 py-2 bg-primary-body text-white rounded hover:bg-primary-body/90"
+              className="px-6 py-2 bg-primary-body text-white rounded hover:bg-primary-body/90 cursor-pointer"
             >
               Save Changes
             </button>
@@ -161,6 +162,7 @@ const PatientProfile = () => {
       )}
 
       <ConfirmModal
+        bgColour="bg-green-500"
         isOpen={showConfirm}
         onClose={() => setShowConfirm(false)}
         onConfirm={handleSubmit}

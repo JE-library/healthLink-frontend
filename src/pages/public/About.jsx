@@ -3,7 +3,40 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import PublicLayout from "../../layouts/PublicLayout";
 import pictureImg1 from "../../assets/public/about/about-image2.jpg";
 import bgImage from "../../assets/public/about/about-image1.jpg";
-import pictureImg2 from "../../assets/public/about/about-image3.jpg"
+import pictureImg2 from "../../assets/public/about/about-image3.jpg";
+
+const services = [
+  {
+    title: "Laboratory Services",
+    description:
+      "Blood tests, imaging studies, and diagnostic procedures to detect health conditions.",
+    icon: "🧪",
+  },
+  {
+    title: "Rehabilitation Services",
+    description:
+      "Physical and occupational therapy to support recovery after injuries or surgeries.",
+    icon: "🦾",
+  },
+  {
+    title: "Ambulance Services",
+    description:
+      "Fast-response emergency transportation for critical medical needs.",
+    icon: "🚑",
+  },
+  {
+    title: "Acute & Chronic Care",
+    description:
+      "Medication management and treatment plans for ongoing health conditions.",
+    icon: "💊",
+  },
+  {
+    title: "Mental Health Services",
+    description:
+      "Counseling and therapy to support mental and emotional well-being.",
+    icon: "🧠",
+  },
+];
 
 const About = () => {
   const [openIndex, setOpenIndex] = useState(null);
@@ -13,435 +46,279 @@ const About = () => {
   };
   return (
     <PublicLayout>
-      <div className="bg-gradient-to-r from-blue-50 to-blue-200">
+      <div className="bg-gradient-to-r from-blue-200 to-transparent">
         <section
-          className="bg-cover bg-center bg-no-repeat h-screen"
+          className="relative h-[50vh] bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: `url(${bgImage})` }}
         >
-          <div className="bg-black/50 h-full items-center justify-center text-white px-6 grid grid-cols-2">
-            <div className="mb-[50px]">
-              <h1 className="text-[55px] font-semibold font-primary-font text-blue-500 ml-[40px] ">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-900/60 to-blue-500/40"></div>
+
+          <div className="relative z-10 h-full flex items-center justify-center px-6 md:px-12">
+            <div className="text-center max-w-3xl text-white space-y-6">
+              <h1 className="text-4xl sm:text-6xl font-primary-font font-bold text-blue-100 drop-shadow-lg">
                 Welcome to HealthLink
               </h1>
-              <h3 className="text-[25px] font-semibold font-secondary-font text-center ">
+              <p className="text-lg sm:text-2xl font-secondary-font font-medium text-white/90">
                 Your Partner in Health and Wellness
-              </h3>
-            </div>
-            <div></div>
-          </div>
-        </section>
-
-        <section className="bg-gray-100 py-12 px-6">
-          <div className="max-w-6xl mx-auto grid grid-cols-3 sm:grid-cols-2 gap-6">
-            {/* Card 1 */}
-            <div className="p-6 items-center justify-center">
-              <div className="flex flex-column text-[20px] font-secondary-font text-main-body">
-                <h1 className="text-[20px]  font-semibold ml-[20px]">
-                  Services
-                </h1>
-              </div>
-              <div className="flex flex-column ">
-                <h3 className="text-[55px] font-semibold text-primary-body font-primary-font ">
-                  Our Best Services
-                </h3>
-              </div>
-            </div>
-
-            {/* Card 2 */}
-            <div className="bg-secondary-body rounded-xl shadow-md p-6">
-              <div className="bg-white p-6 rounded-2xl shadow-md relative">
-                <div className="bg-blue-600 text-white p-2 rounded-full w-10 h-10 flex items-center justify-center mb-4">
-                  📅
-                </div>
-                <h3 className="font-semibold text-[25px] font-primary-font text-primary-body">
-                  Laboratory Services
-                </h3>
-                <p className="mt-2 text-[15px] font-secondary-font text-main-font">
-                  Blood tests, imaging studies, and other tests to diagnose
-                  health conditions
-                </p>
-                <div className="absolute bottom-0 right-0 m-4">
-                  <div className="bg-blue-200 w-8 h-8 flex items-center justify-center rounded-lg text-blue-600 text-xl">
-                    →
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Card 3 */}
-            <div className="bg-secondary-body rounded-xl shadow-md p-6">
-              <div className="bg-white p-6 rounded-2xl shadow-md relative">
-                <div className="bg-blue-600 text-white p-2 rounded-full w-10 h-10 flex items-center justify-center mb-4">
-                  📅
-                </div>
-                <h3 className="font-semibold text-[25px] font-primary-font text-primary-body">
-                  Rehabilitation services
-                </h3>
-                <p className="mt-2 text-[15px] font-secondary-font text-main-font">
-                  Physical therapy, occupational therapy, and other services to
-                  help patients recover from injuries
-                </p>
-                <div className="absolute bottom-0 right-0 m-4">
-                  <div className="bg-blue-200 w-8 h-8 flex items-center justify-center rounded-lg text-blue-600 text-xl">
-                    →
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Card 4 */}
-            <div className="bg-secondary-body rounded-xl shadow-md p-6">
-              <div className="bg-white p-6 rounded-2xl shadow-md relative">
-                <div className="bg-blue-600 text-white p-2 rounded-full w-10 h-10 flex items-center justify-center mb-4">
-                  📅
-                </div>
-                <h3 className="font-semibold text-[25px] font-primary-font text-primary-body">
-                  Ambulance Services
-                </h3>
-                <p className="mt-2 text-[15px] font-secondary-font text-main-font">
-                  Fast Ambulace service resopnses incase of Emergencies
-                </p>
-                <div className="absolute bottom-0 right-0 m-4">
-                  <div className="bg-blue-200 w-8 h-8 flex items-center justify-center rounded-lg text-blue-600 text-xl">
-                    →
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Card 5 */}
-            <div className="bg-secondary-body rounded-xl shadow-md p-6">
-              <div className="bg-white p-6 rounded-2xl shadow-md relative">
-                <div className="bg-blue-600 text-white p-2 rounded-full w-10 h-10 flex items-center justify-center mb-4">
-                  📅
-                </div>
-                <h3 className="font-semibold text-[25px] font-primary-font text-primary-body">
-                  Treatment for acute and chronic conditions
-                </h3>
-                <p className="mt-2 text-[15px] font-secondary-font text-main-font">
-                  Medication management, disease management, and other
-                  treatments to improve health outcomes
-                </p>
-                <div className="absolute bottom-0 right-0 m-4">
-                  <div className="bg-blue-200 w-8 h-8 flex items-center justify-center rounded-lg text-blue-600 text-xl">
-                    →
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Card 6 */}
-            <div className="bg-secondary-body rounded-xl shadow-md p-6">
-              <div className="bg-white p-6 rounded-2xl shadow-md relative">
-                <div className="bg-blue-600 text-white p-2 rounded-full w-10 h-10 flex items-center justify-center mb-4">
-                  📅
-                </div>
-                <h3 className="font-semibold text-[25px] font-primary-font text-primary-body">
-                  Mental health services
-                </h3>
-                <p className="mt-2 text-[15px] font-secondary-font text-main-font">
-                  Counseling, therapy, and other services to help patients
-                  manage mental health conditions
-                </p>
-                <div className="absolute bottom-0 right-0 m-4">
-                  <div className="bg-blue-200 w-8 h-8 flex items-center justify-center rounded-lg text-blue-600 text-xl">
-                    →
-                  </div>
-                </div>
-              </div>
+              </p>
             </div>
           </div>
         </section>
 
-        <div className="max-w-7xl mx-auto px-8 py-12 bg-gradient-to-r from-blue-50 to-blue-200">
-          <section className="max-w-7xl mx-auto px-4 py-16 flex flex-col lg:flex-row gap-10 items-center">
-            {/* <!-- Left Image --> */}
-            <div className="w-full lg:w-1/2 rounded-2xl overflow-hidden shadow-md">
-              <img src={pictureImg1} alt="" />
+        <section className="bg-blue-50 py-16 px-4 sm:px-8">
+          <div className="max-w-7xl mx-auto">
+            {/* Header */}
+            <div className="text-center mb-12">
+              <p className="text-blue-600 font-secondary-font text-lg font-semibold tracking-wide">
+                Services
+              </p>
+              <h2 className="text-4xl sm:text-5xl font-primary-font font-bold text-primary-body">
+                Our Best Services
+              </h2>
             </div>
 
-            {/* <!-- Right Content --> */}
+            {/* Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {services.map((service, index) => (
+                <div
+                  key={index}
+                  className="bg-white rounded-2xl shadow-md p-6 relative hover:shadow-lg transition"
+                >
+                  <div className="bg-blue-600 text-white w-12 h-12 flex items-center justify-center rounded-full text-xl mb-4">
+                    {service.icon}
+                  </div>
+                  <h3 className="text-xl font-primary-font font-semibold text-primary-body mb-2">
+                    {service.title}
+                  </h3>
+                  <p className="text-sm text-gray-700 font-secondary-font">
+                    {service.description}
+                  </p>
+                  <div className="absolute bottom-4 right-4">
+                    <div className="bg-blue-100 w-8 h-8 rounded-lg flex items-center justify-center text-blue-600 text-xl hover:bg-blue-200 transition">
+                      →
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+        <div className=" mx-auto px-4 sm:px-8 py-16 bg-gradient-to-r from-blue-50 to-blue-200">
+          {/* --- WHY CHOOSE US --- */}
+          <section className="flex flex-col lg:flex-row gap-10 items-center">
+            {/* Left Image */}
+            <div className="w-full lg:w-1/2 rounded-2xl overflow-hidden shadow-lg">
+              <img
+                src={pictureImg1}
+                alt="Why Choose Us"
+                className="w-full object-cover"
+              />
+            </div>
+
+            {/* Right Content */}
             <div className="w-full lg:w-1/2">
-              <h2 className="text-[45px] font-semibold text-primary-body font-primary-font">
+              <h2 className="text-4xl sm:text-5xl font-semibold text-primary-body font-primary-font mb-8">
                 Why Choose Us
               </h2>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-                {/* <!-- Card 1 --> */}
-                <div>
-                  <div className="bg-blue-100 w-10 h-10 flex items-center justify-center rounded-full mb-3">
-                    💡
+                {[
+                  {
+                    icon: "💡",
+                    title: "Experienced Medical Professionals",
+                    desc: "Our team includes experienced doctors and healthcare providers dedicated to exceptional care.",
+                  },
+                  {
+                    icon: "🏥",
+                    title: "Comprehensive Services",
+                    desc: "A wide range of healthcare offerings from preventive care to advanced treatments.",
+                  },
+                  {
+                    icon: "🧑‍⚕️",
+                    title: "Patient-Centered",
+                    desc: "We prioritize personalized attention and compassionate care tailored to you.",
+                  },
+                  {
+                    icon: "🧬",
+                    title: "Seamless Consultations",
+                    desc: "Easily schedule virtual or in-person consultations at your convenience.",
+                  },
+                ].map((item, i) => (
+                  <div key={i}>
+                    <div className="bg-blue-100 w-10 h-10 flex items-center justify-center rounded-full mb-3 text-xl">
+                      {item.icon}
+                    </div>
+                    <h3 className="text-xl font-semibold font-primary-font text-main-font">
+                      {item.title}
+                    </h3>
+                    <p className="mt-2 text-sm text-gray-700 font-secondary-font">
+                      {item.desc}
+                    </p>
                   </div>
-                  <h3 className="font-semibold text-[25px] font-primary-font text-main-font">
-                    Experienced Medical Professionals
-                  </h3>
-                  <p className="mt-2 text-[15px] font-secondary-font text-main-font">
-                    Our team includes experienced doctors and other
-                    healthcare professionals dedicated to excellent care.
-                  </p>
-                </div>
-
-                {/* <!-- Card 2 --> */}
-                <div>
-                  <div className="bg-blue-100 w-10 h-10 flex items-center justify-center rounded-full mb-3">
-                    🏥
-                  </div>
-                  <h3 className="font-semibold text-[25px] font-primary-font text-main-font">
-                    Comprehensive Services
-                  </h3>
-                  <p className="mt-2 text-[15px] font-secondary-font text-main-font">
-                    A wide range of healthcare services from preventive to
-                    complex treatments.
-                  </p>
-                </div>
-
-                {/* <!-- Card 3 --> */}
-                <div>
-                  <div className="bg-blue-100 w-10 h-10 flex items-center justify-center rounded-full mb-3">
-                    🧑‍⚕️
-                  </div>
-                  <h3 className="font-semibold text-[25px] font-primary-font text-main-font">
-                    Patient-centered
-                  </h3>
-                  <p className="mt-2 text-[15px] font-secondary-font text-main-font">
-                    We put patients first with personalized attention and
-                    compassionate care.
-                  </p>
-                </div>
-
-                {/* <!-- Card 4 --> */}
-                <div>
-                  <div className="bg-blue-100 w-10 h-10 flex items-center justify-center rounded-full mb-3">
-                    🧬
-                  </div>
-                  <h3 className="font-semibold text-[25px] font-primary-font text-main-font">
-                    Seamless Health Consultations
-                  </h3>
-                  <p className="mt-2 text-[15px] font-secondary-font text-main-font">
-                    Appointment bookings can be made so easy so you get the needed healthcare
-                  </p>
-                </div>
+                ))}
               </div>
             </div>
           </section>
 
-          <section className="max-w-7xl mx-auto px-4 py-16 text-center">
-            <h2 className="text-[45px] font-semibold text-primary-body font-primary-font mb-[40px] ">
+          {/* --- MEET THE TEAM --- */}
+          <section className="text-center mt-20">
+            <h2 className="text-4xl sm:text-5xl font-semibold text-primary-body font-primary-font mb-12">
               Meet the Team
             </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
-              {/* <!-- Person 1 --> */}
-              <div>
-                <div className="w-40 h-40 mx-auto rounded-full bg-gradient-to-br from-blue-200 to-blue-400 flex items-center justify-center overflow-hidden mb-4">
-                  {/* <img src="https://via.placeholder.com/150x150?text=Dr+1" alt="Dr. James Lee" className="object-cover w-full h-full"> */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
+              {[
+                {
+                  name: "Josephine Asiedu",
+                  role: "Frontend Developer",
+                },
+                {
+                  name: "Efua Amissah-Mensah",
+                  role: "Frontend Developer",
+                },
+                {
+                  name: "Jacqueline Osei-Bonsu",
+                  role: "Backend Developer",
+                },
+                {
+                  name: "Ebenezer Flintwood Brace",
+                  role: "Backend Developer",
+                },
+              ].map((person, i) => (
+                <div key={i}>
+                  <div className="w-40 h-40 mx-auto rounded-full bg-gradient-to-br from-blue-200 to-blue-400 flex items-center justify-center overflow-hidden mb-4">
+                    {/* Placeholder for profile image */}
+                    {/* <img src="..." alt={person.name} className="w-full h-full object-cover" /> */}
+                  </div>
+                  <h3 className="text-lg font-bold font-primary-font text-main-font">
+                    {person.name}
+                  </h3>
+                  <p className="text-sm text-gray-700 mt-1">{person.role}</p>
                 </div>
-                <h3 className="text-[20px] font-bold font-primary-font text-main-font">
-                  Josephine Asiedu
-                </h3>
-                <p className="text-[15px] font-medium text-gray-700 mt-1">
-                  Frontend Developer
-                </p>
-              </div>
-
-              {/* <!-- Person 2 --> */}
-              <div>
-                <div className="w-40 h-40 mx-auto rounded-full bg-gradient-to-br from-blue-200 to-blue-400 flex items-center justify-center overflow-hidden mb-4">
-                  {/* <img src="https://via.placeholder.com/150x150?text=Dr+2" alt="Dr. John Smith" className="object-cover w-full h-full"> */}
-                </div>
-                <h3 className="text-[20px] font-bold font-primary-font text-main-font">
-                  Efua Amissah-Mensah
-                </h3>
-                <p className="text-[15px] font-medium font-primary-font text-gray-700 mt-1">
-                  Frontend Developer
-                </p>
-              </div>
-
-              {/* <!-- Person 3 --> */}
-              <div>
-                <div className="w-40 h-40 mx-auto rounded-full bg-gradient-to-br from-blue-200 to-blue-400 flex items-center justify-center overflow-hidden mb-4">
-                  {/* <img src="https://via.placeholder.com/150x150?text=Dr+3" alt="Dr. Susan Bones" className="object-cover w-full h-full"> */}
-                </div>
-                <h3 className="text-[20px] font-bold font-primary-font text-main-font">
-                  Jacqueline Osei-Bonsu
-                </h3>
-                <p className="text-[15px] font-medium text-gray-700 mt-1">
-                  Backend Developer
-                </p>
-              </div>
-              <div>
-                <div className="w-40 h-40 mx-auto rounded-full bg-gradient-to-br from-blue-200 to-blue-400 flex items-center justify-center overflow-hidden mb-4">
-                  {/* <img src="https://via.placeholder.com/150x150?text=Dr+3" alt="Dr. Susan Bones" className="object-cover w-full h-full"> */}
-                </div>
-                <h3 className="text-[20px] font-bold font-primary-font text-main-font">
-                  Ebenezer Flintwood Brace
-                </h3>
-                <p className="text-[15px] font-medium text-gray-700 mt-1">
-                  Backend Developer
-                </p>
-              </div>
+              ))}
             </div>
           </section>
         </div>
+        <section className="bg-gray-100 py-16 px-4 sm:px-6">
+          {/* FAQ Section */}
+          <div className="text-center mb-12">
+            <h1 className="text-lg font-primary-font font-semibold text-blue-700">
+              People's
+            </h1>
+            <h2 className="text-4xl font-semibold font-primary-font text-blue-900 mt-2">
+              Frequently Asked Questions
+            </h2>
+          </div>
 
-        <section className="bg-gray-100 py-12 px-6">
-          <div className="p-6">
-            <div className="flex flex-column  items-center justify-center text-[20px] font-secondary-font text-main-body">
-              <h1 className="text-[15px] font-primary-font font-semibold ml-[20px]">
-                People's
-              </h1>
+          <div className="bg-white rounded-2xl shadow-lg p-8 max-w-3xl mx-auto mb-16">
+            <div className="space-y-4">
+              {[
+                {
+                  question: "What services does HealthLink offer?",
+                  answer:
+                    "We offer virtual consultations, urgent care, mental health services, and more.",
+                },
+                {
+                  question: "Do you accept insurance?",
+                  answer: "Yes, we accept most major health insurance plans.",
+                },
+                {
+                  question: "How difficult would it be to book an appointment?",
+                  answer:
+                    "Your appointment booking and consultations will be seamless, bringing healthcare to your home.",
+                },
+              ].map((item, i) => (
+                <div
+                  key={i}
+                  className={`border border-blue-200 rounded-xl p-4 transition-all cursor-pointer ${
+                    openIndex === i ? "bg-blue-50" : "bg-white"
+                  }`}
+                  onClick={() => toggle(i)}
+                >
+                  <div className="flex justify-between items-center">
+                    <h3 className="text-lg font-semibold text-blue-900">
+                      {item.question}
+                    </h3>
+                    {openIndex === i ? (
+                      <ChevronUp size={20} />
+                    ) : (
+                      <ChevronDown size={20} />
+                    )}
+                  </div>
+                  {openIndex === i && (
+                    <p className="mt-2 text-sm text-gray-700">{item.answer}</p>
+                  )}
+                </div>
+              ))}
             </div>
-            <div className="flex flex-column items-center justify-center">
-              <h3 className="text-[45px] font-semibold text-primary-body font-primary-font ">
-                Frequently Asked Questions
+          </div>
+
+          {/* Testimonials Section */}
+          <div className="bg-gradient-to-r from-blue-50 to-blue-100 py-16 px-4 rounded-2xl">
+            <div className="max-w-6xl mx-auto text-center">
+              <h2 className="text-4xl font-semibold text-blue-900 font-primary-font mb-12">
+                What Our Patients Say About Us
+              </h2>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
+                {[
+                  {
+                    name: "Samanta McGill",
+                    text: `“The healthcare professionals were attentive, always checking in on me, and the doctors were knowledgeable and patient. It's rare to find an app that processes such great qualities.”`,
+                    image:
+                      "https://media.gettyimages.com/id/1748173351/video/face-business-and-happy-black-woman-in-corporate-workplace-office-and-company-portrait-smile.jpg?s=640x640&k=20&c=kaW167IRjpuCO8Mw2L8b9bWoK-tDgqjzTtihf73xqvA=",
+                  },
+                  {
+                    name: "Vanessa Smith",
+                    text: `"Booking an appointment was easy, and I was pleasantly surprised by how quickly I was able to speak to a health professional. Unlike other clinics, this app allows immediate healthcare access."`,
+                    image:
+                      "https://t3.ftcdn.net/jpg/06/21/27/04/360_F_621270406_n7Vx7a5RuRJVmaI1AEltnsfA2SjkOrrr.jpg",
+                  },
+                ].map((testimonial, i) => (
+                  <div key={i} className="bg-white p-6 rounded-xl shadow-md">
+                    <div className="text-3xl text-cyan-400 mb-4">❝</div>
+                    <p className="text-base font-medium text-gray-700 mb-4">
+                      {testimonial.text}
+                    </p>
+                    <div className="flex items-center gap-4">
+                      <img
+                        src={testimonial.image}
+                        alt={testimonial.name}
+                        className="w-12 h-12 rounded-full object-cover"
+                      />
+                      <div>
+                        <p className="text-sm text-gray-500">App User</p>
+                        <p className="text-sm font-semibold">
+                          {testimonial.name}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Call to Action Section */}
+          <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-8 mt-20 max-w-7xl mx-auto">
+            <div className="rounded-2xl overflow-hidden shadow-md">
+              <img
+                src={pictureImg2}
+                alt="Doctor Consult"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="text-center md:text-left">
+              <h1 className="text-3xl sm:text-4xl text-blue-900 font-primary-font font-semibold mb-4">
+                Don't Let Your Health Take a Backseat!
+              </h1>
+              <h3 className="text-lg font-medium text-gray-700">
+                Schedule an appointment with one of our experienced medical
+                professionals today!
               </h3>
             </div>
           </div>
-
-          <div className="bg-secondary-body rounded-xl shadow-md p-6 mb-[40px]">
-            <section className="bg-white py-12 px-6 rounded-2xl">
-              <div className="max-w-3xl mx-auto space-y-4">
-                {/* FAQ 1 */}
-                <div
-                  className={`border border-blue-200 rounded-xl p-4 transition-all duration-300 ${
-                    openIndex === 0 ? "bg-blue-100" : "bg-white"
-                  }`}
-                  onClick={() => toggle(0)}
-                >
-                  <div className="flex justify-between items-center cursor-pointer">
-                    <h3 className="text-lg font-semibold">
-                      What services does HealthLink offer?
-                    </h3>
-                    {openIndex === 0 ? <ChevronUp /> : <ChevronDown />}
-                  </div>
-                  {openIndex === 0 && (
-                    <p className="mt-2 text-sm text-gray-700">
-                      We offer virtual consultations, urgent care, mental health
-                      services, and more.
-                    </p>
-                  )}
-                </div>
-
-                {/* FAQ 2 */}
-                <div
-                  className={`border border-blue-200 rounded-xl p-4 transition-all duration-300 ${
-                    openIndex === 1 ? "bg-blue-100" : "bg-white"
-                  }`}
-                  onClick={() => toggle(1)}
-                >
-                  <div className="flex justify-between items-center cursor-pointer">
-                    <h3 className="text-lg font-semibold">
-                      Do you accept insurance?
-                    </h3>
-                    {openIndex === 1 ? <ChevronUp /> : <ChevronDown />}
-                  </div>
-                  {openIndex === 1 && (
-                    <p className="mt-2 text-sm text-gray-700">
-                      Yes, we accept most major health insurance plans.
-                    </p>
-                  )}
-                </div>
-
-                {/* FAQ 3 */}
-                <div
-                  className={`border border-blue-200 rounded-xl p-4 transition-all duration-300 ${
-                    openIndex === 2 ? "bg-blue-100" : "bg-white"
-                  }`}
-                  onClick={() => toggle(2)}
-                >
-                  <div className="flex justify-between items-center cursor-pointer">
-                    <h3 className="text-1g font-semibold">
-                      How difficult would it be to book an appointment?
-                    </h3>
-                    {openIndex === 2 ? <ChevronUp /> : <ChevronDown />}
-                  </div>
-                  {openIndex === 2 && (
-                    <p className="mt-2 text-sm text-gray-700">
-                      Your appointment booking and consultations will be seamless bringing you healthcare in the comfort of your home.
-                    </p>
-                  )}
-                </div>
-              </div>
-            </section>
-          </div>
-
-          <section className="bg-secondary-body py-16 px-6 rounded-2xl">
-            <div className="max-w-6xl mx-auto text-center">
-              <h2 className="text-[45px] font-semibold text-primary-body font-primary-font mb-[40px] ">
-                What Our Patients Say About Us
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {/* Testimonial 1 */}
-                <div className="bg-white p-6 rounded-xl shadow-lg text-left">
-                  <div className="text-3xl text-cyan-400 mb-4">❝</div>
-                  <p className="font-semibold text-[15px] font-primary-font  text-main-font">
-                    “The healthcare professionals were attentive, always
-                    checking in on me, and the doctors were knowledgeable and
-                    patient. It's rare to find an app that processes such great
-                    qualities.”
-                  </p>
-                  <div className="flex items-center gap-4 mt-[10px]">
-                    <img
-                      src="/assets/samanta.jpg" // <-- Replace with actual path or import
-                      alt="Samanta McGill"
-                      className="w-12 h-12 rounded-full object-cover"
-                    />
-                    <div>
-                      <p className="text-[13px] text-gray-500 mt-[12px]">
-                        App User
-                      </p>
-                      <p className="font-semibold text-[13px]">
-                        Samanta McGill
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Testimonial 2 */}
-                <div className="bg-white p-6 rounded-xl shadow-lg text-left">
-                  <div className="text-3xl text-cyan-400 mb-4">❝</div>
-                  <p className="font-semibold text-[15px] font-primary-font  text-main-font">
-                    "Booking an appointment was easy, and I was pleasantly
-                    surprised by how quickly I was able to speak to a health
-                    professional. Unlike other clinics where I have to wait to
-                    see someone this app allows me to get healthcare
-                    immediately.”
-                  </p>
-                  <div className="flex items-center gap-4 mt-[10px]">
-                    <img
-                      src="/assets/tina.jpg" // <-- Replace with actual path or import
-                      alt="Tina Peterson"
-                      className="w-12 h-12 rounded-full object-cover"
-                    />
-                    <div>
-                      <p className="text-[18px] text-gray-500 mt-[12px]">
-                        {" "}
-                        App User
-                      </p>
-                      <p className="font-semibold text-[13px]">Vanessa Smith</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
         </section>
-
-
-        <div className="grid grid-cols-2 max-w-7xl mx-auto px-8 py-12">
-          <div className="w-full lg:w-xl rounded-2xl overflow-hidden shadow-md">
-              <img src={pictureImg2} alt="" />
-            </div>
-          <div className="mt-[50px]">
-            <h1 className="text-[40px] mb-[15px] text-primary-body font-primary-font font-semibold tracking-tight justify-center text-center">
-              Don't Let Your Health Take a Backseat!
-            </h1>
-            <h3 className="text-[20px] font-semibold text-center justify-center text-main-font font-primary-font">
-              Schedule an appointment with one of our experienced medical
-              professionals today!
-            </h3>
-          </div>
-        </div>
       </div>
     </PublicLayout>
   );

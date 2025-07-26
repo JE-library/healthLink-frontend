@@ -61,7 +61,7 @@ const AppointmentDetails = () => {
           </a>
           <button
             onClick={() => navigator.clipboard.writeText(link)}
-            className="px-4 py-2 bg-gray-100 border rounded-lg text-sm hover:bg-gray-200"
+            className="px-4 py-2 bg-gray-100 border rounded-lg text-sm hover:bg-gray-200 cursor-pointer"
           >
             Copy Link
           </button>
@@ -73,7 +73,7 @@ const AppointmentDetails = () => {
       <div className="mt-6">
         <button
           onClick={() => navigate("/patient/consultation/:id")}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer"
         >
           Start Chat
         </button>
@@ -91,7 +91,7 @@ const AppointmentDetails = () => {
         Appointment Details
       </h2>
 
-      <div className="bg-white rounded-xl shadow border p-6 space-y-4">
+      <div className="bg-white rounded-xl shadow border border-gray-300 p-6 space-y-4">
         <div className="space-y-1">
           <p className="text-sm text-gray-500">Provider</p>
           <div className="flex items-center gap-4">
@@ -153,7 +153,7 @@ const AppointmentDetails = () => {
             <div className="mt-6">
               <button
                 onClick={() => setShowCancelModal(true)}
-                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 cursor-pointer"
               >
                 Cancel Appointment
               </button>
@@ -165,7 +165,7 @@ const AppointmentDetails = () => {
       <div className="mt-6">
         <button
           onClick={() => navigate("/patient/appointments")}
-          className="text-blue-600 hover:underline text-sm"
+          className="text-blue-600 hover:underline text-sm cursor-pointer"
         >
           ← Back to Appointments
         </button>
