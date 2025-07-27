@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Outlet, NavLink, useNavigate } from "react-router";
+import { Outlet, NavLink, useNavigate, useLocation } from "react-router";
 import {
   FaUser,
   FaStethoscope,
@@ -21,7 +21,9 @@ import { FaFlaskVial, FaUserDoctor } from "react-icons/fa6";
 const PatientLayout = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
+  const [noti, setNoti] = useState([]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -34,6 +36,18 @@ const PatientLayout = () => {
     };
     fetchUser();
   }, []);
+
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const res = await axios.get("notifications");
+        setNoti(res.data.notifications);
+      } catch (err) {
+        console.error("Failed to fetch notifications:", err);
+      }
+    };
+    fetchNotifications();
+  }, [location]);
 
   const logout = () => {
     localStorage.removeItem("accessToken");
@@ -63,6 +77,8 @@ const PatientLayout = () => {
     { to: "/patient/notifications", icon: <FaBell />, label: "Notifications" },
     { to: "/patient/profile", icon: <FaCog />, label: "Settings" },
   ];
+
+  const unreadNoti = noti.filter((n) => !n.read);
 
   return (
     <div className="flex h-screen bg-gray-50 font-primary-font overflow-hidden">
@@ -103,7 +119,6 @@ const PatientLayout = () => {
         >
           <FaSignOutAlt /> Logout
         </button>
-        
       </aside>
 
       {/* Main Area */}
@@ -126,9 +141,16 @@ const PatientLayout = () => {
           <div className="flex items-center gap-4">
             <button
               onClick={() => navigate("/patient/notifications")}
-              className="text-gray-500 hover:text-blue-600 relative"
+              className="text-gray-500 hover:text-blue-600 relative cursor-pointer"
             >
-              <FaBell size={20} />
+              {/* Notification count, only show if there are unread notifications */}
+              {unreadNoti.length > 0 && (
+                <p className="absolute top-0 right-0 text-xs text-white bg-red-600 rounded-full w-4 h-4 flex items-center justify-center">
+                  {unreadNoti.length}
+                </p>
+              )}
+
+              <FaBell size={25} />
             </button>
 
             {user && (

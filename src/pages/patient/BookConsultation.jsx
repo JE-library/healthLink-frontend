@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
 import axios from "../../services/api";
 import ConfirmModal from "../../component/public/ConfirmModal";
+import { toast } from "react-toastify";
 
 const BookConsultation = () => {
   const [showConfirm, setShowConfirm] = useState(false);
@@ -39,6 +40,9 @@ const BookConsultation = () => {
 
       const res = await axios.post(`/users/book-appointment/${id}`, payload);
       if (res.data.success) {
+        toast.success(
+          res.data.message || "Your Appointment Was Booked Successfully!"
+        );
         navigate("/patient/appointments");
       }
     } catch (err) {

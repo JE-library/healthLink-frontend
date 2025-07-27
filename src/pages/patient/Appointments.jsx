@@ -25,7 +25,7 @@ const Appointments = () => {
 
   const handleCancel = async () => {
     try {
-      await axios.patch(`/appointments/${selectedId}/cancel`);
+      await axios.delete(`users/appointments/${selectedId}/cancel`);
       setAppointments((prev) =>
         prev.map((appt) =>
           appt._id === selectedId ? { ...appt, status: "cancelled" } : appt
@@ -43,7 +43,7 @@ const Appointments = () => {
   }, []);
 
   return (
-    <div className="min-h-screen px-4 md:px-12 py-10 bg-gray-50">
+    <div className="min-h-screen md:px-12 py-10 bg-gray-50">
       <h1 className="text-2xl font-bold text-gray-800 mb-6">My Appointments</h1>
       {loading ? (
         <p>Loading...</p>

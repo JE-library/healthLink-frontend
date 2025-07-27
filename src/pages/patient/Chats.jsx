@@ -1,62 +1,75 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import axios from "../../services/api";
+import { formatDistanceToNowStrict } from "date-fns";
 
 const Chats = () => {
   const navigate = useNavigate();
+  const [conversations, setConversations] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const chatList = [
-    {
-      id: 1,
-      name: "Dr. James Peterson",
-      lastMessage: "Your results are ready.",
-      time: "2h ago",
-      profilePhoto: "/avatars/doc1.jpg",
-    },
-    {
-      id: 2,
-      name: "Lab Services",
-      lastMessage: "Please confirm your home visit.",
-      time: "1d ago",
-      profilePhoto: "/avatars/lab1.png",
-    },
-    {
-      id: 3,
-      name: "Support Team",
-      lastMessage: "Let us know if you need anything else.",
-      time: "3d ago",
-      profilePhoto: "", // Will fallback to default
-    },
-  ];
+  useEffect(() => {
+    const fetchChats = async () => {
+      try {
+        const res = await axios.get("/users/chats");
+        setConversations(res.data.conversations || []);
+      } catch (error) {
+        console.error("Error fetching conversations", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchChats();
+  }, []);
 
   return (
-    <div className="p-6 md:px-10 max-w-4xl mx-auto">
+    <div className=" md:px-10 max-w-4xl mx-auto">
       <h2 className="text-2xl font-bold text-gray-800 mb-6">Chats</h2>
 
-      <div className="space-y-4">
-        {chatList.map((chat) => (
-          <div
-            onClick={() => navigate("/patient/consultation/:id")}
-            key={chat.id}
-            className="bg-white border border-gray-300 rounded-xl p-4 shadow-sm hover:shadow-md transition cursor-pointer flex items-center gap-4"
-          >
-            <img
-              src={chat.profilePhoto || "/default-avatar.png"}
-              alt={chat.name}
-              className="w-12 h-12 rounded-full object-cover border-2 border-main-body/50"
-            />
+      {loading ? (
+        <p className="text-gray-500 text-sm">Loading conversations...</p>
+      ) : conversations.length === 0 ? (
+        <p className="text-gray-500 text-sm">No chats yet.</p>
+      ) : (
+        <div className="space-y-4">
+          {conversations.map((chat) => {
+            const specialist = chat.serviceProvider;
+            const profilePhoto =
+              specialist?.profilePhoto?.url || "/default-avatar.png";
+            const lastMsg = chat.lastMessage?.message || "No messages yet";
+            const time =
+              chat.lastMessage?.createdAt &&
+              formatDistanceToNowStrict(new Date(chat.lastMessage.createdAt), {
+                addSuffix: true,
+              });
 
-            <div className="flex-1">
-              <div className="flex justify-between items-center mb-1">
-                <p className="text-gray-800 font-medium">{chat.name}</p>
-                <span className="text-xs text-gray-400">{chat.time}</span>
+            return (
+              <div
+                key={chat._id}
+                onClick={() => navigate(`/patient/consultation/${chat._id}`)}
+                className="bg-white border border-gray-300 rounded-xl p-4 shadow-sm hover:shadow-md transition cursor-pointer flex items-center gap-4"
+              >
+                <img
+                  src={profilePhoto}
+                  alt={specialist?.fullName}
+                  className="w-12 h-12 rounded-full object-cover border-2 border-blue-100"
+                />
+
+                <div className="flex-1">
+                  <div className="flex justify-between items-center mb-1">
+                    <p className="text-gray-800 font-medium">
+                      {specialist?.fullName || "Unknown Specialist"}
+                    </p>
+                    <span className="text-xs text-gray-400">{time}</span>
+                  </div>
+                  <p className="text-sm text-gray-600 truncate">{lastMsg}</p>
+                </div>
               </div>
-              <p className="text-sm text-gray-600 truncate">
-                {chat.lastMessage}
-              </p>
-            </div>
-          </div>
-        ))}
-      </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };

@@ -71,7 +71,7 @@ const ServicesHome = () => {
         <p className="max-w-3xl mx-auto text-gray-600 mb-8">
           At HealthLink, we bring healthcare to your fingertips. From certified
           doctors and therapists to nutritionists and lab technicians, our
-          platform connects you to the right experts—securely, conveniently, and
+          platform connects you to the right experts securely, conveniently, and
           from anywhere. Whether it’s virtual consultations, home lab testing,
           or emergency care, we’re here to ensure quality medical support
           without the wait.

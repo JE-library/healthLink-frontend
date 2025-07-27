@@ -42,7 +42,7 @@ const LabRequests = () => {
   if (loading) return <div className="p-6">Loading lab requests...</div>;
 
   return (
-    <div className="p-4 sm:p-6 md:px-16 max-w-6xl mx-auto">
+    <div className="sm:p-6 md:px-16 max-w-6xl mx-auto">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">Your Lab Requests</h2>
 
       {labRequests.length === 0 ? (

@@ -44,6 +44,9 @@ const HomeLab = () => {
 
       const res = await axios.post(`/users/book-lab-service/${id}`, payload);
       if (res.data.success) {
+        toast.success(
+          res.data.message || "Your Lab Service Was Booked Successfully!"
+        );
         navigate("/patient/lab-requests");
       }
     } catch (err) {
