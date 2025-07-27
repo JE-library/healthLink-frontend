@@ -50,7 +50,7 @@ const AllProviders = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8 space-y-8">
+    <div className="max-w-6xl mx-auto sm:px-4 py-8 space-y-8">
       {/* Hero Section */}
       <div className="flex flex-col md:flex-row items-center bg-blue-100 rounded-xl p-6 md:p-10 shadow-sm">
         <div className="flex-1 space-y-3">
@@ -109,9 +109,9 @@ const AllProviders = () => {
           <div
             key={provider._id}
             onClick={() => navigate(`/patient/providers/${provider._id}`)}
-            className="flex flex-col sm:flex-row items-center justify-between bg-white hover:bg-blue-50 border border-gray-100 rounded-xl shadow-md px-4 py-4 cursor-pointer transition"
+            className="flex flex-col sm:flex-row items-center justify-between  bg-white hover:bg-blue-50 border border-gray-100 rounded-xl shadow-md px-4 py-4 cursor-pointer transition"
           >
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center w-full space-x-4">
               <img
                 src={provider.profilePhoto?.url}
                 alt={provider.fullName}

@@ -51,7 +51,7 @@ const Notifications = () => {
   };
 
   return (
-    <div className="p-4 max-w-3xl mx-auto">
+    <div className=" max-w-3xl mx-auto">
       <div className="flex items-center gap-2 mb-6">
         <BellIcon className="w-6 h-6 text-blue-600" />
         <h2 className="text-xl font-semibold text-gray-800">

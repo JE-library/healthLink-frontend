@@ -27,7 +27,7 @@ const WellnessBlog = () => {
     return <p className="p-6 text-gray-500">No blog posts found.</p>;
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
+    <div className="max-w-6xl mx-auto py-8">
       <h2 className="text-3xl font-bold text-gray-800 mb-6">
         Wellness & Health Tips
       </h2>

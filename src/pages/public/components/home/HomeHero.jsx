@@ -47,8 +47,7 @@ const HomeHero = () => {
           </h2>
           <p className="text-lg text-primary-body/90 text-center md:text-left max-w-xl">
             Say goodbye to long queues and waiting rooms. With HealthLink, you
-            can book virtual consultations, request lab tests at home, or even
-            call an ambulance—all from your phone.
+            can book virtual consultations, request lab tests at home all from your phone.
           </p>
           <button
             onClick={() => navigate("/signup/patient")}

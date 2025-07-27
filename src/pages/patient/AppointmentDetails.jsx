@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router";
 import axios from "../../services/api";
 import ConfirmModal from "../../component/public/ConfirmModal";
 import { format } from "date-fns";
+import { toast } from "react-toastify";
 
 const AppointmentDetails = () => {
   const { id } = useParams();
@@ -28,11 +29,25 @@ const AppointmentDetails = () => {
 
   const handleCancelAppointment = async () => {
     try {
-      await axios.patch(`users/appointments/${id}/cancel`);
+      await axios.delete(`users/appointments/${id}/cancel`);
       setAppointment({ ...appointment, status: "cancelled" });
       setShowCancelModal(false);
     } catch (err) {
       console.error("Failed to cancel appointment", err);
+    }
+  };
+  const handleCreateChat = async () => {
+    try {
+      const res = await axios.post(`users/appointments/${id}/chat`);
+      if (res.data.success) {
+        const chatId = res.data.conversation.conversation._id;
+        console.log(res.data.conversation.conversation);
+
+        navigate(`/patient/consultation/${chatId}`);
+      }
+    } catch (err) {
+      toast.error("Unable start chat");
+      console.log(err);
     }
   };
 
@@ -72,8 +87,8 @@ const AppointmentDetails = () => {
     return (
       <div className="mt-6">
         <button
-          onClick={() => navigate("/patient/consultation/:id")}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer"
+          onClick={handleCreateChat}
+          className="px-2 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer"
         >
           Start Chat
         </button>
@@ -86,7 +101,7 @@ const AppointmentDetails = () => {
     return <div className="p-6 text-red-500">Appointment not found.</div>;
 
   return (
-    <div className="p-4 sm:p-6 md:px-16 max-w-4xl mx-auto">
+    <div className=" sm:p-6 md:px-16 max-w-4xl mx-auto">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">
         Appointment Details
       </h2>
@@ -153,7 +168,7 @@ const AppointmentDetails = () => {
             <div className="mt-6">
               <button
                 onClick={() => setShowCancelModal(true)}
-                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 cursor-pointer"
+                className="px-2 py-1 bg-red-600 text-white rounded-lg hover:bg-red-700 cursor-pointer"
               >
                 Cancel Appointment
               </button>

@@ -65,7 +65,7 @@ import ProviderLayout from "./layouts/ProviderLayout";
 import AmbulanceLayout from "./layouts/AmbulanceLayout";
 
 import AdminLayout from "./layouts/AdminLayout";
-
+import ScrollToTop from "./utility/ScrollToTop";
 
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
@@ -142,5 +142,9 @@ const router = createBrowserRouter([
 ]);
 
 export default function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <RouterProvider router={router}>
+      <ScrollToTop />
+    </RouterProvider>
+  );
 }
