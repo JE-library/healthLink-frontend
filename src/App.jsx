@@ -33,6 +33,7 @@ import Support from "./pages/patient/Support";
 import AllProviders from "./pages/patient/AllProviders";
 import LabRequets from "./pages/patient/LabRequets";
 import LabRequetDetails from "./pages/patient/LabRequetDetails";
+import ChangePassword from "./pages/patient/ChangePassword";
 
 // Provider Pages
 import ProviderDashboard from "./pages/provider/Dashboard";
@@ -41,6 +42,8 @@ import ProviderAppointmentDetails from "./pages/provider/ProviderAppointmentDeta
 import ProviderProfile from "./pages/provider/Profile";
 import ProviderSettings from "./pages/provider/Settings";
 import PendingApproval from "./pages/public/PendingApproval";
+import ProviderLabRequests from "./pages/provider/LabRequets";
+import ProviderLabRequestsDetails from "./pages/provider/LabRequestsDetails";
 import ProviderNotifications from "./pages/provider/ProviderNotifications";
 import ProviderChats from "./pages/provider/ProviderChats";
 import ProviderConsultation from "./pages/provider/ProviderConsultation";
@@ -100,6 +103,7 @@ const router = createBrowserRouter([
       { path: "pharmacy", element: <Pharmacy /> },
       { path: "profile", element: <PatientProfile /> },
       { path: "edit-profile", element: <EditPatientProfile /> },
+      { path: "change-password", element: <ChangePassword /> },
       { path: "support", element: <Support /> },
     ],
   },
@@ -112,6 +116,8 @@ const router = createBrowserRouter([
       { path: "appointments/:id", element: <ProviderAppointmentDetails /> },
       { path: "chats", element: <ProviderChats /> },
       { path: "chat/:id", element: <ProviderConsultation /> },
+      { path: "lab-requests", element: <ProviderLabRequests /> },
+      { path: "lab-requests/:id", element: <ProviderLabRequestsDetails /> },
       { path: "profile", element: <ProviderProfile /> },
       { path: "settings", element: <ProviderSettings /> },
       { path: "notifications", element: <ProviderNotifications /> },

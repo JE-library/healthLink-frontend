@@ -1,160 +1,259 @@
-import { useState, useEffect } from "react";
-import { FaUserEdit } from "react-icons/fa";
-import {
-  apiFetchProviderProfile,
-  apiUpdateProviderProfile,
-} from "../../services/health";
-
+import { useEffect, useState } from "react";
+import axios from "../../services/api";
+import { toast } from "react-toastify";
+import ConfirmModal from "../../component/public/ConfirmModal";
 
 const Profile = () => {
-  const [profile, setProfile] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    specialty: "",
-    bio: "",
-    image: null,
-  });
+  const [provider, setProvider] = useState(null);
+  const [form, setForm] = useState({});
+  const [showConfirm, setShowConfirm] = useState(false);
 
-  // Set defaults to ensure all fields are controlled
   useEffect(() => {
-    apiFetchProviderProfile()
-      .then((res) => {
-        const { name, email, phone, specialty, bio } = res.data;
-        setProfile({
-          name: name || "",
-          email: email || "",
-          phone: phone || "",
-          specialty: specialty || "",
-          bio: bio || "",
-          image: null, // File inputs should not be controlled
+    const fetchProfile = async () => {
+      try {
+        const { data } = await axios.get("/providers/profile");
+        setProvider(data.provider);
+
+        setForm({
+          fullName: data.provider.fullName || "",
+          email: data.provider.email || "",
+          phoneNumber: data.provider.phoneNumber || "",
+          gender: data.provider.gender || "",
+          dateOfBirth: data.provider.dateOfBirth?.split("T")[0] || "",
+          address: data.provider.address || "",
+          bio: data.provider.bio || "",
+          professionalTitle: data.provider.professionalTitle || "",
+          experienceYears: data.provider.experienceYears || "",
+          labTestsOffered: data.provider.labTestsOffered?.join("\n") || "",
+          consultationModes: {
+            video: data.provider.consultationModes?.video || false,
+            audio: data.provider.consultationModes?.audio || false,
+            chat: data.provider.consultationModes?.chat || false,
+          },
+          isAvailable: data.provider.isAvailable || false,
         });
-      })
-      .catch((err) => console.error("Error fetching profile:", err));
+      } catch (err) {
+        toast.error("Failed to load profile");
+      }
+    };
+    fetchProfile();
   }, []);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setProfile((prev) => ({ ...prev, [name]: value }));
+    const { name, value, type, checked } = e.target;
+
+    if (name.startsWith("consultationModes.")) {
+      const key = name.split(".")[1];
+      setForm((prev) => ({
+        ...prev,
+        consultationModes: {
+          ...prev.consultationModes,
+          [key]: checked,
+        },
+      }));
+    } else {
+      setForm((prev) => ({
+        ...prev,
+        [name]: type === "checkbox" ? checked : value,
+      }));
+    }
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0] || null;
-    setProfile((prev) => ({ ...prev, image: file }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const formData = new FormData();
-    Object.entries(profile).forEach(([key, value]) => {
-      if (value !== null) {
-        formData.append(key, value);
-      }
-    });
-
+  const handleSubmit = async () => {
     try {
-      await apiUpdateProviderProfile(formData);
-      alert("Profile updated successfully!");
+      const updatedData = {
+        ...form,
+        labTestsOffered:
+          provider.specialization === "lab technician"
+            ? form.labTestsOffered
+                .split("\n")
+                .map((test) => test.trim())
+                .filter(Boolean)
+            : undefined,
+        consultationModes:
+          provider.specialization !== "lab technician"
+            ? form.consultationModes
+            : undefined,
+      };
+
+      const { data } = await axios.put("/providers/profile", updatedData); // ✅ use PUT
+      toast.success("Profile updated successfully");
+      setProvider(data.provider);
     } catch (err) {
-      console.error("Update failed:", err);
-      alert("Failed to update profile.");
+      toast.error(err.response?.data?.message || "Update failed");
+    } finally {
+      setShowConfirm(false);
     }
   };
 
   return (
-    <div className="max-w-xl mx-auto mt-8 bg-tertiary-body p-6 rounded shadow">
-      <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-        <FaUserEdit /> Provider Profile
-      </h2>
-
-      <form onSubmit={handleSubmit}>
-        {/* Profile Picture */}
-        <div className="mb-4">
-          <label>Upload Profile Picture</label>
-          <input
-            type="file"
-            onChange={handleImageChange}
-            className="w-full p-2 border rounded"
-          />
-        </div>
-
-        {/* Full Name */}
-        <div className="mb-4">
-          <label>Full Name</label>
-          <input
-            type="text"
-            name="name"
-            value={profile.name}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-          />
-        </div>
-
-        {/* Email */}
-        <div className="mb-4">
-          <label>Email</label>
-          <input
-            type="email"
-            name="email"
-            value={profile.email}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-          />
-        </div>
-
-        {/* Phone */}
-        <div className="mb-4">
-          <label>Phone Number</label>
-          <input
-            type="tel"
-            name="phone"
-            value={profile.phone}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-          />
-        </div>
-
-        {/* Specialty */}
-        <div className="mb-4">
-          <label>Specialty</label>
-          <select
-            name="specialty"
-            value={profile.specialty}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-          >
-            <option value="">--Select--</option>
-            <option value="General Practitioner">General Practitioner</option>
-            <option value="Pediatrician">Pediatrician</option>
-            <option value="Cardiologist">Cardiologist</option>
-            <option value="Dermatology">Dermatology</option>
-            <option value="Nutritionist">Nutritionist</option>
-            <option value="Therapist">Therapist</option>
-            <option value="Labtech">Lab Technician</option>
-            <option value="Physiotherapist">Physiotherapist</option>
-          </select>
-        </div>
-
-        {/* Bio */}
-        <div className="mb-4">
-          <label>Bio</label>
-          <textarea
-            name="bio"
-            value={profile.bio}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-            rows={2}
-          />
-        </div>
-
-        {/* Submit Button */}
-        <button
-          type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+    <div className="max-w-3xl mx-auto px-4 py-10">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-semibold text-primary-body">
+          Provider Profile
+        </h2>
+        {/* <button
+          onClick={() => (window.location.href = "/provider/change-password")}
+          className="text-sm text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md shadow"
         >
-          Save Changes
-        </button>
-      </form>
+          Change Password
+        </button> */}
+      </div>
+
+      {provider ? (
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            setShowConfirm(true);
+          }}
+          className="space-y-4 bg-white p-6 rounded-md shadow-md"
+        >
+          <div className="flex items-center gap-4">
+            <img
+              src={provider.profilePhoto?.url || "/default-avatar.png"}
+              alt="Profile"
+              className="w-20 h-20 rounded-full object-cover border"
+            />
+            <div>
+              <h3 className="text-lg font-medium text-primary-body">
+                {provider.fullName}
+              </h3>
+              <p className="text-sm text-gray-500 capitalize">
+                {provider.specialization}
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {[
+              { label: "Full Name", name: "fullName", type: "text" },
+              { label: "Email", name: "email", type: "email" },
+              { label: "Phone Number", name: "phoneNumber", type: "text" },
+              { label: "Gender", name: "gender", type: "select" },
+              { label: "Date of Birth", name: "dateOfBirth", type: "date" },
+              { label: "Address", name: "address", type: "text" },
+              {
+                label: "Professional Title",
+                name: "professionalTitle",
+                type: "text",
+              },
+              {
+                label: "Experience Years",
+                name: "experienceYears",
+                type: "number",
+              },
+            ].map((field) => (
+              <div key={field.name}>
+                <label className="block text-sm font-medium">
+                  {field.label}
+                </label>
+                {field.type === "select" ? (
+                  <select
+                    name={field.name}
+                    value={form[field.name]}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 rounded border-b border-r outline-blue-400/50 border-gray-300 text-gray-500"
+                  >
+                    <option value="">-- Select --</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                  </select>
+                ) : (
+                  <input
+                    type={field.type}
+                    name={field.name}
+                    value={form[field.name]}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 rounded border-b border-r outline-blue-400/50 border-gray-300 text-gray-500"
+                  />
+                )}
+              </div>
+            ))}
+
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium">Bio</label>
+              <textarea
+                name="bio"
+                rows={3}
+                value={form.bio}
+                onChange={handleChange}
+                className="w-full px-3 py-2 rounded border-b border-r outline-blue-400/50 border-gray-300 text-gray-500"
+              />
+            </div>
+
+            {provider.specialization === "lab technician" && (
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium">
+                  Lab Tests Offered{" "}
+                  <span className="text-xs text-gray-400">(One per line)</span>
+                </label>
+                <textarea
+                  name="labTestsOffered"
+                  rows={4}
+                  value={form.labTestsOffered}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 rounded border-b border-r outline-blue-400/50 border-gray-300 text-gray-500"
+                />
+              </div>
+            )}
+
+            {provider.specialization !== "lab technician" && (
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium mb-2">
+                  Consultation Modes
+                </label>
+                <div className="flex gap-4 flex-wrap text-sm text-gray-700">
+                  {["video", "audio", "chat"].map((mode) => (
+                    <label key={mode} className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        name={`consultationModes.${mode}`}
+                        checked={form.consultationModes[mode]}
+                        onChange={handleChange}
+                      />
+                      {mode.charAt(0).toUpperCase() + mode.slice(1)}
+                    </label>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div className="flex items-center gap-2 md:col-span-2">
+              <input
+                type="checkbox"
+                name="isAvailable"
+                checked={form.isAvailable}
+                onChange={handleChange}
+              />
+              <label className="text-sm font-medium">
+                Available for Appointments
+              </label>
+            </div>
+          </div>
+
+          <div className="pt-4">
+            <button
+              type="submit"
+              className="px-6 py-2 bg-primary-body text-white rounded hover:bg-primary-body/90"
+            >
+              Save Changes
+            </button>
+          </div>
+        </form>
+      ) : (
+        <p>Loading profile...</p>
+      )}
+
+      <ConfirmModal
+        bgColour="bg-green-500"
+        isOpen={showConfirm}
+        onClose={() => setShowConfirm(false)}
+        onConfirm={handleSubmit}
+        title="Confirm Profile Changes"
+        message="Are you sure you want to update your profile with these changes?"
+        confirmText="Yes, Update"
+      />
     </div>
   );
 };

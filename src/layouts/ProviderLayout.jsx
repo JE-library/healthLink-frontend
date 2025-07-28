@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Outlet, NavLink, useNavigate } from "react-router";
+import { Outlet, NavLink, useNavigate, useLocation } from "react-router";
 import {
   FaBell,
   FaSignOutAlt,
@@ -17,6 +17,8 @@ const ProviderLayout = () => {
   const [provider, setProvider] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const [noti, setNoti] = useState([]);
 
   useEffect(() => {
     const fetchProvider = async () => {
@@ -30,22 +32,42 @@ const ProviderLayout = () => {
     fetchProvider();
   }, []);
 
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const res = await axios.get("notifications");
+        setNoti(res.data.notifications);
+      } catch (err) {
+        console.error("Failed to fetch notifications:", err);
+      }
+    };
+    fetchNotifications();
+  }, [location]);
+
   const logout = () => {
     localStorage.removeItem("accessToken");
     navigate("/login");
   };
 
-  // Build sidebar links dynamically
+  const isLabTech =
+    provider?.specialization?.toLowerCase() === "lab technician";
+
+  // Wait for provider data before rendering navigation
   const navLinks = [
     {
       to: "/provider/dashboard",
       icon: <FaHome />,
       label: "Dashboard",
     },
-    {
+    !isLabTech && {
       to: "/provider/appointments",
       icon: <FaCalendarCheck />,
       label: "Appointments",
+    },
+    isLabTech && {
+      to: "/provider/lab-requests",
+      icon: <FaFlask />,
+      label: "Lab Requests",
     },
     {
       to: "/provider/chats",
@@ -62,15 +84,8 @@ const ProviderLayout = () => {
       icon: <FaCog />,
       label: "Settings",
     },
-  ];
-
-  if (provider?.specialization?.toLowerCase() === "lab technician") {
-    navLinks.splice(2, 0, {
-      to: "/provider/lab-requests",
-      icon: <FaFlaskVial />,
-      label: "Lab Requests",
-    });
-  }
+  ].filter(Boolean); // remove `false` or `undefined` entries
+  const unreadNoti = noti.filter((n) => !n.read);
 
   return (
     <div className="flex h-screen bg-gray-50 font-primary-font overflow-hidden">
@@ -136,7 +151,14 @@ const ProviderLayout = () => {
               onClick={() => navigate("/provider/notifications")}
               className="text-gray-500 hover:text-blue-600 relative"
             >
-              <FaBell size={20} />
+              {/* Notification count, only show if there are unread notifications */}
+              {unreadNoti.length > 0 && (
+                <p className="absolute top-0 right-0 text-xs text-white bg-red-600 rounded-full w-4 h-4 flex items-center justify-center">
+                  {unreadNoti.length}
+                </p>
+              )}
+
+              <FaBell size={25} />
             </button>
 
             {provider && (
@@ -148,7 +170,7 @@ const ProviderLayout = () => {
                 />
                 <div className="text-sm text-right">
                   <p className="font-medium text-gray-800">
-                {provider.fullName}
+                    {provider.fullName}
                   </p>
                   <p className="text-gray-500 text-xs">{provider.email}</p>
                 </div>

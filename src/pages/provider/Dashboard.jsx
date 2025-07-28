@@ -8,16 +8,24 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import axios from "../../services/api";
+import { toast } from "react-toastify";
 
 const Dashboard = () => {
-  const [role, setRole] = useState("Doctor");
+  const [provider, setProvider] = useState(null);
   const [stats, setStats] = useState([]);
-  const [isAvailable, setIsAvailable] = useState(true);
+  const [isAvailable, setIsAvailable] = useState(null);
   const [overview, setOverview] = useState(null);
 
-  const toggleAvailability = () => setIsAvailable((prev) => !prev);
+  const fetchProvider = async () => {
+    try {
+      const res = await axios.get("/providers/profile");
+      setProvider(res.data.provider);
+    } catch (err) {
+      console.error("Failed to fetch provider profile", err);
+    }
+  };
 
-  const fetchStats = async () => {
+  const fetchOverview = async () => {
     try {
       const res = await axios.get("/providers/overview");
       setOverview(res.data.dashboardStats);
@@ -26,32 +34,44 @@ const Dashboard = () => {
     }
   };
 
+  const toggleAvailability = async () => {
+    try {
+      const res = await axios.patch("/providers/is-available");
+      setIsAvailable(res.data.serviceProviderAvailability);
+      toast.success("Availability Status Changed");
+    } catch (err) {
+      console.error("Failed to toggle availability", err);
+    }
+  };
+
   useEffect(() => {
-    fetchStats();
+    fetchProvider();
+    fetchOverview();
   }, []);
 
   useEffect(() => {
-    if (!overview) return;
+    if (!provider || !overview) return;
 
-    const baseStats =
-      role === "Lab Technician" ? overview.labRequests : overview.appointments;
+    const isLabTech =
+      provider.specialization?.toLowerCase() === "lab technician";
+    const data = isLabTech ? overview.labRequests : overview.appointments;
 
     const roleStats = [
-      { title: "Total", value: baseStats.total },
-      { title: "Pending", value: baseStats.pending },
-      { title: "Cancelled", value: baseStats.cancelled },
-      { title: "Confirmed", value: baseStats.confirmed },
-      { title: "Completed", value: baseStats.completed },
+      { title: "Total", value: data.total },
+      { title: "Pending", value: data.pending },
+      { title: "Cancelled", value: data.cancelled },
+      { title: "Confirmed", value: data.confirmed },
+      { title: "Completed", value: data.completed },
     ];
 
-    // Always include posts card
     const postStat = {
       title: "Posts",
       value: overview.posts?.total || 0,
     };
 
+    setIsAvailable(provider.isAvailable);
     setStats([...roleStats, postStat]);
-  }, [role, overview]);
+  }, [provider, overview]);
 
   const chartData = [
     { name: "Jan", count: 20 },
@@ -64,23 +84,19 @@ const Dashboard = () => {
     { name: "Aug", count: 5 },
   ];
 
+  const title =
+    provider?.specialization?.toLowerCase() === "lab technician"
+      ? "Lab Requests"
+      : "Appointments";
+
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
-        <h1 className="text-2xl font-semibold text-gray-800">Appointments</h1>
+        <h1 className="text-2xl font-semibold text-gray-800">{title}</h1>
         <div className="flex items-center gap-4 mt-4 sm:mt-0">
-          <select
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
-            className="px-4 py-2 rounded-md border border-gray-300 bg-white text-sm"
-          >
-            <option value="Doctor">Doctor</option>
-            <option value="Lab Technician">Lab Technician</option>
-          </select>
-
           <button
             onClick={toggleAvailability}
-            className={`px-4 py-2 rounded-md text-sm font-medium text-white ${
+            className={`px-4 py-2 rounded-md text-sm font-medium text-white cursor-pointer ${
               isAvailable ? "bg-green-600" : "bg-red-500"
             }`}
           >

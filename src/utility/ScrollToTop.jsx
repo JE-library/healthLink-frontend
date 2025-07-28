@@ -10,7 +10,7 @@ const ScrollToTop = () => {
     window.scrollTo({
       top: 0,
       left: 0,
-      behavior: "smooth", // use 'auto' if you want it to jump instantly
+      behavior: "auto", // use 'auto' if you want it to jump instantly
     });
   }, [pathname]);
 
