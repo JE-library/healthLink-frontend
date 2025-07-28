@@ -7,6 +7,7 @@ const DesktopNav = () => {
     { label: "About", path: "/about" },
     { label: "Blog", path: "/blog" },
     { label: "Contact", path: "/contact" },
+    { label: "Login", path: "/login" },
   ];
 
   return (

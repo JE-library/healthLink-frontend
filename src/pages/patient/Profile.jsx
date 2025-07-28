@@ -53,7 +53,7 @@ const PatientProfile = () => {
         <h2 className="text-2xl font-semibold text-primary-body">My Profile</h2>
         <button
           onClick={() => (window.location.href = "/patient/change-password")}
-          className="text-sm text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md shadow"
+          className="text-sm text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md shadow cursor-pointer"
         >
           Change Password
         </button>

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router";
 import axios from "../../services/api";
 import ConfirmModal from "../../component/public/ConfirmModal";
 import { format } from "date-fns";
+import { toast } from "react-toastify";
 
 const ProviderAppointmentDetails = () => {
   const { id } = useParams();
@@ -11,6 +12,7 @@ const ProviderAppointmentDetails = () => {
   const [appointment, setAppointment] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showCancelModal, setShowCancelModal] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [meetLink, setMeetLink] = useState("");
 
   useEffect(() => {
@@ -33,31 +35,127 @@ const ProviderAppointmentDetails = () => {
       await axios.delete(`providers/appointments/${id}/cancel`);
       setAppointment({ ...appointment, status: "cancelled" });
       setShowCancelModal(false);
+      toast.success("Appointment cancelled");
     } catch (err) {
       console.error("Failed to cancel appointment", err);
+      toast.error("Failed to cancel appointment");
     }
   };
 
   const handleConfirmAppointment = async () => {
     try {
-      await axios.patch(`providers/appointments/${id}/confirm`, { videoLink: meetLink });
+      await axios.patch(`providers/appointments/${id}/confirm`, {
+        videoLink: meetLink,
+      });
       setAppointment({
         ...appointment,
         status: "confirmed",
         videoLink: meetLink,
       });
+      setShowConfirmModal(false);
+      toast.success("Appointment confirmed");
     } catch (err) {
       console.error("Failed to confirm appointment", err);
+      toast.error("Failed to confirm appointment");
+    }
+  };
+  const handleCreateChat = async () => {
+    try {
+      const res = await axios.post(`providers/appointments/${id}/chat`);
+      if (res.data.success) {
+        const chatId = res.data.conversation.conversation._id;
+        console.log(res.data.conversation.conversation);
+
+        navigate(`/provider/chat/${chatId}`);
+      }
+    } catch (err) {
+      toast.error("Unable start chat");
+      console.log(err);
     }
   };
 
   const handleCompleteAppointment = async () => {
     try {
-      await axios.patch(`/appointments/${id}/complete`);
+      await axios.patch(`providers/appointments/${id}/complete`);
       setAppointment({ ...appointment, status: "completed" });
+      toast.success("Appointment marked as completed");
     } catch (err) {
       console.error("Failed to complete appointment", err);
+      toast.error("Failed to mark as completed");
     }
+  };
+
+  const renderActionButtons = () => {
+    if (!appointment) return null;
+
+    const { status, mode } = appointment;
+
+    if (status === "pending") {
+      return (
+        <>
+          {mode === "video" && (
+            <div className="w-full">
+              <label className="block text-sm text-gray-700 font-medium mb-1">
+                Google Meet Link
+              </label>
+              <input
+                type="text"
+                className="w-full p-2 border rounded-lg text-sm"
+                placeholder="Paste your Google Meet link here"
+                value={meetLink}
+                onChange={(e) => setMeetLink(e.target.value)}
+              />
+            </div>
+          )}
+
+          <div className="flex flex-wrap gap-4 mt-4">
+            <button
+              onClick={() => {
+                if (mode === "video" && !meetLink.trim()) {
+                  toast.warning(
+                    "Please provide the Google Meet link before confirming."
+                  );
+                  return;
+                }
+                setShowConfirmModal(true);
+              }}
+              className="px-2 py-1 bg-green-600 text-white rounded-lg hover:bg-green-700 cursor-pointer"
+            >
+              Confirm Appointment
+            </button>
+            <button
+              onClick={() => setShowCancelModal(true)}
+              className="px-2 py-1 bg-red-600 text-white rounded-lg hover:bg-red-700 cursor-pointer"
+            >
+              Cancel Appointment
+            </button>
+          </div>
+        </>
+      );
+    }
+
+    if (status === "confirmed") {
+      return (
+        <div className="flex flex-wrap gap-4 mt-4">
+          {mode === "chat" && (
+            <button
+              onClick={handleCreateChat}
+              className="px-2 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer"
+            >
+              Start Chat
+            </button>
+          )}
+          <button
+            onClick={handleCompleteAppointment}
+            className="px-2 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer"
+          >
+            Mark as Completed
+          </button>
+        </div>
+      );
+    }
+
+    return null;
   };
 
   if (loading) return <div className="p-6">Loading appointment...</div>;
@@ -65,27 +163,27 @@ const ProviderAppointmentDetails = () => {
     return <div className="p-6 text-red-500">Appointment not found.</div>;
 
   return (
-    <div className="p-4 sm:p-6 md:px-16 max-w-4xl mx-auto">
+    <div className="sm:p-6 md:px-16 max-w-4xl mx-auto">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">
         Appointment Details
       </h2>
 
-      <div className="bg-white rounded-xl shadow border p-6 space-y-4">
+      <div className="bg-white rounded-xl shadow border border-gray-300 p-6 space-y-4">
         <div className="space-y-1">
           <p className="text-sm text-gray-500">Patient</p>
           <div className="flex items-center gap-4">
             <img
-              src={appointment.user.profilePhoto?.url || "/default-avatar.png"}
+              src={appointment.user?.profilePhoto?.url || "/default-avatar.png"}
               alt="User"
-              className="w-12 h-12 rounded-full object-cover border"
+              className="w-12 h-12 rounded-full object-cover border-3 border-main-body"
             />
             <div>
               <p className="font-semibold text-gray-800">
-                {appointment.user.fullName}
+                {appointment.user?.fullName}
               </p>
-              <p className="text-sm text-gray-500">{appointment.user.email}</p>
+              <p className="text-sm text-gray-500">{appointment.user?.email}</p>
               <p className="text-sm text-gray-500">
-                {appointment.user.phoneNumber}
+                {appointment.user?.phoneNumber}
               </p>
             </div>
           </div>
@@ -124,49 +222,8 @@ const ProviderAppointmentDetails = () => {
           )}
         </div>
 
-        {appointment.mode === "video" && appointment.status === "pending" && (
-          <div className="mt-4">
-            <label className="block text-sm text-gray-700 font-medium mb-1">
-              Google Meet Link
-            </label>
-            <input
-              type="text"
-              className="w-full p-2 border rounded-lg text-sm"
-              placeholder="Paste your Google Meet link here"
-              value={meetLink}
-              onChange={(e) => setMeetLink(e.target.value)}
-            />
-          </div>
-        )}
-
         {/* Action Buttons */}
-        <div className="flex flex-wrap items-center gap-4 mt-6">
-          {appointment.status === "pending" && (
-            <>
-              <button
-                onClick={handleConfirmAppointment}
-                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
-              >
-                Confirm Appointment
-              </button>
-              <button
-                onClick={() => setShowCancelModal(true)}
-                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
-              >
-                Cancel Appointment
-              </button>
-            </>
-          )}
-
-          {appointment.status === "confirmed" && (
-            <button
-              onClick={handleCompleteAppointment}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-            >
-              Mark as Completed
-            </button>
-          )}
-        </div>
+        {renderActionButtons()}
       </div>
 
       {/* Back link */}
@@ -179,7 +236,18 @@ const ProviderAppointmentDetails = () => {
         </button>
       </div>
 
-      {/* Confirm Cancel Modal */}
+      {/* Confirm Appointment Modal */}
+      <ConfirmModal
+        isOpen={showConfirmModal}
+        onClose={() => setShowConfirmModal(false)}
+        onConfirm={handleConfirmAppointment}
+        title="Confirm Appointment"
+        message="Are you sure you want to confirm this appointment?"
+        confirmText="Yes, Confirm"
+        bgColour="bg-green-600"
+      />
+
+      {/* Cancel Appointment Modal */}
       <ConfirmModal
         isOpen={showCancelModal}
         onClose={() => setShowCancelModal(false)}

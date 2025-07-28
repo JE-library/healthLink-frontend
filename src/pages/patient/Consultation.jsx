@@ -14,6 +14,7 @@ const Consultation = () => {
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
   const [loading, setLoading] = useState(true);
+  const [sending, setSending] = useState(false);
 
   useEffect(() => {
     const fetchConversation = async () => {
@@ -36,8 +37,6 @@ const Consultation = () => {
     const channel = pusher.subscribe(`chat-${id}`);
     // 3. Listen for new messages
     channel.bind("new-message", (data) => {
-      console.log(data);
-
       setMessages((prev) => [...prev, data]);
     });
     // 4. Clean up on unmount
@@ -54,19 +53,27 @@ const Consultation = () => {
   const handleSend = async () => {
     if (!inputMessage.trim()) return;
 
-    // Optimistic update (optional enhancement)
-    const newMessage = {
-      message: inputMessage,
-      senderModel: "User",
-      createdAt: new Date().toISOString(),
-    };
-    setMessages((prev) => [...prev, newMessage]);
-    setInputMessage("");
+    // // Optimistic update (optional enhancement)
+    // const newMessage = {
+    //   message: inputMessage,
+    //   senderModel: "User",
+    //   createdAt: new Date().toISOString(),
+    // };
+    // setMessages((prev) => [...prev, newMessage]);
 
-    // TODO: Send message to backend
-    await axios.post(`/users/chats/${id}/send-message`, {
-      message: inputMessage,
-    });
+    try {
+      setInputMessage("");
+      setSending(true);
+      // TODO: Send message to backend
+      await axios.post(`/users/chats/${id}/send-message`, {
+        message: inputMessage,
+      });
+      setSending(false);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setSending(false);
+    }
   };
 
   if (loading) return <div className="p-6">Loading chat...</div>;
@@ -106,9 +113,7 @@ const Consultation = () => {
       </div>
 
       {/* Chat Section */}
-      <div
-        className="bg-gray-50 shadow border border-gray-300 rounded-lg h-96 p-4 overflow-y-auto mb-4"
-      >
+      <div className="bg-gray-50 shadow border border-gray-300 rounded-lg h-96 p-4 overflow-y-auto mb-4">
         {messages.length === 0 && (
           <p className="text-sm text-gray-500">
             No messages yet. Start the conversation!
@@ -129,13 +134,21 @@ const Consultation = () => {
               }`}
             >
               <p className="text-[16px]">{msg.message}</p>
-              <p className="text-[10px] text-gray-200">
+              <p
+                className={`text-[10px] text-gray-200${
+                  msg.senderModel === "User"
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-200 text-gray-800"
+                }`}
+              >
                 {msg.createdAt ? format(new Date(msg.createdAt), "p") : ""}
               </p>
             </div>
           </div>
         ))}
-        <div ref={messagesEndRef} />
+        <div ref={messagesEndRef} className="flex justify-end">
+          {sending ? "sending..." : ""}
+        </div>
       </div>
 
       {/* Message Input */}
