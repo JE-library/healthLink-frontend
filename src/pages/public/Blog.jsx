@@ -59,7 +59,7 @@ const Blog = () => {
                   <img
                     src={postImage.url}
                     alt="Blog Post"
-                    className="w-full h-52 object-cover"
+                    className="w-full h-52 object-contain"
                   />
                 )}
 
