@@ -149,7 +149,7 @@ const ProviderLayout = () => {
           <div className="flex items-center gap-4">
             <button
               onClick={() => navigate("/provider/notifications")}
-              className="text-gray-500 hover:text-blue-600 relative"
+              className="text-gray-500 hover:text-blue-600 relative cursor-pointer"
             >
               {/* Notification count, only show if there are unread notifications */}
               {unreadNoti.length > 0 && (
