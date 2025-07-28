@@ -47,7 +47,7 @@ const WellnessBlog = () => {
                 <img
                   src={post.postImage.url}
                   alt={post.title}
-                  className="w-full h-48 object-cover rounded-md mb-4"
+                  className="w-full h-48 object-contain rounded-md mb-4"
                 />
               )}
 
@@ -55,9 +55,7 @@ const WellnessBlog = () => {
                 {post.title}
               </h3>
 
-              <p className="text-sm text-gray-600 mb-4">
-                {post.description}
-              </p>
+              <p className="text-sm text-gray-600 mb-4">{post.description}</p>
 
               {/* Author */}
               {post.author && (
